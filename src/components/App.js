@@ -1,35 +1,44 @@
-import {BrouserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import Timeline from './Timeline/Timeline'
 
-export default function App () {
+export default function App() {
 
     return (
+        
         <Router>
+           
             <Switch>
-                <Route to='/sign-up' exact>
+                <Route path='/' exact>
+                    
+                </Route>
+                
+                <Route path='/sign-up' exact>
 
                 </Route>
-                <Route to='/' exact>
-
+                
+                <Route path='/timeline' exact>
+                    <Timeline/>
                 </Route>
-                <Route to='/timeline' exact>
+                
+                <Route path='/my-posts' exact>
                     
                 </Route>
-                <Route to='/my-posts' exact>
+               
+                <Route path='/hashtag/:hashtag' exact>
                     
                 </Route>
-                <Route to='/hashtag/:hashtag' exact>
+                
+                <Route path='/user/:id' exact>
                     
                 </Route>
-                <Route to='/user/:id' exact>
-                    
-                </Route>
-                <Route to='/my-likes' exact>
+                
+                <Route path='/my-likes' exact>
                     
                 </Route>
             </Switch>
         </Router>
 
-
+        
     );
 
 }
