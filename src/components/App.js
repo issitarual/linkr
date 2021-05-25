@@ -1,4 +1,4 @@
-import {BrouserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 export default function App () {
 
@@ -28,7 +28,6 @@ export default function App () {
                 </Route>
             </Switch>
         </Router>
-
 
     );
 
