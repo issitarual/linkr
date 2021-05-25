@@ -1,12 +1,18 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+
 import Timeline from './Timeline/Timeline'
+
+import GlobalStyle from './GlobalStyles';
+
 
 export default function App() {
 
     return (
         
         <Router>
-           
+
+            <GlobalStyle />
+
             <Switch>
                 <Route path='/' exact>
                     
@@ -38,7 +44,9 @@ export default function App() {
             </Switch>
         </Router>
 
+
         
+
     );
 
 }
