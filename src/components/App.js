@@ -29,7 +29,6 @@ export default function App () {
             </Switch>
         </Router>
 
-
     );
 
 }
