@@ -31,9 +31,9 @@ export default function Header (){
                     <p>My posts</p>
                 </Link>
                 <Link to="/my-likes">
-                    <p onClick={() => alert("my-likes")}>My likes</p>
+                    <p>My likes</p>
                 </Link>
-                    <p onClick= {logout}>Logout</p>
+                    <p>Logout</p>
             </div>
         </ContainerHeader>
     )
