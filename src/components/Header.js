@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
@@ -27,20 +27,19 @@ export default function Header (){
                 <img src="https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg"/>
             </span>
             <div>
-                <Link to="/my-posts">
-                    <p>My posts</p>
-                </Link>
-                <Link to="/my-likes">
-                    <p>My likes</p>
-                </Link>
-                    <p onClick={logout}>Logout</p>
+                    <p onClick={() => link("my-posts")}>My posts</p>
+                    <p onClick={() => link("my-likes")}>My likes</p>
+                    <p onClick={() => link("logout")}>Logout</p>
             </div>
         </ContainerHeader>
     )
 
-    function logout (){
-        localStorage.clear();
-        history.push("/")
+    function link (url){
+        if(url === "logout"){
+            localStorage.clear();
+        }
+        setState(!state);
+        history.push(url);
     }
 }
 
