@@ -1,37 +1,44 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import React from 'react';
+import { useState } from "react";
+
+import UserContext from './UserContext';
 
 import Home from './/home/Home.js';
 import Register from './sign-up/SignUp.js';
 
 export default function App () {
+    const [user, setUser] = useState([]);
+
 
     return (
+        <UserContext.Provider value={{user, setUser}}>
         <Router>
             <Switch>
-                <Route to='/' exact>
+                <Route path='/' exact>
                     <Home />
                 </Route>
-                <Route to='/sign-up' exact>
+                <Route path='/sign-up' exact>
                     <Register />
                 </Route>
-                <Route to='/timeline' exact>
+                <Route path='/timeline' exact>
                     
                 </Route>
-                <Route to='/my-posts' exact>
+                <Route path='/my-posts' exact>
                     
                 </Route>
-                <Route to='/hashtag/:hashtag' exact>
+                <Route path='/hashtag/:hashtag' exact>
                     
                 </Route>
-                <Route to='/user/:id' exact>
+                <Route path='/user/:id' exact>
                     
                 </Route>
-                <Route to='/my-likes' exact>
+                <Route path='/my-likes' exact>
                     
                 </Route>
             </Switch>
         </Router>
+        </UserContext.Provider>
 
     );
 

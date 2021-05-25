@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 //import axios from 'axios';
 
 export default function Home(){
+
+    // function SendInfo(){
+
+    // }
+
+
     return(
         <FrontPage>
             <RightSide>
@@ -17,11 +23,11 @@ export default function Home(){
             </RightSide>
 
             <LeftSide>
-                <Form>
+                <form>
                     <input type="text" placeholder="e-mail"></input>
                     <input type="text" placeholder="password"></input>
                     <button>Log In</button>
-                </Form>
+                </form>
                
                 <Link to="/sign-up">
                     <p>First lime? Creat an account!</p>
@@ -104,11 +110,12 @@ const LeftSide = styled.div`
         font-family: 'Lato', sans-serif;
 
     }
-`;
 
-const Form = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
 `;

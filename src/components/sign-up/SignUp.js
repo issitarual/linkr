@@ -1,8 +1,47 @@
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
-//import axios from 'axios';
+import { Link, useHistory } from "react-router-dom";
+import { useState } from "react";
+import axios from 'axios';
 
 export default function Register(){
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [pictureUrl, setPictureUrl] = useState("");
+
+    const [charging, setCharging] = useState(false);
+
+    let history = useHistory();
+
+    const body = {
+        email,
+        password,        
+        username, 
+        pictureUrl
+    }
+
+    function SendInfo(event){
+        event.preventDefault();
+        setCharging(true)
+
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-up", body)
+        request.then(goToLogin)
+        //request.catch(errors)
+
+        function goToLogin(){
+           
+            history.push("/")
+        }
+
+        // function errors(){
+        //     if(campo vazio){alert("Preencha os campos corretamente")}
+        //     else if(erro 400){alert("Email inserido já foi cadastro")}
+            
+        // }
+        
+    }
+
+
     return(
         <FrontPage>
             <RightSide>
@@ -17,13 +56,14 @@ export default function Register(){
             </RightSide>
 
             <LeftSide>
-                <Form>
-                    <input type="text" placeholder="e-mail"></input>
-                    <input type="text" placeholder="password"></input>
-                    <input type="text" placeholder="username"></input>
-                    <input type="text" placeholder="picture url"></input>
-                    <button>Sign Up</button>
-                </Form>
+                <form onSubmit={SendInfo}>
+                    <input type="text" placeholder="e-mail" onChange={(e) => setEmail(e.target.value)} value={email} />
+                    <input type="text" placeholder="password" onChange={(e) => setPassword(e.target.value)} value={password} />
+                    <input type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)} value={username} />
+                    <input type="text" placeholder="picture url" onChange={(e) => setPictureUrl(e.target.value)} value={pictureUrl} />
+
+                    <button type="submit" disabled={charging}>Sign Up</button>
+                </form>
                
                 <Link to="/">
                     <p>Switch back to Log In</p>
@@ -106,11 +146,11 @@ const LeftSide = styled.div`
         font-family: 'Lato', sans-serif;
 
     }
-`;
 
-const Form = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`
+    form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+`;
