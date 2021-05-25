@@ -1,29 +1,32 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import GlobalStyle from './GlobalStyles';
+import NewPost from './timeline/NewPost';
 
 export default function App () {
 
     return (
         <Router>
+            <GlobalStyle />
             <Switch>
-                <Route to='/sign-up' exact>
+                <Route path='/sign-up' exact>
 
                 </Route>
-                <Route to='/' exact>
+                <Route path='/' exact>
 
                 </Route>
-                <Route to='/timeline' exact>
+                <Route path='/timeline' exact>
+                    <NewPost />
+                </Route>
+                <Route path='/my-posts' exact>
                     
                 </Route>
-                <Route to='/my-posts' exact>
+                <Route path='/hashtag/:hashtag' exact>
                     
                 </Route>
-                <Route to='/hashtag/:hashtag' exact>
+                <Route path='/user/:id' exact>
                     
                 </Route>
-                <Route to='/user/:id' exact>
-                    
-                </Route>
-                <Route to='/my-likes' exact>
+                <Route path='/my-likes' exact>
                     
                 </Route>
             </Switch>
