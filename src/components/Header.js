@@ -33,7 +33,7 @@ export default function Header (){
                 <Link to="/my-likes">
                     <p>My likes</p>
                 </Link>
-                    <p>Logout</p>
+                    <p onClick={logout}>Logout</p>
             </div>
         </ContainerHeader>
     )
