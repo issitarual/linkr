@@ -27,12 +27,12 @@ export default function Header (){
                 <img src="https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg"/>
             </span>
             <div>
-                {/*<Link to="/my-posts">*/}
-                    <p onClick={() => alert("my-posts")}>My posts</p>
-                {/*</Link>*/}
-                {/*<Link to="/my-likes">*/}
+                <Link to="/my-posts">
+                    <p>My posts</p>
+                </Link>
+                <Link to="/my-likes">
                     <p onClick={() => alert("my-likes")}>My likes</p>
-                {/*</Link>*/}
+                </Link>
                     <p onClick= {logout}>Logout</p>
             </div>
         </ContainerHeader>
