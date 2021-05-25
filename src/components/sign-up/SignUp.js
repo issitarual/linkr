@@ -22,22 +22,22 @@ export default function Register(){
 
     function SendInfo(event){
         event.preventDefault();
-        setCharging(true)
+        setCharging(true);
 
-        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-up", body)
-        request.then(goToLogin)
-        //request.catch(errors)
-
-        function goToLogin(){
-           
-            history.push("/")
+        if(body.username === "" || body.email === "" || body.password === "" || body.pictureUrl === ""){
+            alert("Por favor preencher todos os campos corretamente")
         }
 
-        // function errors(){
-        //     if(campo vazio){alert("Preencha os campos corretamente")}
-        //     else if(erro 400){alert("Email inserido já foi cadastro")}
-            
-        // }
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-up", body)
+        request.then(() => history.push("/"));
+        request.catch(errors)
+
+        function errors(error){
+            setCharging(false);
+            if(error.response.status === 403){
+                alert("O e-mail inserido já foi cadastrado")
+            } 
+        }
         
     }
 
@@ -58,7 +58,7 @@ export default function Register(){
             <LeftSide>
                 <form onSubmit={SendInfo}>
                     <input type="text" placeholder="e-mail" onChange={(e) => setEmail(e.target.value)} value={email} />
-                    <input type="text" placeholder="password" onChange={(e) => setPassword(e.target.value)} value={password} />
+                    <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} value={password} />
                     <input type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)} value={username} />
                     <input type="text" placeholder="picture url" onChange={(e) => setPictureUrl(e.target.value)} value={pictureUrl} />
 

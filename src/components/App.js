@@ -13,31 +13,31 @@ export default function App () {
 
     return (
         <UserContext.Provider value={{user, setUser}}>
-        <Router>
-            <Switch>
-                <Route path='/' exact>
-                    <Home />
-                </Route>
-                <Route path='/sign-up' exact>
-                    <Register />
-                </Route>
-                <Route path='/timeline' exact>
-                    
-                </Route>
-                <Route path='/my-posts' exact>
-                    
-                </Route>
-                <Route path='/hashtag/:hashtag' exact>
-                    
-                </Route>
-                <Route path='/user/:id' exact>
-                    
-                </Route>
-                <Route path='/my-likes' exact>
-                    
-                </Route>
-            </Switch>
-        </Router>
+            <Router>
+                <Switch>
+                    <Route path='/' exact>
+                        <Home />
+                    </Route>
+                    <Route path='/sign-up' exact>
+                        <Register />
+                    </Route>
+                    <Route path='/timeline' exact>
+                        
+                    </Route>
+                    <Route path='/my-posts' exact>
+                        
+                    </Route>
+                    <Route path='/hashtag/:hashtag' exact>
+                        
+                    </Route>
+                    <Route path='/user/:id' exact>
+                        
+                    </Route>
+                    <Route path='/my-likes' exact>
+                        
+                    </Route>
+                </Switch>
+            </Router>
         </UserContext.Provider>
 
     );
