@@ -3,9 +3,9 @@ import GlobalStyle from './GlobalStyles';
 import React from 'react';
 import { useState } from "react";
 import UserContext from './UserContext';
-import Home from './/home/Home.js';
+import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
-
+import NewPost from './Timeline/NewPost'
 import Header from './Header';
 
 export default function App () {
@@ -18,13 +18,14 @@ export default function App () {
             <GlobalStyle />
             <Switch>
                 <Route path='/' exact>
-
+                    <Home />
                 </Route>
                 <Route path='/sign-up' exact>
-
+                    <Register />
                 </Route>
                 <Route path='/timeline' exact>
                     <Header/>
+                    <NewPost />
                 </Route>
                 <Route path='/my-posts' exact>
                     <Header/>

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
 export default function Header (){
