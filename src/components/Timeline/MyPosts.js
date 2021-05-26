@@ -17,7 +17,6 @@ export default function MyPosts(){
                 'Authorization' : `Bearer ${user.token}`
             }
         } 
-
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{

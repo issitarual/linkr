@@ -40,7 +40,7 @@ export default function NewPost ({config}) {
   }
 
   return (
-    <Corpo>
+    // <Corpo>
       <Post>
         <Icon>
           <img src={''}/>
@@ -62,21 +62,21 @@ export default function NewPost ({config}) {
           <Button disabled={disabled}>{buttonText}</Button>
         </Form>
       </Post>
-    </Corpo>
+    // {/* </Corpo> */}
   );
 
 }
 
-//quando for para a timeline esse estilo 'Corpo' vai sumir
-const Corpo = styled.div`
-  background-color: #333333;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Lato;
-`;
+// //quando for para a timeline esse estilo 'Corpo' vai sumir
+// const Corpo = styled.div`
+//   background-color: #333333;
+//   width: 100vw;
+//   height: 100vh;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-family: Lato;
+// `;
 
 const Post = styled.div`
   background-color: white;

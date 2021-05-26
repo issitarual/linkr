@@ -58,12 +58,9 @@ export default function Timeline(){
                 <button onClick={()=>console.log(serverLoading)}>server load</button>
                 
                 <TimelineContent>
+                    
                     <TimelinePosts>
-<<<<<<< HEAD
-                      <NewPost />
-=======
-                        {/*Adicone o componente de criar post aqui*/}
->>>>>>> origin/feature-timeline
+                    <NewPost />
 
                         {serverLoading 
                             ? <p>Loading</p> 
