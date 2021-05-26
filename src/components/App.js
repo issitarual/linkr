@@ -1,49 +1,48 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import React from 'react';
+import { useState } from "react";
+
+import UserContext from './UserContext';
+
+import Home from './/home/Home.js';
+import Register from './sign-up/SignUp.js';
 
 import Timeline from './Timeline/Timeline'
 
 import GlobalStyle from './GlobalStyles';
 
+export default function App () {
+    const [user, setUser] = useState([]);
 
-export default function App() {
 
     return (
-        
-        <Router>
-
-            <GlobalStyle />
-
-            <Switch>
-                <Route path='/' exact>
-                    
-                </Route>
-                
-                <Route path='/sign-up' exact>
-
-                </Route>
-                
-                <Route path='/timeline' exact>
-                    <Timeline/>
-                </Route>
-                
-                <Route path='/my-posts' exact>
-                    
-                </Route>
-               
-                <Route path='/hashtag/:hashtag' exact>
-                    
-                </Route>
-                
-                <Route path='/user/:id' exact>
-                    
-                </Route>
-                
-                <Route path='/my-likes' exact>
-                    
-                </Route>
-            </Switch>
-        </Router>
-
+        <UserContext.Provider value={{user, setUser}}>
+            <Router>
+                <Switch>
+                    <Route path='/' exact>
+                        <Home />
+                    </Route>
+                    <Route path='/sign-up' exact>
+                        <Register />
+                    </Route>
+                    <Route path='/timeline' exact>
+                        <Timeline/>
+                    </Route>
+                    <Route path='/my-posts' exact>
+                        
+                    </Route>
+                    <Route path='/hashtag/:hashtag' exact>
+                        
+                    </Route>
+                    <Route path='/user/:id' exact>
+                        
+                    </Route>
+                    <Route path='/my-likes' exact>
+                        
+                    </Route>
+                </Switch>
+            </Router>
+        </UserContext.Provider>
 
         
 
