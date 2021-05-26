@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import axios from 'axios';
+import ReactTooltip from 'react-tooltip';
 
 import { HeartOutline } from 'react-ionicons';
 import { HeartSharp } from 'react-ionicons';
@@ -24,7 +25,7 @@ export default function Timeline(){
                         <li>
                             <div className='postLeft'>
                                 <img src='x'/>
-                                <div onClick={() => like("id")}>
+                                <div data-tip='like' onClick={() => like("id")}>
                                     {likedPosts.includes("id")?
                                     <HeartSharp
                                         color={'#AC2B25'} 
@@ -37,8 +38,7 @@ export default function Timeline(){
                                         width="25px"
                                     />
                                     }
-
-
+                                    <ReactTooltip />
                                 </div> 
 
                             </div>
