@@ -1,13 +1,18 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+
 import React from 'react';
 
 import Home from './/home/Home.js';
 import Register from './sign-up/SignUp.js';
 
+import GlobalStyle from './GlobalStyles';
+
+
 export default function App () {
 
     return (
         <Router>
+            <GlobalStyle />
             <Switch>
                 <Route to='/' exact>
                     <Home />
