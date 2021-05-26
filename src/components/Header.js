@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import UserContext from './UserContext';
 
@@ -12,7 +12,9 @@ export default function Header (){
     const { user } = useContext(UserContext);
     return(
         <ContainerHeader state={state}>
-            <h1>linkr</h1>
+            <Link>
+                <h1>linkr</h1>
+            </Link>
             <span onClick={() => setState(!state)}>
                 {state?
                 <ChevronUpOutline
