@@ -27,7 +27,7 @@ export default function Header (){
                 <img src="https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg"/>
             </span>
             <div>
-                    <p onClick={() => link("my-posts")}>My posts</p>
+                    <p onClick={() => link("/my-posts")}>My posts</p>
                     <p onClick={() => link("my-likes")}>My likes</p>
                     <p onClick={() => link("logout")}>Logout</p>
             </div>
