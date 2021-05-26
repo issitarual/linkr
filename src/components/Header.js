@@ -12,7 +12,7 @@ export default function Header (){
     const { user } = useContext(UserContext);
     return(
         <ContainerHeader state={state}>
-            <Link>
+            <Link to ="/timeline">
                 <h1>linkr</h1>
             </Link>
             <span onClick={() => setState(!state)}>
@@ -31,8 +31,8 @@ export default function Header (){
                 <img src={user.user.avatar}/>
             </span>
             <div>
-                    <p onClick={() => link("my-posts")}>My posts</p>
-                    <p onClick={() => link("my-likes")}>My likes</p>
+                    <p onClick={() => link("/my-posts")}>My posts</p>
+                    <p onClick={() => link("/my-likes")}>My likes</p>
                     <p onClick={() => link("/")}>Logout</p>
             </div>
         </ContainerHeader>
