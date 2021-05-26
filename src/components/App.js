@@ -7,6 +7,8 @@ import GlobalStyle from './GlobalStyles';
 
 import UserContext from './UserContext';
 
+import { useState } from 'react';
+import Header from './Header.js';
 
 export default function App () {
     const [user, setUser] = useState([]);
@@ -16,31 +18,30 @@ export default function App () {
             <Router>
                 <GlobalStyle />
                 <Switch>
-                    <Route to='/' exact>
+                    <Route path='/' exact>
                         <Home />
                     </Route>
-                    <Route to='/sign-up' exact>
+                    <Route path='/sign-up' exact>
                         <Register />
                     </Route>
-                    <Route to='/timeline' exact>
-                        
+                    <Route path='/timeline' exact>
+                        <Header />
                     </Route>
-                    <Route to='/my-posts' exact>
-                        
+                    <Route path='/my-posts' exact>
+                        <Header />
                     </Route>
-                    <Route to='/hashtag/:hashtag' exact>
-                        
+                    <Route path='/hashtag/:hashtag' exact>
+                        <Header />
                     </Route>
-                    <Route to='/user/:id' exact>
-                        
+                    <Route path='/user/:id' exact>
+                        <Header />
                     </Route>
-                    <Route to='/my-likes' exact>
-                        
+                    <Route path='/my-likes' exact>
+                        <Header />
                     </Route>
                 </Switch>
             </Router>
         </UserContext.Provider>
-
     );
 
 }
