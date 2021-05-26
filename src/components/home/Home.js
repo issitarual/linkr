@@ -1,12 +1,45 @@
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
-//import axios from 'axios';
+import { Link, useHistory } from "react-router-dom";
+import { useState, useContext } from "react";
+import axios from 'axios';
+
+import UserContext from '../UserContext';
 
 export default function Home(){
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    // function SendInfo(){
+    const [charging, setCharging] = useState(false);
 
-    // }
+    const {setUser} = useContext(UserContext);
+
+    let history = useHistory();
+
+    const body = {
+        email,
+        password,        
+    }
+
+    function SendInfo(event){
+        event.preventDefault();
+        setCharging(true)
+
+        if(body.email === "" || body.password === ""){
+            alert("Por favor preencher todos os campos corretamente")
+        }
+
+
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in", body);
+        request.then((response) => {setUser(response.data); history.push("/timeline")});
+        request.catch(errors)
+    }
+
+    function errors(error){
+        setCharging(false);
+        if(error.response.status === 403){
+            alert("Email ou Senha incorretos")
+        } 
+    }
 
 
     return(
@@ -23,10 +56,11 @@ export default function Home(){
             </RightSide>
 
             <LeftSide>
-                <form>
-                    <input type="text" placeholder="e-mail"></input>
-                    <input type="text" placeholder="password"></input>
-                    <button>Log In</button>
+                <form onSubmit={SendInfo}>
+                    <input type="text" placeholder="e-mail" onChange={(e) => setEmail(e.target.value)} value={email} />
+                    <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} value={password} />
+
+                    <button type="submit" disabled={charging}>Log In</button>
                 </form>
                
                 <Link to="/sign-up">

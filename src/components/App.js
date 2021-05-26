@@ -17,7 +17,6 @@ export default function App () {
     return (
         <UserContext.Provider value={{user, setUser}}>
             <Router>
-                <GlobalStyle />
                 <Switch>
                     <Route path='/' exact>
                         <Home />

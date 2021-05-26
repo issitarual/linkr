@@ -10,7 +10,6 @@ export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
     const { user } = useContext(UserContext);
-
     return(
         <ContainerHeader state={state}>
             <h1>linkr</h1>
@@ -27,7 +26,7 @@ export default function Header (){
                     width="32px"
                 />
                 }
-                <img src="https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg"/>
+                <img src={user.user.avatar}/>
             </span>
             <div>
                     <p onClick={() => link("my-posts")}>My posts</p>
