@@ -51,7 +51,7 @@ export default function NewPost ({update}) {
   return (
       <Post>
         <Icon>
-          <img src={''}/>
+          <img src={user.user.avatar}/>
         </Icon>
         <Form onSubmit={createNewPost}>
           <p>O que você tem para favoritar hoje?</p>
@@ -120,8 +120,7 @@ const Form = styled.form`
 const Icon = styled.div`
   width: 50px;
   height: 50px;
-  background-color: #333333;
-  border-radius: 30px;
+  border-radius: 25px;
   margin-top: 16px;
   margin-left: 18px;
   margin-right: 18px;
