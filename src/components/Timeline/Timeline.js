@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import NewPost from './NewPost';
 export default function Timeline(){
      return( 
       
@@ -6,11 +7,13 @@ export default function Timeline(){
         
         <TimelineContainer>
             <h1>timeline</h1>
+            
                 
                 <TimelineContent>
-
                     <TimelinePosts>
                         <li>
+                        <NewPost />
+
                             <div className='postLeft'>
                                 <img src='x'/>
                                 <div>coracao</div> {/*icone do coracao*/}

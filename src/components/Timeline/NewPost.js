@@ -23,22 +23,20 @@ export default function NewPost ({config}) {
       "link": linkToPost
     }
     
-    const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', body, config);
-    letDisabled(true);
-    letButtonText('Publicando...')
-
-    promise.then((post) => {
+    const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', body, config).then((response)=>{
       letDisabled(false);
       letButtonText('Publicar')
       setLinkToPost('');
       setLinkDescription('');
-    });
-
-    promise.catch(() => {
+    }).catch((error)=>{
       alert('houve um erro ao publicar seu link');
-      letDisabled(true);
-    });
-
+      letDisabled(false);
+      letButtonText('Publicar')
+    })
+   
+    letDisabled(true);
+    letButtonText('Publicando...')
+    
   }
 
   return (
@@ -112,6 +110,7 @@ const Form = styled.form`
     border-radius: 5px;
     padding-left: 12px;
     padding-top: 8px;
+    resize: none;
     ::placeholder {
       color: #949494;
       font-size: 15px;
@@ -141,7 +140,6 @@ const InputLink = styled.textarea`
 const InputDescription = styled.textarea`
   height: 66px;
   margin-top: 8px;
-  resize: none;
 `;
 
 const Button = styled.button`
