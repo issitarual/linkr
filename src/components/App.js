@@ -8,6 +8,7 @@ import Home from './/home/Home.js';
 import Register from './sign-up/SignUp.js';
 import GlobalStyle from './GlobalStyles';
 import Header from './Header';
+import Timeline from './Timeline/Timeline'
 
 
 export default function App () {
@@ -26,6 +27,7 @@ export default function App () {
                     </Route>
                     <Route path='/timeline' exact>
                         <Header/>
+                        <Timeline/>
                     </Route>
                     <Route path='/my-posts' exact>
                         <Header/>
