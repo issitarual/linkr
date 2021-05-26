@@ -1,55 +1,42 @@
-import styled from 'styled-components';
-import {useContext, useEffect,useState} from 'react';
+import styled from 'styled-components'
+import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
-import axios from 'axios';
+import axios from 'axios'
 import ReactHashtag from "react-hashtag";
-import {useHistory} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
 
-import { HeartOutline, HeartSharp } from 'react-ionicons';
-
-export default function Timeline(){
-    const history = useHistory()
-    const [likedPosts, SetLikedPosts] = useState([]);
-    const { user } = useContext(UserContext);
-    const [allPosts,setAllPosts] = useState([])
-    const [serverLoading,setServerLoading] = useState(true)
+export default function MyPosts(){
+     
+    const {user} = useContext(UserContext)
+    const [myPosts,setMyPosts] = useState([])
+   const [serverLoading,setServerLoading] = useState(true)
 
     useEffect(()=>{
-       // console.log(user)
+        console.log(user)
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
             }
-        }
+        } 
 
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-          //  console.log(response)
-           // console.log('Os postos foram pegos')
-            const newArray = response.data.posts
-            setAllPosts(newArray)
+            console.log(response)
+            console.log('Os meus posts foram pegos')
+           const newArray = response.data.posts
+           setMyPosts(newArray)
             setServerLoading(false)
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    console.log(post.id)
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
-                }})
-            })
-            SetLikedPosts(sharpedHeart)
         })
 
         getPosts.catch((responseError)=>{
-           // console.log(responseError)
+            console.log(responseError)
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
     },[])
 
-    function goToLink(e,link){
+
+  function goToLink(e,link){
         e.preventDefault()
         console.log(`ir para o link: ${link}`)
        window.open(link)
@@ -59,54 +46,34 @@ export default function Timeline(){
         setServerLoading(!serverLoading)
         
     }
+   
     return( 
       
     <Container>
         
         <TimelineContainer>
-            <h1>timeline</h1> <button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
+            <h1>My Posts</h1> <button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>server load</button>
                 <button onClick={()=>console.log(serverLoading)}>server load</button>
                 
                 <TimelineContent>
 
                     <TimelinePosts>
-                        {/*Adicone o componente de criar post aqui*/}
+                       
 
                         {serverLoading 
                             ? <p>Loading</p> 
-                            : (allPosts.length===0 
-                                ? <p>Nenhum post encontrado</p>
-                                :allPosts.map((post)=>{
-
+                            : (myPosts.length===0 
+                                ? <p>Você ainda não postou nada</p>
+                                :myPosts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
-                                <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
-                                <div data-tip={post.likes.length === 0? "0 curtidas":`${post.likes[0].id}`} onClick={() => like(post.id)}>
-                                    {likedPosts.map(n=>n.id).includes(post.id)?                                  
-                                    <HeartSharp
-                                        color={'#AC2B25'} 
-                                        height="25px"
-                                        width="25px"
-                                    />:
-                                    <HeartOutline
-                                        color={'#fff'} 
-                                        height="25px"
-                                        width="25px"
-                                    />
-                                    }
-                                    <ReactTooltip 
-                                        backgroundColor	="#fff"
-                                        textColor="#505050"
-                                    />
-                                </div> 
-                                <h6>
-                                    {likedPosts.map(n => n.id).includes(post.id)? post.likes.length + 1:post.likes.length} likes
-                                </h6>
+                                <img src={post.user.avatar}/>
+                                    <div>coracao</div> {/*icone do coracao*/}
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
+                                <h2 id={post.user.id}>{post.user.username}</h2>
                                     <p>
                                         <ReactHashtag>
                                             {post.text}
@@ -129,48 +96,29 @@ export default function Timeline(){
                             )
                         }
 
-                      
+                       {/* <li>
+                            <div className='postLeft'></div>
+                            <div className='postRight'></div>
+                        </li>
+
+                        <li>
+                            <div className='postLeft'></div>
+                            <div className='postRight'></div>
+                       </li>*/}
                     </TimelinePosts>
                     
                     <div className = 'trending'>
-                        'lista de hashtag'
                     </div> {/* add o trendin aqui*/}
                 </TimelineContent>
         </TimelineContainer>
 
     </Container>
     )
-
-
-
-    function like (id){
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${user.token}`
-            }
-        }
-        if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-                console.log(success);
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else{
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                console.log(success);
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-    }
 }
 
 const Container = styled.div`
 
-    width: 100%;
+width: 100%;
     height: auto;
     min-height: 100vh;
     
@@ -179,6 +127,7 @@ const Container = styled.div`
     
     display: flex;
     justify-content: center;
+
 
 `
 
@@ -207,7 +156,6 @@ const TimelineContainer = styled.div`
         z-index:2;
         right: 174px;
         top: 226px;
-        color: white;
     }
 
 `
@@ -250,9 +198,6 @@ const TimelinePosts = styled.ul`
        p{
            width: 502px;
            height: auto;
-       }
-       h6{
-        font-family: 'Lato', sans-serif;
        }
     }
 
@@ -321,11 +266,11 @@ display: flex;
             a{
                 font-size: 13px;
                 width: 263px;
-                height: auto;
+                height: 13px;
                 color: white;
                 white-space: pre-wrap; /* CSS3 */    
    
-                 word-wrap: break-word; /* Internet Explorer 5.5+ */
+                word-wrap: break-word; /* Internet Explorer 5.5+ */
                 
             }
             a:hover{
