@@ -12,7 +12,6 @@ export default function Timeline(){
     const [allPosts,setAllPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true)
     
-
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
@@ -21,7 +20,8 @@ export default function Timeline(){
 
     function update () {
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-     
+        setServerLoading(true)
+
         getPosts.then((response)=>{
           //  console.log(response)
            // console.log('Os postos foram pegos')

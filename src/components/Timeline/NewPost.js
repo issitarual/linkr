@@ -63,7 +63,7 @@ export default function NewPost ({update}) {
             onChange={e => setLinkToPost(e.target.value)} 
           />
           <InputDescription
-            value={InputDescription}
+            value={linkDescription}
             disabled={disabled}
             type="text"
             placeholder={"Muito irado esse link falando de #javascript"}
