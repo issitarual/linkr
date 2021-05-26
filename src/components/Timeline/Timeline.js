@@ -59,7 +59,11 @@ export default function Timeline(){
                 
                 <TimelineContent>
                     <TimelinePosts>
+<<<<<<< HEAD
                       <NewPost />
+=======
+                        {/*Adicone o componente de criar post aqui*/}
+>>>>>>> origin/feature-timeline
 
                         {serverLoading 
                             ? <p>Loading</p> 
@@ -70,7 +74,7 @@ export default function Timeline(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
-                                    <div>coracao</div> {/*icone do coracao*/}
+                                    <div>coracao</div> {/*icone do coracao* <----------*/}
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
@@ -96,18 +100,11 @@ export default function Timeline(){
                             )
                         }
 
-                       {/* <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                        </li>
-
-                        <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                       </li>*/}
+                      
                     </TimelinePosts>
                     
                     <div className = 'trending'>
+                        'lista de hashtag'
                     </div> {/* add o trendin aqui*/}
                 </TimelineContent>
         </TimelineContainer>
@@ -120,6 +117,7 @@ const Container = styled.div`
 
     width: 100%;
     height: auto;
+    min-height: 100vh;
     
     background-color: #333333;
     
@@ -154,6 +152,7 @@ const TimelineContainer = styled.div`
         z-index:2;
         right: 174px;
         top: 226px;
+        color: white;
     }
 
 `
@@ -276,11 +275,7 @@ display: flex;
                 text-decoration: underline;
                 cursor: pointer;
             }
-            a:visited {
-                color: pink;
-                background-color: transparent;
-                text-decoration: none;
-                }
+            
     }
 
     img{
