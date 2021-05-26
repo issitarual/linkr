@@ -12,7 +12,7 @@ export default function Timeline(){
                     <TimelinePosts>
                         <li>
                             <div className='postLeft'>
-                                <img src='x'/>
+                                <img src='https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg'/>
                                 <div>coracao</div> {/*icone do coracao*/}
 
                             </div>
@@ -42,6 +42,16 @@ export default function Timeline(){
                             <div className='postLeft'></div>
                             <div className='postRight'></div>
                         </li>
+
+                        <li>
+                            <div className='postLeft'></div>
+                            <div className='postRight'></div>
+                        </li>
+
+                        <li>
+                            <div className='postLeft'></div>
+                            <div className='postRight'></div>
+                        </li>
                     </TimelinePosts>
                     
                     <div className = 'trending'>
@@ -56,25 +66,28 @@ export default function Timeline(){
 const Container = styled.div`
 
     width: 100%;
-    height: 800px;
-    background-color: #E5E5E5;
-
+    height: auto;
+    background-color: #333333;
+    
     
     display: flex;
     justify-content: center;
+
 `
 
 const TimelineContainer = styled.div`
-    margin-top: 160px;
+    margin-top: 125px;
     width: 1000px;
-   border: 1px solid white;
-    height: 800px;
+    border: 1px solid white;
+    height: auto;
     min-width: 900px;
+    padding-bottom: 300px;
 
     h1{
         color: white;
         margin-bottom: 40px;
         border: 1px solid red;
+        font-size: 43px;
     }
 
     .trending{
@@ -165,7 +178,7 @@ border-radius: 16px;
 display: flex;
 
     div{
-        width: 330px;
+        width: 350px;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
