@@ -1,27 +1,27 @@
 import styled from 'styled-components'
 import NewPost from './NewPost';
-import {useContext, useEffect,useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom'
 
 export default function Timeline(){
-     const history = useHistory()
+    const history = useHistory()
     const {user} = useContext(UserContext)
     const [allPosts,setAllPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
+    const [serverLoading,setServerLoading] = useState(true)
+    
 
-    useEffect(()=>{
-       // console.log(user)
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
         }
+    }
 
+    function update () {
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-
+     
         getPosts.then((response)=>{
           //  console.log(response)
            // console.log('Os postos foram pegos')
@@ -35,7 +35,15 @@ export default function Timeline(){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    },[])
+    }
+        useEffect(()=>{
+            // console.log(user)
+            update();
+           
+         },[]);
+    
+
+   
 
 
     function goToLink(e,link){
@@ -60,7 +68,7 @@ export default function Timeline(){
                 <TimelineContent>
                     
                     <TimelinePosts>
-                    <NewPost />
+                    <NewPost update={update} />
 
                         {serverLoading 
                             ? <p>Loading</p> 

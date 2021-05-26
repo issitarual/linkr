@@ -17,6 +17,7 @@ export default function MyPosts(){
                 'Authorization' : `Bearer ${user.token}`
             }
         } 
+
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
@@ -58,7 +59,37 @@ export default function MyPosts(){
                 <TimelineContent>
 
                     <TimelinePosts>
-                       
+                       {/*} <li>
+                            <div className='postLeft'>
+                                <img src='https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg'/>
+                                <div>coracao</div> {/*icone do coracao
+
+                            </div>
+                            <div className='postRight'>
+                                <h2>Nome da pessoa</h2>
+                                <p>
+                                    <ReactHashtag>
+                                        Muito maneiro esse tutorial de Material UI 
+                                        com React, deem uma olhada! #react 
+                                        #material
+                                    </ReactHashtag>    
+                                </p>
+                                <LinkDetails>
+                                    <div>
+                                        <h3>Como aplicar o Material UI em um 
+                                            projeto React</h3>
+                                        
+                                        <p className='linkDescription'>Hey! I have moved this tutorial to my personal blog. 
+                                            Same content, new location. 
+                                            Sorry about making you click through to another page.</p>
+                                       
+                                        <a href='#'>https://medium.com/@pshrmn/a-simple-react-router</a>
+                                    </div>
+                                    <img/>
+                                </LinkDetails>
+
+                            </div>
+                                </li> */}
 
                         {serverLoading 
                             ? <p>Loading</p> 
@@ -117,16 +148,15 @@ export default function MyPosts(){
 
 const Container = styled.div`
 
-width: 100%;
+    width: 100%;
     height: auto;
-    min-height: 100vh;
+    min-height: 1000px;
     
     background-color: #333333;
     
     
     display: flex;
     justify-content: center;
-
 
 `
 
@@ -277,7 +307,11 @@ display: flex;
                 text-decoration: underline;
                 cursor: pointer;
             }
-            
+            a:visited {
+                color: pink;
+                background-color: transparent;
+                text-decoration: none;
+                }
     }
 
     img{
