@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import UserContext from '../UserContext';
 
-export default function NewPost ({config}) {
+export default function NewPost ({update}) {
 
-  const [linkToPost, setLinkToPost] = useState('')
-  const [linkDescription, setLinkDescription] = useState('')
-  const [disabled, letDisabled] = useState(false)
-  const [buttonText, letButtonText] = useState('Publicar')
+  const [linkToPost, setLinkToPost] = useState('');
+  const [linkDescription, setLinkDescription] = useState('');
+  const [disabled, letDisabled] = useState(false);
+  const [buttonText, letButtonText] = useState('Publicar');
+  const { user } = useContext(UserContext);
 
   function createNewPost (event) {
 
@@ -22,12 +24,19 @@ export default function NewPost ({config}) {
       "text": linkDescription,
       "link": linkToPost
     }
+
+    const config = {
+      headers:{
+      'Authorization' : `Bearer ${user.token}`
+      }
+    }
     
     const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', body, config).then((response)=>{
       letDisabled(false);
       letButtonText('Publicar')
       setLinkToPost('');
       setLinkDescription('');
+      update()    
     }).catch((error)=>{
       alert('houve um erro ao publicar seu link');
       letDisabled(false);
@@ -40,20 +49,21 @@ export default function NewPost ({config}) {
   }
 
   return (
-    <Corpo>
       <Post>
         <Icon>
           <img src={''}/>
         </Icon>
         <Form onSubmit={createNewPost}>
           <p>O que você tem para favoritar hoje?</p>
-          <InputLink 
+          <InputLink
+            value={linkToPost} 
             disabled={disabled} 
             type="url" 
             placeholder={"http://..."} 
             onChange={e => setLinkToPost(e.target.value)} 
           />
-          <InputDescription 
+          <InputDescription
+            value={linkDescription}
             disabled={disabled}
             type="text"
             placeholder={"Muito irado esse link falando de #javascript"}
@@ -62,21 +72,9 @@ export default function NewPost ({config}) {
           <Button disabled={disabled}>{buttonText}</Button>
         </Form>
       </Post>
-    </Corpo>
   );
 
 }
-
-//quando for para a timeline esse estilo 'Corpo' vai sumir
-const Corpo = styled.div`
-  background-color: #333333;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Lato;
-`;
 
 const Post = styled.div`
   background-color: white;
@@ -86,6 +84,7 @@ const Post = styled.div`
   display: flex;
   padding-right: 22px;
   padding-bottom: 16px;
+  font-family: Lato;
 `;
 
 const Form = styled.form`

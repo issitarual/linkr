@@ -5,7 +5,7 @@ import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
 import { useState } from "react";
 import UserContext from './UserContext';
-import Timeline from './Timeline/Timeline'
+import Timeline from './Timeline/Timeline';
 import Header from './Header';
 
 export default function App () {

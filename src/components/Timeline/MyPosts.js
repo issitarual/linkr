@@ -1,52 +1,42 @@
 import styled from 'styled-components'
-import NewPost from './NewPost';
-import {useContext, useEffect, useState} from 'react'
+import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
-import {useHistory} from 'react-router-dom'
 
-export default function Timeline(){
-    const history = useHistory()
+export default function MyPosts(){
+     
     const {user} = useContext(UserContext)
-    const [allPosts,setAllPosts] = useState([])
-    const [serverLoading,setServerLoading] = useState(true)
-    
-    const config = {
-        headers:{
-            'Authorization' : `Bearer ${user.token}`
-        }
-    }
+    const [myPosts,setMyPosts] = useState([])
+   const [serverLoading,setServerLoading] = useState(true)
 
-    function update () {
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-        setServerLoading(true)
+    useEffect(()=>{
+        console.log(user)
+        const config = {
+            headers:{
+                'Authorization' : `Bearer ${user.token}`
+            }
+        } 
+
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-          //  console.log(response)
-           // console.log('Os postos foram pegos')
-            const newArray = response.data.posts
-            setAllPosts(newArray)
+            console.log(response)
+            console.log('Os meus posts foram pegos')
+           const newArray = response.data.posts
+           setMyPosts(newArray)
             setServerLoading(false)
         })
 
         getPosts.catch((responseError)=>{
-           // console.log(responseError)
+            console.log(responseError)
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    }
-        useEffect(()=>{
-            // console.log(user)
-            update();
-           
-         },[]);
-    
-
-   
+    },[])
 
 
-    function goToLink(e,link){
+  function goToLink(e,link){
         e.preventDefault()
         console.log(`ir para o link: ${link}`)
        window.open(link)
@@ -56,33 +46,64 @@ export default function Timeline(){
         setServerLoading(!serverLoading)
         
     }
+   
     return( 
       
     <Container>
         
         <TimelineContainer>
-            <h1>timeline</h1> <button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
+            <h1>My Posts</h1> <button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>server load</button>
                 <button onClick={()=>console.log(serverLoading)}>server load</button>
                 
                 <TimelineContent>
-                    
+
                     <TimelinePosts>
-                    <NewPost update={update} />
+                       {/*} <li>
+                            <div className='postLeft'>
+                                <img src='https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg'/>
+                                <div>coracao</div> {/*icone do coracao
+
+                            </div>
+                            <div className='postRight'>
+                                <h2>Nome da pessoa</h2>
+                                <p>
+                                    <ReactHashtag>
+                                        Muito maneiro esse tutorial de Material UI 
+                                        com React, deem uma olhada! #react 
+                                        #material
+                                    </ReactHashtag>    
+                                </p>
+                                <LinkDetails>
+                                    <div>
+                                        <h3>Como aplicar o Material UI em um 
+                                            projeto React</h3>
+                                        
+                                        <p className='linkDescription'>Hey! I have moved this tutorial to my personal blog. 
+                                            Same content, new location. 
+                                            Sorry about making you click through to another page.</p>
+                                       
+                                        <a href='#'>https://medium.com/@pshrmn/a-simple-react-router</a>
+                                    </div>
+                                    <img/>
+                                </LinkDetails>
+
+                            </div>
+                                </li> */}
 
                         {serverLoading 
                             ? <p>Loading</p> 
-                            : (allPosts.length===0 
-                                ? <p>Nenhum post encontrado</p>
-                                :allPosts.map((post)=>{
+                            : (myPosts.length===0 
+                                ? <p>Você ainda não postou nada</p>
+                                :myPosts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
-                                <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
-                                    <div>coracao</div> {/*icone do coracao* <----------*/}
+                                <img src={post.user.avatar}/>
+                                    <div>coracao</div> {/*icone do coracao*/}
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
+                                <h2 id={post.user.id}>{post.user.username}</h2>
                                     <p>
                                         <ReactHashtag>
                                             {post.text}
@@ -105,11 +126,18 @@ export default function Timeline(){
                             )
                         }
 
-                      
+                       {/* <li>
+                            <div className='postLeft'></div>
+                            <div className='postRight'></div>
+                        </li>
+
+                        <li>
+                            <div className='postLeft'></div>
+                            <div className='postRight'></div>
+                       </li>*/}
                     </TimelinePosts>
                     
                     <div className = 'trending'>
-                        'lista de hashtag'
                     </div> {/* add o trendin aqui*/}
                 </TimelineContent>
         </TimelineContainer>
@@ -122,7 +150,7 @@ const Container = styled.div`
 
     width: 100%;
     height: auto;
-    min-height: 100vh;
+    min-height: 1000px;
     
     background-color: #333333;
     
@@ -157,7 +185,6 @@ const TimelineContainer = styled.div`
         z-index:2;
         right: 174px;
         top: 226px;
-        color: white;
     }
 
 `
@@ -268,11 +295,11 @@ display: flex;
             a{
                 font-size: 13px;
                 width: 263px;
-                height: auto;
+                height: 13px;
                 color: white;
                 white-space: pre-wrap; /* CSS3 */    
    
-                 word-wrap: break-word; /* Internet Explorer 5.5+ */
+                word-wrap: break-word; /* Internet Explorer 5.5+ */
                 
             }
             a:hover{
@@ -280,7 +307,11 @@ display: flex;
                 text-decoration: underline;
                 cursor: pointer;
             }
-            
+            a:visited {
+                color: pink;
+                background-color: transparent;
+                text-decoration: none;
+                }
     }
 
     img{
