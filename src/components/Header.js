@@ -28,7 +28,7 @@ export default function Header (){
             </span>
             <div>
                     <p onClick={() => link("/my-posts")}>My posts</p>
-                    <p onClick={() => link("my-likes")}>My likes</p>
+                    <p onClick={() => link("/my-likes")}>My likes</p>
                     <p onClick={() => link("logout")}>Logout</p>
             </div>
         </ContainerHeader>

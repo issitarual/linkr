@@ -96,18 +96,11 @@ export default function Timeline(){
                             )
                         }
 
-                       {/* <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                        </li>
-
-                        <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                       </li>*/}
+                      
                     </TimelinePosts>
                     
                     <div className = 'trending'>
+                        'lista de hashtag'
                     </div> {/* add o trendin aqui*/}
                 </TimelineContent>
         </TimelineContainer>
@@ -155,6 +148,7 @@ const TimelineContainer = styled.div`
         z-index:2;
         right: 174px;
         top: 226px;
+        color: white;
     }
 
 `
