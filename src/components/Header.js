@@ -10,7 +10,7 @@ export default function Header (){
 
     return(
         <ContainerHeader state={state}>
-            <h1>linkr</h1>
+            <h1 onClick={()=>history.push('/timeline')}>linkr</h1>
             <span onClick={() => setState(!state)}>
                 {state?
                 <ChevronUpOutline

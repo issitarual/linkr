@@ -150,6 +150,7 @@ const Container = styled.div`
 
     width: 100%;
     height: auto;
+    min-height: 1000px;
     
     background-color: #333333;
     
@@ -296,6 +297,9 @@ display: flex;
                 width: 263px;
                 height: 13px;
                 color: white;
+                white-space: pre-wrap; /* CSS3 */    
+   
+                word-wrap: break-word; /* Internet Explorer 5.5+ */
                 
             }
             a:hover{

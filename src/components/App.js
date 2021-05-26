@@ -11,6 +11,8 @@ import Register from './sign-up/SignUp.js';
 
 import Timeline from './Timeline/Timeline'
 import MyPosts from './Timeline/MyPosts'
+import OtherUsersPosts from './Timeline/OtherUsersPosts'
+
 
 import GlobalStyle from './GlobalStyles';
 
@@ -53,6 +55,7 @@ export default function App () {
                 </Route>
                 <Route path='/user/:id' exact>
                     <Header/>
+                    <OtherUsersPosts/>
                 </Route>
                 <Route path='/my-likes' exact>
                     <Header/>
