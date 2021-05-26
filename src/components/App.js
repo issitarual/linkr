@@ -1,4 +1,5 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+
 import React from 'react';
 import { useState } from "react";
 
@@ -6,24 +7,25 @@ import UserContext from './UserContext';
 
 import Home from './/home/Home.js';
 import Register from './sign-up/SignUp.js';
+import Timeline from './Timeline/Timeline';
 import GlobalStyle from './GlobalStyles';
 import Header from './Header';
-import Timeline from './Timeline/Timeline'
 
 
 export default function App () {
     const [user, setUser] = useState([]);
 
 
-    return (
-        <UserContext.Provider value={{user, setUser}}>
+    return (                   
+        <UserContext.Provider value={{user, setUser}}> 
             <Router>
+                <GlobalStyle/>
                 <Switch>
                     <Route path='/' exact>
-                        <Home />
+                        <Home/>
                     </Route>
                     <Route path='/sign-up' exact>
-                        <Register />
+                        <Register/>
                     </Route>
                     <Route path='/timeline' exact>
                         <Header/>
@@ -44,7 +46,8 @@ export default function App () {
                 </Switch>
             </Router>
         </UserContext.Provider>
-    );
+    )
+
 
 }
 

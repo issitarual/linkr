@@ -4,15 +4,18 @@ import ReactTooltip from 'react-tooltip';
 
 import { HeartOutline } from 'react-ionicons';
 import { HeartSharp } from 'react-ionicons';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 import UserContext from '../UserContext';
 
 export default function Timeline(){
     const [likedPosts, SetLikedPosts] = useState([]);
     const { user } = useContext(UserContext);
+    useEffect(()=>{
+        console.log(user)
+    },[])
 
-     return( 
+    return( 
       
     <Container>
         
@@ -24,7 +27,7 @@ export default function Timeline(){
                     <TimelinePosts>
                         <li>
                             <div className='postLeft'>
-                                <img src='x'/>
+                                <img src='https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg'/>
                                 <div data-tip='like' onClick={() => like("id")}>
                                     {likedPosts.includes("id")?
                                     <HeartSharp
@@ -38,8 +41,11 @@ export default function Timeline(){
                                         width="25px"
                                     />
                                     }
+
                                     <ReactTooltip />
                                 </div> 
+                                <h6>x likes</h6>
+
 
                             </div>
                             <div className='postRight'>
@@ -65,9 +71,58 @@ export default function Timeline(){
                         </li>
 
                         <li>
+                            <div className='postLeft'>
+                            <img src={user.user.avatar}/>
+                            <div data-tip='like' onClick={() => like("id")}>
+                                    {likedPosts.includes("id")?
+                                    <HeartSharp
+                                        color={'#AC2B25'} 
+                                        height="25px"
+                                        width="25px"
+                                    />:
+                                    <HeartOutline
+                                        color={'#fff'} 
+                                        height="25px"
+                                        width="25px"
+                                    />
+                                    }
+                                    <ReactTooltip 
+                                        background-color="#fff"
+                                    />
+                                </div> 
+                                <h6>x likes</h6>
+
+                            </div>
+                            <div className='postRight'>
+                            <h2>{user.user.username}</h2>
+                                <p>Muito maneiro esse tutorial de Material UI 
+                                    com React, deem uma olhada! #react 
+                                    #material</p>
+                                <LinkDetails>
+                                    <div>
+                                        <h3>Como aplicar o Material UI em um 
+                                            projeto React</h3>
+                                        
+                                        <p className='linkDescription'>Hey! I have moved this tutorial to my personal blog. 
+                                            Same content, new location. 
+                                            Sorry about making you click through to another page.</p>
+                                       
+                                        <a href='#'>https://medium.com/@pshrmn/a-simple-react-router</a>
+                                    </div>
+                                    <img/>
+                                </LinkDetails>
+                            </div>
+                        </li>
+
+                       {/* <li>
                             <div className='postLeft'></div>
                             <div className='postRight'></div>
                         </li>
+
+                        <li>
+                            <div className='postLeft'></div>
+                            <div className='postRight'></div>
+                       </li>*/}
                     </TimelinePosts>
                     
                     <div className = 'trending'>
@@ -86,7 +141,7 @@ export default function Timeline(){
         }
         if(likedPosts.includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => likedPosts.filter( (n,i) => n !== id));
+            request.then(success => SetLikedPosts(likedPosts.filter( (n,i) => n !== id)));
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
@@ -100,25 +155,28 @@ export default function Timeline(){
 const Container = styled.div`
 
     width: 100%;
-    height: 800px;
-    background-color: #E5E5E5;
-
+    height: auto;
+    background-color: #333333;
+    
     
     display: flex;
     justify-content: center;
+
 `
 
 const TimelineContainer = styled.div`
-    margin-top: 160px;
+    margin-top: 125px;
     width: 1000px;
-   border: 1px solid white;
-    height: 800px;
+    border: 1px solid white;
+    height: auto;
     min-width: 900px;
+    padding-bottom: 300px;
 
     h1{
         color: white;
         margin-bottom: 40px;
         border: 1px solid red;
+        font-size: 43px;
     }
 
     .trending{
@@ -169,6 +227,9 @@ const TimelinePosts = styled.ul`
            width: 502px;
            height: auto;
        }
+       h6{
+        font-family: 'Lato', sans-serif;
+       }
     }
 
     .postLeft{
@@ -209,7 +270,7 @@ border-radius: 16px;
 display: flex;
 
     div{
-        width: 330px;
+        width: 350px;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
