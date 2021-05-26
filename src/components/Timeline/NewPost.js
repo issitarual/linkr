@@ -6,10 +6,17 @@ export default function NewPost ({config}) {
 
   const [linkToPost, setLinkToPost] = useState('')
   const [linkDescription, setLinkDescription] = useState('')
-  const [disabled, letDisabled] = useState(true)
+  const [disabled, letDisabled] = useState(false)
   const [buttonText, letButtonText] = useState('Publicar')
 
-  function createNewPost () {
+  function createNewPost (event) {
+
+    event.preventDefault();
+
+    if (linkToPost === '') {
+      alert('o link é obrigatório.');
+      return;
+    }
 
     const body = {
       "text": linkDescription,
@@ -25,18 +32,12 @@ export default function NewPost ({config}) {
       letButtonText('Publicar')
       setLinkToPost('');
       setLinkDescription('');
-
     });
 
     promise.catch(() => {
-
+      alert('houve um erro ao publicar seu link');
+      letDisabled(true);
     });
-
-  }
-
-  function teste () {
-    letDisabled(true);
-    letButtonText('Publicando...')
 
   }
 
@@ -46,15 +47,16 @@ export default function NewPost ({config}) {
         <Icon>
           <img src={''}/>
         </Icon>
-        <Form onSubmit={teste}>
+        <Form onSubmit={createNewPost}>
           <p>O que você tem para favoritar hoje?</p>
           <InputLink 
-            required 
+            disabled={disabled} 
             type="url" 
             placeholder={"http://..."} 
             onChange={e => setLinkToPost(e.target.value)} 
           />
-          <InputDescription disabled
+          <InputDescription 
+            disabled={disabled}
             type="text"
             placeholder={"Muito irado esse link falando de #javascript"}
             onChange={e => setLinkDescription(e.target.value)}
@@ -66,7 +68,6 @@ export default function NewPost ({config}) {
   );
 
 }
-  
 
 //quando for para a timeline esse estilo 'Corpo' vai sumir
 const Corpo = styled.div`
@@ -102,7 +103,7 @@ const Form = styled.form`
     width: 100%;
   }
 
-  input {
+  textarea {
     width: 100%;
     margin-bottom: 5px;
     margin-top: 0px;
@@ -110,6 +111,7 @@ const Form = styled.form`
     border: none;
     border-radius: 5px;
     padding-left: 12px;
+    padding-top: 8px;
     ::placeholder {
       color: #949494;
       font-size: 15px;
@@ -132,13 +134,14 @@ const Icon = styled.div`
   }
 `;
 
-const InputLink = styled.input`
+const InputLink = styled.textarea`
   height: 30px;
 `;
 
-const InputDescription = styled.input`
+const InputDescription = styled.textarea`
   height: 66px;
   margin-top: 8px;
+  resize: none;
 `;
 
 const Button = styled.button`
