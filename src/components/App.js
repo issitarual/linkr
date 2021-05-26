@@ -5,12 +5,11 @@ import { useState } from "react";
 import UserContext from './UserContext';
 import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
-import NewPost from './Timeline/NewPost'
+import Timeline from './Timeline/Timeline'
 import Header from './Header';
 
 export default function App () {
     const [user, setUser] = useState([]);
-
 
     return (
         <UserContext.Provider value={{user, setUser}}>
@@ -25,7 +24,7 @@ export default function App () {
                 </Route>
                 <Route path='/timeline' exact>
                     <Header/>
-                    <NewPost />
+                    <Timeline />
                 </Route>
                 <Route path='/my-posts' exact>
                     <Header/>
