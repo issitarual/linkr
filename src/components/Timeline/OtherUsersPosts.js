@@ -1,44 +1,48 @@
 import styled from 'styled-components'
-import NewPost from './NewPost';
 import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
-import {useHistory} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 
-export default function Timeline(){
-     const history = useHistory()
+export default function OtherUsersPosts(){
+     const {id} = useParams()
     const {user} = useContext(UserContext)
-    const [allPosts,setAllPosts] = useState([])
+    const [posts,setPosts] = useState([])
    const [serverLoading,setServerLoading] = useState(true)
+   const [pageUser,setPageUser] = useState(null)
 
     useEffect(()=>{
-       // console.log(user)
+        console.log(user)
+        console.log(id)
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
             }
-        }
+        } 
 
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
 
         getPosts.then((response)=>{
-          //  console.log(response)
-           // console.log('Os postos foram pegos')
-            const newArray = response.data.posts
-            setAllPosts(newArray)
-            setServerLoading(false)
+            console.log(response)
+            console.log('Os posts do usuario foram pegos')
+            console.log(response.data.posts[0].user.username)
+          const newArray = response.data.posts
+           setPosts(newArray)
+          setPageUser(response.data.posts[0].user.username)
+           setServerLoading(false) 
+
         })
 
         getPosts.catch((responseError)=>{
-           // console.log(responseError)
+            console.log(responseError)
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
     },[])
 
 
-    function goToLink(e,link){
+  function goToLink(e,link){
         e.preventDefault()
         console.log(`ir para o link: ${link}`)
        window.open(link)
@@ -48,18 +52,20 @@ export default function Timeline(){
         setServerLoading(!serverLoading)
         
     }
+   
     return( 
       
     <Container>
         
         <TimelineContainer>
-            <h1>timeline</h1> <button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
-                <button onClick={changeLoad}>server load</button>
+            <h1>{`${pageUser}'s posts` || 'Other Posts'}</h1> <button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
+                <button onClick={changeLoad}>change load</button>
                 <button onClick={()=>console.log(serverLoading)}>server load</button>
                 
                 <TimelineContent>
+
                     <TimelinePosts>
-                        {/*<li>
+                       {/*} <li>
                             <div className='postLeft'>
                                 <img src='https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg'/>
                                 <div>coracao</div> {/*icone do coracao
@@ -89,21 +95,21 @@ export default function Timeline(){
                                 </LinkDetails>
 
                             </div>
-                                </li>*/}
+                                </li> */}
 
                         {serverLoading 
                             ? <p>Loading</p> 
-                            : (allPosts.length===0 
-                                ? <p>Nenhum post encontrado</p>
-                                :allPosts.map((post)=>{
+                            : (posts.length===0 
+                                ? <p>Você ainda não postou nada</p>
+                                :posts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
-                                <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
+                                <img src={post.user.avatar}/>
                                     <div>coracao</div> {/*icone do coracao*/}
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
+                                <h2 id={post.user.id}>{post.user.username}</h2>
                                     <p>
                                         <ReactHashtag>
                                             {post.text}
@@ -292,13 +298,14 @@ display: flex;
             }
 
             a{
-                font-size: 13px;
+                font-size: 11px;
                 width: 263px;
                 height: auto;
                 color: white;
+                border: 1px solid red;
                 white-space: pre-wrap; /* CSS3 */    
    
-                 word-wrap: break-word; /* Internet Explorer 5.5+ */
+                word-wrap: break-word; /* Internet Explorer 5.5+ */
                 
             }
             a:hover{

@@ -9,7 +9,7 @@ export default function Header (){
 
     return(
         <ContainerHeader state={state}>
-            <h1>linkr</h1>
+            <h1 onClick={()=>history.push('/timeline')}>linkr</h1>
             <span onClick={() => setState(!state)}>
                 {state?
                 <ChevronUpOutline
@@ -44,6 +44,7 @@ export default function Header (){
 
 const ContainerHeader = styled.header`
     position: fixed;
+    z-index:2;
     top: 0;
     left: 0;
     width: 100%;
