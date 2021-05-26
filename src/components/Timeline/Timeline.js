@@ -6,11 +6,14 @@ import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom'
 
 export default function Timeline(){
-     const history = useHistory()
+    const history = useHistory()
     const {user} = useContext(UserContext)
     const [allPosts,setAllPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
-
+    const [serverLoading,setServerLoading] = useState(true)
+   
+   
+   
+    
     useEffect(()=>{
        // console.log(user)
         const config = {
@@ -78,6 +81,7 @@ export default function Timeline(){
                                         <ReactHashtag>
                                             {post.text}
                                         </ReactHashtag>
+                                        
                                     </p>
                                     <LinkDetails>
                                         <div>
