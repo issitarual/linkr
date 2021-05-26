@@ -83,7 +83,7 @@ export default function Timeline(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
-                                <div data-tip={post.likes.length === 0? "0 curtidas":`${post.likes[0].id}`} onClick={() => like(post.id)}>
+                                <div className ="ion-icon" data-tip={post.likes.length === 0? "0 curtidas":`${post.likes[0].id}`} onClick={() => like(post.id)}>
                                     {likedPosts.map(n=>n.id).includes(post.id)?                                  
                                     <HeartSharp
                                         color={'#AC2B25'} 
@@ -251,9 +251,6 @@ const TimelinePosts = styled.ul`
            width: 502px;
            height: auto;
        }
-       h6{
-        font-family: 'Lato', sans-serif;
-       }
     }
 
     .postLeft{
@@ -270,6 +267,14 @@ const TimelinePosts = styled.ul`
            width: 50px;
            height: 50px;
          //  border: 1px solid red;
+           margin-top: 20px;
+       }
+       h6{
+        font-family: 'Lato', sans-serif!important;
+        font-size: 11px;
+        margin-top: 5px;
+       }
+       .ion-icon{
            margin-top: 20px;
        }
     }
