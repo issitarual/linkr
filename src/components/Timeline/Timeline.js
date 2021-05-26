@@ -1,6 +1,14 @@
 import styled from 'styled-components'
+import {useContext, useEffect} from 'react'
+import UserContext from '../UserContext';
 export default function Timeline(){
-     return( 
+     
+    const {user} = useContext(UserContext)
+
+    useEffect(()=>{
+        console.log(user)
+    },[])
+    return( 
       
     <Container>
         
@@ -39,6 +47,32 @@ export default function Timeline(){
                         </li>
 
                         <li>
+                            <div className='postLeft'>
+                            <img src={user.user.avatar}/>
+                                <div>coracao</div> {/*icone do coracao*/}
+                            </div>
+                            <div className='postRight'>
+                            <h2>{user.user.username}</h2>
+                                <p>Muito maneiro esse tutorial de Material UI 
+                                    com React, deem uma olhada! #react 
+                                    #material</p>
+                                <LinkDetails>
+                                    <div>
+                                        <h3>Como aplicar o Material UI em um 
+                                            projeto React</h3>
+                                        
+                                        <p className='linkDescription'>Hey! I have moved this tutorial to my personal blog. 
+                                            Same content, new location. 
+                                            Sorry about making you click through to another page.</p>
+                                       
+                                        <a href='#'>https://medium.com/@pshrmn/a-simple-react-router</a>
+                                    </div>
+                                    <img/>
+                                </LinkDetails>
+                            </div>
+                        </li>
+
+                       {/* <li>
                             <div className='postLeft'></div>
                             <div className='postRight'></div>
                         </li>
@@ -46,12 +80,7 @@ export default function Timeline(){
                         <li>
                             <div className='postLeft'></div>
                             <div className='postRight'></div>
-                        </li>
-
-                        <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                        </li>
+                       </li>*/}
                     </TimelinePosts>
                     
                     <div className = 'trending'>
