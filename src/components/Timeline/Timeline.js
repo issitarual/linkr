@@ -40,13 +40,19 @@ export default function Timeline(){
         console.log(`ir para o link: ${link}`)
        window.open(link)
     }
+
+    function changeLoad(){
+        setServerLoading(!serverLoading)
+        
+    }
     return( 
       
     <Container>
         
         <TimelineContainer>
             <h1>timeline</h1> <button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
-                
+                <button onClick={changeLoad}>server load</button>
+                <button onClick={()=>console.log(serverLoading)}>server load</button>
                 
                 <TimelineContent>
 
@@ -83,7 +89,11 @@ export default function Timeline(){
                             </div>
                         </li>
 
-                        {allPosts.map((post)=>{
+                        {serverLoading 
+                            ? <p>Loading</p> 
+                            : (allPosts.length===0 
+                                ? <p>Nenhum post encontrado</p>
+                                :allPosts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
@@ -111,6 +121,7 @@ export default function Timeline(){
                             </li>   
                             )
                         })
+                            )
                         }
 
                        {/* <li>
