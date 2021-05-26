@@ -83,7 +83,7 @@ export default function Timeline(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
-                                <div className ="ion-icon" data-tip={post.likes.length === 0? "0 curtidas":`${post.likes[0].id}`} onClick={() => like(post.id)}>
+                                <div className ="ion-icon" data-tip={post.likes.length === 0? "0 pessoas": likedPosts.map(n => n.id).includes(post.id)? `Você e outras ${likedPosts.filter(n => n.id === post.id)[0].likes} pessoas`:`${post.likes.length} pessoas`} onClick={() => like(post.id)}>
                                     {likedPosts.map(n=>n.id).includes(post.id)?                                  
                                     <HeartSharp
                                         color={'#AC2B25'} 
@@ -97,8 +97,11 @@ export default function Timeline(){
                                     />
                                     }
                                     <ReactTooltip 
-                                        backgroundColor	="#fff"
+                                        type="light"
                                         textColor="#505050"
+                                        place="bottom"
+                                        effect="solid"
+                                        border="5"
                                     />
                                 </div> 
                                 <h6>
