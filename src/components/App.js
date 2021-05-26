@@ -10,6 +10,7 @@ import Register from './sign-up/SignUp.js';
 
 
 import Timeline from './Timeline/Timeline'
+import MyPosts from './Timeline/MyPosts'
 
 import GlobalStyle from './GlobalStyles';
 
@@ -45,6 +46,7 @@ export default function App () {
                 </Route>
                 <Route path='/my-posts' exact>
                     <Header/>
+                    <MyPosts/>
                 </Route>
                 <Route path='/hashtag/:hashtag' exact>
                     <Header/>
