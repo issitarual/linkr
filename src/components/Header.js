@@ -26,7 +26,7 @@ export default function Header (){
                     color={'#fff'} 
                     height="32px"
                     width="32px" 
-                />
+                /> 
                 }
                 <img src={user.user.avatar}/>
             </span>
@@ -43,7 +43,7 @@ export default function Header (){
             localStorage.clear();
         }
         setState(!state);
-        history.push(url);
+        history.push(url); 
     }
 }
 

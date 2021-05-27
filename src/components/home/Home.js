@@ -144,7 +144,6 @@ const LeftSide = styled.div`
         color: #fff;
         font-size: 20px;
         font-family: 'Lato', sans-serif;
-
     }
 
     form{
