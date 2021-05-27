@@ -1,16 +1,15 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import React from 'react';
-import { useState } from 'react';
-import Home from './home/Home.js';
-import Register from './sign-up/SignUp.js';
+import { useState } from "react";
+import GlobalStyle from './GlobalStyles';
 
 import UserContext from './UserContext';
 
+import Home from './home/Home.js';
+import Register from './sign-up/SignUp.js';
 import Timeline from './Timeline/Timeline';
 import MyPosts from './Timeline/MyPosts';
 import OtherUsersPosts from './Timeline/OtherUsersPosts';
-
-import GlobalStyle from './GlobalStyles';
 import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
 import Hashtag from './Timeline/Hashtag';
@@ -22,29 +21,29 @@ export default function App () {
     return (
     <UserContext.Provider value={{user, setUser}}> 
         <Router>
-            <GlobalStyle/>
+            <GlobalStyle />
             <Switch>
                 <Route path='/' exact>
-                    <Home/>
+                    <Home />
                 </Route>
                 <Route path='/sign-up' exact>
-                    <Register/>
+                    <Register />
                 </Route>
                 <Route path='/timeline' exact>
                     <Header/>
-                    <Timeline/>
+                    <Timeline />
                 </Route>
                 <Route path='/my-posts' exact>
                     <Header/>
-                    <MyPosts/>
+                    <MyPosts />
                 </Route>
                 <Route path='/hashtag/:hashtag' exact>
                     <Header/>
-                    <Hashtag/>
+                    <Hashtag />
                 </Route>
                 <Route path='/user/:id' exact>
                     <Header/>
-                    <OtherUsersPosts/>
+                    <OtherUsersPosts />
                 </Route>
                 <Route path='/my-likes' exact>
                     <Header/>
@@ -53,6 +52,8 @@ export default function App () {
             </Switch>
         </Router>
         </UserContext.Provider>
+
     );
+
 }
 
