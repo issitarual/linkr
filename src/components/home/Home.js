@@ -77,6 +77,10 @@ export default function Home(){
 
 const FrontPage = styled.div`
     display: flex;
+
+    @media(max-width: 600px){
+        flex-direction: column;
+    }
 `;
 
 const RightSide = styled.div`
@@ -89,22 +93,44 @@ const RightSide = styled.div`
     justify-content: center;
     align-items: center;
 
+    @media(max-width: 600px){
+        width: 100%;
+        height: 175px;
+    }
+
     h1{
         font-size: 106px;
         letter-spacing: 10px;
         line-height: 116px;
         font-family: 'Passion One', cursive;
+
+        @media(max-width: 600px){
+            font-size: 76px;
+            letter-spacing: 7px;
+            line-height: 83px;
+        }
     }
 
     p{
         font-size: 43px;
         line-height: 63px;
         font-family: 'Oswald', sans-serif;
+
+        @media(max-width: 600px){
+            font-size: 23px;
+            letter-spacing: 7px;
+            line-height: 34px;
+        }
     }
+
 
     div{
         display: flex;
         flex-direction: column;
+
+        @media(max-width: 600px){
+            align-items: center;
+        }
     }
 `;
 
@@ -116,6 +142,11 @@ const LeftSide = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    @media(max-width: 600px){
+        width: 100%;
+        height: 500px;
+    }
 
     input{
         width: 429px;
