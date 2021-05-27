@@ -10,7 +10,7 @@ export default function MyPosts(){
     const history=useHistory()
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
+    const [serverLoading,setServerLoading] = useState(true)
 
     useEffect(()=>{
         console.log(user)
