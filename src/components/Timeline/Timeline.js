@@ -7,7 +7,8 @@ import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
-import TrendingList from './TrendingList'
+
+import TrendingList from './TrendingList';
 
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 
@@ -99,7 +100,6 @@ export default function Timeline(){
                     
                     <TimelinePosts>
                     <NewPost update={update} />
-{/*<p>Loading</p> */}
                         {serverLoading 
                             ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (allPosts.length===0 
@@ -179,9 +179,7 @@ export default function Timeline(){
 
                       
                     </TimelinePosts>
-                    
-                    
-                    
+
                     <TrendingList send={sendToHashtag}/>
                    
                 </TimelineContent>
@@ -248,9 +246,7 @@ const Container = styled.div`
 const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
-  //  border: 1px solid white;
     height: auto;
-    //min-width: 900px;
     padding-bottom: 300px;
     
     @media (max-width:1200px){
@@ -275,13 +271,12 @@ const TimelineContainer = styled.div`
         background-color: #171717;
         width: 301px;
         height: 406px;
-       //// border: 1px solid red;
         position: fixed;
         z-index:2;
         right: 174px;
         top: 226px;
         color: white;
-        
+        border-radius: 16px;
         @media (max-width: 1200px){
             display: none;
     
@@ -293,13 +288,10 @@ const TimelineContainer = styled.div`
 const TimelinePosts = styled.ul`
  width: auto;
  height: auto;
- //
- //border: 1px solid red;
  display: flex;
  flex-direction: column;
  
  @media (max-width:610px){
-            //width: 90%;
             align-items: center;
         }
 
@@ -327,9 +319,7 @@ const TimelinePosts = styled.ul`
     }
     .postRight{
         width: 503px;
-        //min-height: 230px;
         height: auto;
-       //// border: 1px solid blueviolet;
 
        @media (max-width:1200px){
            width: 80%;
@@ -351,25 +341,23 @@ const TimelinePosts = styled.ul`
            font-size: 17px;
 
            @media (max-width:1200px){
-           width: 20%;
-       }
-       }
+                width: 20%;
+            }
+        }
     }
 
     .postLeft{
         width: 87px;
         min-height: 230px;
         height: auto;
-       //// border: 1px solid blue;
-       display: flex;
-       flex-direction: column;
-       align-items: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
        img{
            border-radius:50%;
            width: 50px;
            height: 50px;
-         //  border: 1px solid red;
            margin-top: 20px;
        }
        h6{
@@ -382,23 +370,18 @@ const TimelinePosts = styled.ul`
            height: 60px;
        }
     }
-
-    
-
 `
 
 
 const TimelineContent= styled.div`
-display: flex;
-justify-content:  space-between;
+    display: flex;
+    justify-content:  space-between;
+    height: auto;
 
-height: auto;
-//border: 2px solid yellow;
-
-@media (max-width: 1200px){
-    justify-content: center;
-}
- 
+    @media (max-width: 1200px){
+        justify-content: center;
+    }
+    
 `
 
 const LinkDetails = styled.div`
@@ -443,33 +426,32 @@ display: flex;
                 color: #9B9595;
             }
 
-            a{
-                font-size: 13px;
-                width: 263px;
-                height: auto;
-                color: white;
-                white-space: pre-wrap; /* CSS3 */    
-   
-                 word-wrap: break-word; /* Internet Explorer 5.5+ */
-                
-            }
-            a:hover{
-                color: blue;
-                text-decoration: underline;
-                cursor: pointer;
-            }
+        a{
+            font-size: 13px;
+            width: 263px;
+            height: auto;
+            color: white;
+            white-space: pre-wrap;  
+            word-wrap: break-word; 
+        }
+        
+        a:hover{
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
             
     }
 
     img{
-            width: 153px;
-            height: 155px;
-            border-radius: 0px 12px 13px 0px;
-        
-            @media (max-width:1200px){
+        width: 153px;
+        height: 155px;
+        border-radius: 0px 12px 13px 0px;
+    
+        @media (max-width:1200px){
             width: 30%;
         }
-        }
+    }
 
     img:hover{
         cursor: pointer;
@@ -477,9 +459,8 @@ display: flex;
 `
 
 const NoPostsYet = styled.p`
-font-size: 30px;
-color: white;
-margin-top: 20px;
-margin-left: 20px;
-
+    font-size: 30px;
+    color: white;
+    margin-top: 20px;
+    margin-left: 20px;
 `

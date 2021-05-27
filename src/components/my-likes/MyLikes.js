@@ -7,6 +7,7 @@ import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import { HeartOutline, HeartSharp } from 'react-ionicons';
+import TrendingList from '../Timeline/TrendingList';
 
 export default function MyLikes(){
     const history = useHistory()
@@ -55,6 +56,22 @@ export default function MyLikes(){
     function changeLoad(){
         setServerLoading(!serverLoading)
         
+    }
+
+    function sendToHashtag(val){
+        console.log(val)
+        const newVal = val.replace('#',"")
+        console.log(newVal)
+        history.push(`/hashtag/${newVal}`)
+    }
+
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
     }
     return( 
       
@@ -125,7 +142,7 @@ export default function MyLikes(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
+                                <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
                                     <p className = "postText">
                                         <ReactHashtag>
                                             {post.text}
@@ -151,9 +168,7 @@ export default function MyLikes(){
                       
                     </TimelinePosts>
                     
-                    <div className = 'trending'>
-                        'lista de hashtag'
-                    </div> {/* add o trendin aqui*/}
+                    <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>
 
@@ -245,7 +260,7 @@ const TimelineContainer = styled.div`
         background-color: #171717;
         width: 301px;
         height: 406px;
-       //// border: 1px solid red;
+        border-radius: 16px;
         position: fixed;
         z-index:2;
         right: 174px;
