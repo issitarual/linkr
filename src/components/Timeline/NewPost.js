@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState, useContext } from 'react';
+import { useState, useContext ,useEffect} from 'react';
 import UserContext from '../UserContext';
 
 export default function NewPost ({update}) {
@@ -9,7 +9,9 @@ export default function NewPost ({update}) {
   const [linkDescription, setLinkDescription] = useState('');
   const [disabled, letDisabled] = useState(false);
   const [buttonText, letButtonText] = useState('Publicar');
-  const { user } = useContext(UserContext);
+  const { user ,setUser} = useContext(UserContext);
+
+  
 
   function createNewPost (event) {
 

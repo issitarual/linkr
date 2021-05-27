@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useContext } from 'react';
+import { useState, useContext,useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
 import UserContext from './UserContext';
@@ -9,7 +9,20 @@ import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
-    const { user } = useContext(UserContext);
+    
+
+    const { user ,setUser} = useContext(UserContext);
+
+  useEffect(() =>
+  {if (localStorage.length !== 0){
+      const listString = localStorage.getItem("list");
+      const list = JSON.parse(listString);
+      setUser(list)
+     // history.push("/timeline")
+  }
+
+}, [])
+
     
     return(
         <ContainerHeader state={state}>

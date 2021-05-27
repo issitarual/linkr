@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import React from 'react';
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import GlobalStyle from './GlobalStyles';
 
 import UserContext from './UserContext';
@@ -17,6 +17,9 @@ import Hashtag from './Timeline/Hashtag';
 
 export default function App () {
     const [user, setUser] = useState([]);
+
+
+  
 
     return (
     <UserContext.Provider value={{user, setUser}}> 
