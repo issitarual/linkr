@@ -3,15 +3,21 @@ import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
+import ReactTooltip from 'react-tooltip';
+
+import { HeartOutline, HeartSharp } from 'react-ionicons';
 
 export default function MyPosts(){
      
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
    const [serverLoading,setServerLoading] = useState(true)
+   const [likedPosts, SetLikedPosts] = useState([]);
+   const [olderLikes, SetOlderLikes] = useState([]);
+
+
 
     useEffect(()=>{
-        console.log(user)
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
@@ -21,15 +27,21 @@ export default function MyPosts(){
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-            console.log(response)
-            console.log('Os meus posts foram pegos')
            const newArray = response.data.posts
            setMyPosts(newArray)
             setServerLoading(false)
+            let sharpedHeart = []
+            newArray.forEach( post => {
+                post.likes.forEach(n =>{
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                }})
+            })
+            SetLikedPosts(sharpedHeart)
+            SetOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
-            console.log(responseError)
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
@@ -38,7 +50,6 @@ export default function MyPosts(){
 
   function goToLink(e,link){
         e.preventDefault()
-        console.log(`ir para o link: ${link}`)
        window.open(link)
     }
 
@@ -52,9 +63,7 @@ export default function MyPosts(){
     <Container>
         
         <TimelineContainer>
-            <h1>My Posts</h1> <button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
-                <button onClick={changeLoad}>server load</button>
-                <button onClick={()=>console.log(serverLoading)}>server load</button>
+            <h1>My Posts</h1> 
                 
                 <TimelineContent>
 
@@ -70,7 +79,52 @@ export default function MyPosts(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar}/>
-                                    <div>coracao</div> {/*icone do coracao*/}
+                                <div className ="ion-icon" data-tip={
+                                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
+                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
+                                    likedPosts.map(n => n.id).includes(post.id)? 
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
+                                    post.likes.length === 0? "0 pessoas":
+                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
+                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
+                                } 
+                                    onClick={() => like(post.id)
+                                } 
+                                    onClick={() => like(post.id)
+                                } onClick={() => like(post.id)}>
+                                    {likedPosts.map(n=>n.id).includes(post.id)?                                  
+                                    <HeartSharp
+                                        color={'#AC2B25'} 
+                                        height="25px"
+                                        width="25px"
+                                    />:
+                                    <HeartOutline
+                                        color={'#fff'} 
+                                        height="25px"
+                                        width="25px"
+                                    />
+                                    }
+                                    <ReactTooltip 
+                                        type="light"
+                                        textColor="#505050"
+                                        place="bottom"
+                                        effect="solid"
+                                        border="5"
+                                    />
+                                </div> 
+                                <h6>
+                                    {
+                                    olderLikes.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes:
+                                    likedPosts.map(n => n.id).includes(post.id)?
+                                    likedPosts.filter(n => n.id === post.id)[0].likes:
+                                    post.likes.length
+                                    } likes
+                                </h6>
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id}>{post.user.username}</h2>
@@ -114,6 +168,43 @@ export default function MyPosts(){
 
     </Container>
     )
+    function like (id){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${user.token}`
+            }
+        }
+        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            request.then(success => {
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
+                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(olderLikes.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            request.then(success => {
+                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(likedPosts.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            request.then(success => {
+                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else{
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            request.then(success => {
+                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+    }
 }
 
 const Container = styled.div`
@@ -215,6 +306,14 @@ const TimelinePosts = styled.ul`
            width: 50px;
            height: 50px;
          //  border: 1px solid red;
+           margin-top: 20px;
+       }
+       h6{
+        font-family: 'Lato', sans-serif!important;
+        font-size: 11px;
+        margin-top: 5px;
+       }
+       .ion-icon{
            margin-top: 20px;
        }
     }
