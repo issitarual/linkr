@@ -12,7 +12,7 @@ export default function Header (){
     const { user } = useContext(UserContext);
     return(
         <ContainerHeader state={state}>
-            <Link to="/timeline">
+            <Link to ="/timeline">
                 <h1>linkr</h1>
             </Link>
             <span onClick={() => setState(!state)}>

@@ -1,20 +1,19 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import React from 'react';
 import { useState } from 'react';
-
 import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
 
 import UserContext from './UserContext';
 
-import Timeline from './Timeline/Timeline'
-import MyPosts from './Timeline/MyPosts'
-import OtherUsersPosts from './Timeline/OtherUsersPosts'
+import Timeline from './Timeline/Timeline';
+import MyPosts from './Timeline/MyPosts';
+import OtherUsersPosts from './Timeline/OtherUsersPosts';
 
 
 import GlobalStyle from './GlobalStyles';
 import Header from './Header';
-import MyLikes from './my-likes/MyLikes.js';
+import MyLikes from './my-likes/MyLikes';
 
 
 export default function App () {
