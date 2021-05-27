@@ -5,6 +5,7 @@ import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom'
+import EditAndDelete from './EditAndDelete';
 
 export default function Timeline(){
     const history = useHistory()
@@ -43,8 +44,6 @@ export default function Timeline(){
          },[]);
     
 
-   
-
 
     function goToLink(e,link){
         e.preventDefault()
@@ -56,7 +55,13 @@ export default function Timeline(){
         setServerLoading(!serverLoading)
         
     }
+  
+
+
+
     return( 
+
+   
       
     <Container>
         
@@ -76,18 +81,26 @@ export default function Timeline(){
                                 ? <p>Nenhum post encontrado</p>
                                 :allPosts.map((post)=>{
                             return(
+
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
                                     <div>coracao</div> {/*icone do coracao* <----------*/}
                                 </div>
                                 <div className='postRight'>
+                                <EditAndDelete post={post} />
+
                                 <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
                                     <p>
                                         <ReactHashtag>
                                             {post.text}
                                         </ReactHashtag>
                                     </p>
+                                    
+                                    <InputField readOnly  >
+                                        {post.text}
+                                    </InputField>
+                                    
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
@@ -293,3 +306,16 @@ display: flex;
         cursor: pointer;
     }
 `
+
+const InputField = styled.textarea`
+    width: 502px;
+    height: auto;
+    resize: none;
+    border-radius: 7px;
+    background-color: white;
+    padding: 5px;
+    font-family: Lato;
+    font-weight: 400;
+    color: #4c4c4c;
+    font-size: 14px;   
+`;

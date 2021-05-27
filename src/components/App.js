@@ -9,6 +9,7 @@ import MyPosts from './Timeline/MyPosts'
 import OtherUsersPosts from './Timeline/OtherUsersPosts'
 import GlobalStyle from './GlobalStyles';
 import Header from './Header';
+import EditAndDelete from './Timeline/EditAndDelete';
 
 export default function App () {
     const [user, setUser] = useState([]);
@@ -40,6 +41,10 @@ export default function App () {
                 </Route>
                 <Route path='/my-likes' exact>
                     <Header/>
+                </Route>
+                <Route>
+                    <EditAndDelete path='/teste' />
+                    {/* lembar de apagar essa rota */}
                 </Route>
             </Switch>
         </Router>

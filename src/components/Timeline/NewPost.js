@@ -56,6 +56,7 @@ export default function NewPost ({update}) {
         <Form onSubmit={createNewPost}>
           <p>O que você tem para favoritar hoje?</p>
           <InputLink
+          autoFocus={true}
             value={linkToPost} 
             disabled={disabled} 
             type="url" 
