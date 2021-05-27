@@ -1,15 +1,20 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+
+import UserContext from './UserContext';
+
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
 export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
-
+    const { user } = useContext(UserContext);
     return(
         <ContainerHeader state={state}>
-            <h1 onClick={()=>history.push('/timeline')}>linkr</h1>
+            <Link to ="/timeline">
+                <h1>linkr</h1>
+            </Link>
             <span onClick={() => setState(!state)}>
                 {state?
                 <ChevronUpOutline
@@ -23,18 +28,18 @@ export default function Header (){
                     width="32px" 
                 />
                 }
-                <img src="https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg"/>
+                <img src={user.user.avatar}/>
             </span>
             <div>
                     <p onClick={() => link("/my-posts")}>My posts</p>
                     <p onClick={() => link("/my-likes")}>My likes</p>
-                    <p onClick={() => link("logout")}>Logout</p>
+                    <p onClick={() => link("/")}>Logout</p>
             </div>
         </ContainerHeader>
     )
 
     function link (url){
-        if(url === "logout"){
+        if(url === "/"){
             localStorage.clear();
         }
         setState(!state);
@@ -62,6 +67,9 @@ const ContainerHeader = styled.header`
         letter-spacing: 5px;
         color: #fff;
     }
+    span{
+        cursor: pointer;
+    }
     img{
         width: 44px;
         height: 44px;
@@ -85,5 +93,6 @@ const ContainerHeader = styled.header`
         font-size: 17px;
         color: #fff;
         text-align: center;
+        cursor: pointer;
     }
 `;

@@ -66,7 +66,7 @@ export default function Home(){
                 </form>
                
                 <Link to="/sign-up">
-                    <p>First lime? Creat an account!</p>
+                    <p>First time? Creat an account!</p>
                 </Link>
                 
             </LeftSide>
