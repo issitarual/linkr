@@ -17,8 +17,7 @@ export default function MyLikes(){
     const [allPosts,setAllPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true)
 
-    console.log(likedPosts);
-    console.log(olderLikes)
+  
     useEffect(()=>{
         const config = {
             headers:{
@@ -44,7 +43,6 @@ export default function MyLikes(){
         })
 
         getPosts.catch((responseError)=>{
-           // console.log(responseError)
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
@@ -52,7 +50,6 @@ export default function MyLikes(){
 
     function goToLink(e,link){
         e.preventDefault()
-        console.log(`ir para o link: ${link}`)
        window.open(link)
     }
 
@@ -62,9 +59,7 @@ export default function MyLikes(){
     }
 
     function sendToHashtag(val){
-        console.log(val)
         const newVal = val.replace('#',"")
-        console.log(newVal)
         history.push(`/hashtag/${newVal}`)
     }
 
