@@ -7,7 +7,7 @@ import {useContext, useState, useEffect} from 'react';
 import Modal from 'react-modal';
 import ModalDelete from './ModalDelete'
 
-export default function EditAndDelete ({ post}) {
+export default function EditAndDelete ({post}) {
 
     const { user } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
@@ -16,17 +16,17 @@ export default function EditAndDelete ({ post}) {
     if (post.user.id !== user.user.id) { //garante que so vai aparecer a caixinha se o post for usuario logado
         return null;
     } 
-
-    
-    function edit () {
-        console.log('clicou no edit')
-    }
-    
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
     }
+    function edit () {
+        console.log('clicou no edit')
+    }
+
+//--------------------------inicio do edit------------------//
+
 
     function updateDescription () {
 
@@ -36,11 +36,14 @@ export default function EditAndDelete ({ post}) {
        
         const promise = axios.post('url', body, config).then().catch()
     }
- 
+//--------------------------final do edit------------------//
+
+//--------------------------inicio do delete------------------//
+
     function wishDelete () {
         console.log('clicou no delete!')
     }
-    function actuallyDelete () {
+    function actuallyDelete () { //funcionando perfeitamente: envia a requisição para o servidor para deletar
         const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${post.id}`, config).then((answer)=>{
             console.log('deletou');
             console.log(answer);
@@ -67,11 +70,11 @@ export default function EditAndDelete ({ post}) {
             </dialog>
         )
     }
-   
+//--------------------------final do delete------------------//
+  
 
     return (
         <> 
-    {/* //    <BG> */}
            <Container>
                <Pencil 
                onClick={edit}
@@ -82,7 +85,6 @@ export default function EditAndDelete ({ post}) {
                }}
                src={trash}/>
            </Container>
-    {/* //    </BG> */}
         </>
     );
 }
