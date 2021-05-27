@@ -18,8 +18,6 @@ export default function OtherUsersPosts(){
 
 
     useEffect(()=>{
-        console.log(user)
-        console.log(id)
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
@@ -29,9 +27,6 @@ export default function OtherUsersPosts(){
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
 
         getPosts.then((response)=>{
-            console.log(response)
-            console.log('Os posts do usuario foram pegos')
-            console.log(response.data.posts[0].user.username)
           const newArray = response.data.posts
            setPosts(newArray)
             setPageUser(response.data.posts[0].user.username)
@@ -40,7 +35,6 @@ export default function OtherUsersPosts(){
            newArray.forEach( post => {
                post.likes.forEach(n =>{
                if(n.userId === user.user.id){
-                   console.log(post.id)
                    sharpedHeart.push({id: post.id, likes: post.likes.length})
                }})
            })
@@ -49,7 +43,6 @@ export default function OtherUsersPosts(){
         })
 
         getPosts.catch((responseError)=>{
-            console.log(responseError)
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
@@ -58,7 +51,6 @@ export default function OtherUsersPosts(){
 
   function goToLink(e,link){
         e.preventDefault()
-        console.log(`ir para o link: ${link}`)
        window.open(link)
     }
 
@@ -74,9 +66,7 @@ export default function OtherUsersPosts(){
         <TimelineContainer>
             <h1>{ !serverLoading 
             ? `${pageUser}'s posts`  
-            :'Other Posts'}</h1> <button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
-                <button onClick={changeLoad}>change load</button>
-                <button onClick={()=>console.log(serverLoading)}>server load</button>
+            :'Other Posts'}</h1> 
                 
                 <TimelineContent>
 
@@ -92,7 +82,17 @@ export default function OtherUsersPosts(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar}/>
-                                <div className ="ion-icon" data-tip={post.likes.length === 0? "0 pessoas": likedPosts.map(n => n.id).includes(post.id)? `Você e outras ${likedPosts.filter(n => n.id === post.id)[0].likes} pessoas`:`${post.likes.length} pessoas`} onClick={() => like(post.id)}>
+                                <div className ="ion-icon" data-tip={
+                                    likedPosts.map(n => n.id).includes(post.id)? 
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
+                                    post.likes.length === 0? "0 pessoas":
+                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
+                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`} 
+                                    onClick={() => like(post.id)
+                                    } onClick={() => like(post.id)}>
                                     {likedPosts.map(n=>n.id).includes(post.id)?                                  
                                     <HeartSharp
                                         color={'#AC2B25'} 
@@ -114,7 +114,7 @@ export default function OtherUsersPosts(){
                                     />
                                 </div> 
                                 <h6>
-                                    {likedPosts.map(n => n.id).includes(post.id)? post.likes.length + 1:post.likes.length} likes
+                                    {likedPosts.map(n => n.id).includes(post.id)? likedPosts.filter(n => n.id === post.id)[0].likes: post.likes.length} likes
                                 </h6>
                                 </div>
                                 <div className='postRight'>
@@ -169,7 +169,6 @@ export default function OtherUsersPosts(){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
                 SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-                console.log(success);
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
@@ -177,7 +176,6 @@ export default function OtherUsersPosts(){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
                 SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                console.log(success);
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
