@@ -3,7 +3,7 @@ import GlobalStyle from './GlobalStyles';
 import React from 'react';
 import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
-import Hashtag from './hashtag/Hashtag.js';
+//import Hashtag from './hashtag/Hashtag.js';
 import { useState } from "react";
 import UserContext from './UserContext';
 import Timeline from './Timeline/Timeline';
@@ -33,11 +33,7 @@ export default function App () {
                 </Route>
                 <Route path='/hashtag' exact>
                     <Header/>
-<<<<<<< HEAD
-                    <Hashtag />
-=======
                     <Hashtag/>
->>>>>>> hashtag2.0agoravai
                 </Route>
                 <Route path='/user/:id' exact>
                     <Header/>
