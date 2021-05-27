@@ -3,12 +3,17 @@ import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
+import ReactTooltip from 'react-tooltip';
+
+import { HeartOutline, HeartSharp } from 'react-ionicons';
 
 export default function MyPosts(){
      
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
    const [serverLoading,setServerLoading] = useState(true)
+   const [likedPosts, SetLikedPosts] = useState([]);
+
 
     useEffect(()=>{
         console.log(user)
@@ -26,6 +31,15 @@ export default function MyPosts(){
            const newArray = response.data.posts
            setMyPosts(newArray)
             setServerLoading(false)
+            let sharpedHeart = []
+            newArray.forEach( post => {
+                post.likes.forEach(n =>{
+                if(n.userId === user.user.id){
+                    console.log(post.id)
+                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                }})
+            })
+            SetLikedPosts(sharpedHeart)
         })
 
         getPosts.catch((responseError)=>{
@@ -70,7 +84,30 @@ export default function MyPosts(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar}/>
-                                    <div>coracao</div> {/*icone do coracao*/}
+                                <div className ="ion-icon" data-tip={post.likes.length === 0? "0 pessoas": likedPosts.map(n => n.id).includes(post.id)? `Você e outras ${likedPosts.filter(n => n.id === post.id)[0].likes} pessoas`:`${post.likes.length} pessoas`} onClick={() => like(post.id)}>
+                                    {likedPosts.map(n=>n.id).includes(post.id)?                                  
+                                    <HeartSharp
+                                        color={'#AC2B25'} 
+                                        height="25px"
+                                        width="25px"
+                                    />:
+                                    <HeartOutline
+                                        color={'#fff'} 
+                                        height="25px"
+                                        width="25px"
+                                    />
+                                    }
+                                    <ReactTooltip 
+                                        type="light"
+                                        textColor="#505050"
+                                        place="bottom"
+                                        effect="solid"
+                                        border="5"
+                                    />
+                                </div> 
+                                <h6>
+                                    {likedPosts.map(n => n.id).includes(post.id)? post.likes.length + 1:post.likes.length} likes
+                                </h6>
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id}>{post.user.username}</h2>
@@ -114,6 +151,29 @@ export default function MyPosts(){
 
     </Container>
     )
+    function like (id){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${user.token}`
+            }
+        }
+        if(likedPosts.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            request.then(success => {
+                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                console.log(success);
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else{
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            request.then(success => {
+                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                console.log(success);
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+    }
 }
 
 const Container = styled.div`
@@ -215,6 +275,14 @@ const TimelinePosts = styled.ul`
            width: 50px;
            height: 50px;
          //  border: 1px solid red;
+           margin-top: 20px;
+       }
+       h6{
+        font-family: 'Lato', sans-serif!important;
+        font-size: 11px;
+        margin-top: 5px;
+       }
+       .ion-icon{
            margin-top: 20px;
        }
     }
