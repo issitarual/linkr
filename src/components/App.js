@@ -35,9 +35,9 @@ export default function App () {
                     <Header/>
                     <MyPosts />
                 </Route>
-                <Route path='/hashtag' exact>
+                <Route path='/hashtag/:hashtag' exact>
                     <Header/>
-                    <Hashtag/>
+                    <Hashtag />
                 </Route>
                 <Route path='/user/:id' exact>
                     <Header/>

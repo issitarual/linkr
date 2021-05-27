@@ -127,17 +127,12 @@ export default function Timeline(){
 }
 
 const Container = styled.div`
-
     width: 100%;
     height: auto;
     min-height: 100vh;
-    
     background-color: #333333;
-    
-    
     display: flex;
     justify-content: center;
-
 `
 
 const TimelineContainer = styled.div`
@@ -181,23 +176,21 @@ const TimelineContainer = styled.div`
 `
 
 const TimelinePosts = styled.ul`
- width: auto;
- height: auto;
- display: flex;
- flex-direction: column;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
  
- @media (max-width:610px){
-            align-items: center;
-        }
+    @media (max-width:610px){
+        align-items: center;
+    }
 
-        svg{
-            margin: 40px 180px;
-        }
+    svg{
+        margin: 40px 180px;
+    }
 
     li{
         display: flex;
-      //  border: 1px solid green;
-       
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -209,9 +202,8 @@ const TimelinePosts = styled.ul`
         @media (max-width:610px){
             width: 90%;
         }
-        
-        
     }
+
     .postRight{
         width: 503px;
         height: auto;
@@ -252,7 +244,6 @@ const TimelinePosts = styled.ul`
     }
 `
 
-
 const TimelineContent= styled.div`
     display: flex;
     justify-content:  space-between;
@@ -260,8 +251,7 @@ const TimelineContent= styled.div`
 
     @media (max-width: 1200px){
         justify-content: center;
-    }
-    
+    }  
 `
 
 const LinkDetails = styled.div`
