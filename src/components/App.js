@@ -1,23 +1,25 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import GlobalStyle from './GlobalStyles';
 import React from 'react';
+import { useState } from "react";
+import GlobalStyle from './GlobalStyles';
+
+import UserContext from './UserContext';
+
 import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
-
-import { useState } from "react";
-import UserContext from './UserContext';
 import Timeline from './Timeline/Timeline';
-import Header from './Header';
-import Hashtag from './Timeline/Hashtag';
-import OtherUsersPosts from './Timeline/OtherUsersPosts'
 import MyPosts from './Timeline/MyPosts';
+import OtherUsersPosts from './Timeline/OtherUsersPosts';
+import Header from './Header';
+import MyLikes from './my-likes/MyLikes';
+import Hashtag from './Timeline/Hashtag';
 
 
 export default function App () {
     const [user, setUser] = useState([]);
 
     return (
-        <UserContext.Provider value={{user, setUser}}>
+    <UserContext.Provider value={{user, setUser}}> 
         <Router>
             <GlobalStyle />
             <Switch>
@@ -45,6 +47,7 @@ export default function App () {
                 </Route>
                 <Route path='/my-likes' exact>
                     <Header/>
+                    <MyLikes />
                 </Route>
             </Switch>
         </Router>

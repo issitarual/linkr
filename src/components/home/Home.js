@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link, useHistory } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from 'axios';
 
 import UserContext from '../UserContext';
@@ -11,9 +11,19 @@ export default function Home(){
 
     const [charging, setCharging] = useState(false);
 
-    const {setUser} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
 
     let history = useHistory();
+
+    useEffect(() =>
+        {if (localStorage.length !== 0){
+            const listString = localStorage.getItem("list");
+            const list = JSON.parse(listString);
+            setUser(list);
+            history.push("/timeline");
+        }
+
+    }, [])
 
     const body = {
         email,
@@ -31,9 +41,13 @@ export default function Home(){
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in", body);
         request.then((response) => {setUser(response.data);
-           // console.log(response)
-            history.push("/timeline")
+            console.log(response.data);
+            const infos = {token: response.data.token, user: response.data.user};
+            const infosString = JSON.stringify(infos);
+            localStorage.setItem('list', infosString);
+            history.push("/timeline");
         });
+
         request.catch(errors)
     }
 
@@ -184,5 +198,4 @@ const LeftSide = styled.div`
         justify-content: center;
         align-items: center;
     }
-
 `;

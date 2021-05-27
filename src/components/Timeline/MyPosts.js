@@ -1,20 +1,28 @@
 import styled from 'styled-components'
 import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
-import axios from 'axios'
-import ReactHashtag from "react-hashtag";
+import axios from 'axios';
+import { HeartOutline, HeartSharp } from 'react-ionicons';
 import Loader from "react-loader-spinner";
-import {useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
+import ReactHashtag from "react-hashtag";
 import TrendingList from './TrendingList';
+
+
+
 
 export default function MyPosts(){
     const history=useHistory()
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
-    const [serverLoading,setServerLoading] = useState(true)
+   const [serverLoading,setServerLoading] = useState(true)
+   const [likedPosts, SetLikedPosts] = useState([]);
+   const [olderLikes, SetOlderLikes] = useState([]);
+
+
 
     useEffect(()=>{
-        console.log(user)
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
@@ -24,9 +32,18 @@ export default function MyPosts(){
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-            const newArray = response.data.posts
-            setMyPosts(newArray)
+           const newArray = response.data.posts
+           setMyPosts(newArray)
             setServerLoading(false)
+            let sharpedHeart = []
+            newArray.forEach( post => {
+                post.likes.forEach(n =>{
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                }})
+            })
+            SetLikedPosts(sharpedHeart)
+            SetOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
@@ -38,7 +55,7 @@ export default function MyPosts(){
 
   function goToLink(e,link){
         e.preventDefault()
-        window.open(link)
+       window.open(link)
     }
 
     function sendToHashtag(val){
@@ -51,7 +68,7 @@ export default function MyPosts(){
     <Container>
         
         <TimelineContainer>
-            <h1>My Posts</h1> 
+        <Title>my posts</Title> 
                 
                 <TimelineContent>
 
@@ -65,17 +82,62 @@ export default function MyPosts(){
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
-                                    <img src={post.user.avatar}/>
-                                    <div>coracao</div> {/*icone do coracao*/}
+                                <img src={post.user.avatar}/>
+                                <div className ="ion-icon" data-tip={
+                                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
+                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
+                                    likedPosts.map(n => n.id).includes(post.id)? 
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
+                                    post.likes.length === 0? "0 pessoas":
+                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
+                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
+                                } 
+                                    onClick={() => like(post.id)
+                                } 
+                                    onClick={() => like(post.id)
+                                } onClick={() => like(post.id)}>
+                                    {likedPosts.map(n=>n.id).includes(post.id)?                                  
+                                    <HeartSharp
+                                        color={'#AC2B25'} 
+                                        height="25px"
+                                        width="25px"
+                                    />:
+                                    <HeartOutline
+                                        color={'#fff'} 
+                                        height="25px"
+                                        width="25px"
+                                    />
+                                    }
+                                    <ReactTooltip 
+                                        type="light"
+                                        textColor="#505050"
+                                        place="bottom"
+                                        effect="solid"
+                                        border="5"
+                                    />
+                                </div> 
+                                <h6>
+                                    {
+                                    olderLikes.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes:
+                                    likedPosts.map(n => n.id).includes(post.id)?
+                                    likedPosts.filter(n => n.id === post.id)[0].likes:
+                                    post.likes.length
+                                    } likes
+                                </h6>
                                 </div>
 
                                 <div className='postRight'>
-                                    <h2 id={post.user.id}>{post.user.username}</h2>
-                                    <p>
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
+                                <UserName id={post.user.id}>{post.user.username}</UserName>
+                                    <PostContent>
+                                        <ReactHashtag>
                                             {post.text}
                                         </ReactHashtag>
-                                    </p>
+                                    </PostContent>
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
@@ -90,21 +152,58 @@ export default function MyPosts(){
                             </li>   
                             )
                         })
-                            )
+                        )
                         }
 
                     </TimelinePosts>
                     
-                    <TrendingList send={sendToHashtag} /> 
-
+                    <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>
 
     </Container>
     )
+    function like (id){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${user.token}`
+            }
+        }
+        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            request.then(success => {
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
+                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(olderLikes.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            request.then(success => {
+                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(likedPosts.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            request.then(success => {
+                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else{
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            request.then(success => {
+                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+    }
 }
 
 const Container = styled.div`
+    font-family: Lato;
     width: 100%;
     height: auto;
     min-height: 100vh;
@@ -129,16 +228,18 @@ const TimelineContainer = styled.div`
         color: white;
         margin-bottom: 40px;
         font-size: 43px;
-
+        font-family: 'Oswald', sans-serif !important;
+        font-weight: bold;
+        
         @media (max-width:1200px){
             margin: 10px auto;
         }
     }
-
     .trending{
         background-color: #171717;
         width: 301px;
         height: 406px;
+        border-radius: 16px;
         position: fixed;
         z-index:2;
         right: 174px;
@@ -150,15 +251,13 @@ const TimelineContainer = styled.div`
     
         }
     }
-
 `
-
 const TimelinePosts = styled.ul`
     width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
-   
+
     svg{
         margin: 40px 180px;
     }
@@ -182,15 +281,19 @@ const TimelinePosts = styled.ul`
     .postRight{
         width: 503px;
         height: auto;
-
        h2{
-           margin: 20px 20px;
+           font-family: 'Lato', sans-serif!important;
+           font-size: 19px;
+           color: #fff;
+           margin: 20px 20px 7px 0px;
        }
-
-       .postText{
+       p{
            width: 502px;
            height: auto;
            margin-left: 20px;
+           color: #a3a3a3;
+           font-family: 'Lato', sans-serif!important;
+           font-size: 17px;
        }
     }
 
@@ -198,20 +301,27 @@ const TimelinePosts = styled.ul`
         width: 87px;
         min-height: 230px;
         height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
+       display: flex;
+       flex-direction: column;
+       align-items: center;
        img{
            border-radius:50%;
            width: 50px;
            height: 50px;
            margin-top: 20px;
        }
+       h6{
+        font-family: 'Lato', sans-serif!important;
+        font-size: 11px;
+        margin-top: 10px;
+       }
+       .ion-icon{
+           margin-top: -30px;
+           height: 60px;
+       }
     }
 
 `
-
 
 const TimelineContent= styled.div`
     display: flex;
@@ -226,9 +336,11 @@ const TimelineContent= styled.div`
 const LinkDetails = styled.div`
     width: 503px;
     height:155px;
+    border: 1px solid #4d4d4d;
     margin: 20px 0;
     border-radius: 16px;
     display: flex;
+    color: #CECECE;
 
     @media (max-width:1200px){
         width: 100%;
@@ -250,6 +362,9 @@ const LinkDetails = styled.div`
             min-height: 38px;
             height: auto;
             font-size: 20px;
+            color: #cecece;
+            font-family: 'Lato', sans-serif!important;
+            font-size: 16px;
         }
 
         .linkDescription{
@@ -257,6 +372,8 @@ const LinkDetails = styled.div`
             min-height: 40px;
             height: auto;
             font-size: 11px;
+            font-family: 'Lato', sans-serif!important;
+            color: #9B9595;
         }
 
         a{
@@ -282,10 +399,10 @@ const LinkDetails = styled.div`
         border-radius: 0px 12px 13px 0px;
     
         @media (max-width:1200px){
-        width: 30%;
+            width: 30%;
         }
     }
-
+    
     img:hover{
         cursor: pointer;
     }
@@ -297,3 +414,28 @@ const NoPostsYet = styled.p`
     margin-top: 20px;
 
 `
+const Title = styled.h1`
+    font-family: Oswald;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 64px;
+    color: white;
+`;
+const UserName = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 19px;
+    line-height: 23px;
+    color: white;
+    margin-top: 19px;
+`;
+
+const PostContent = styled.p`
+  font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    margin-top: 10px;
+    color: #B7B7B7;
+`;
