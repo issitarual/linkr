@@ -97,7 +97,7 @@ export default function MyLikes(){
                                 <div className ="ion-icon" data-tip={
                                     olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
                                     olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
+                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} ${post.likes.length -2 > 1? `e outra(s) ${post.likes.length -2}pessoas`: ""} `:                      
                                     likedPosts.map(n => n.id).includes(post.id)? 
                                     likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
                                     likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
