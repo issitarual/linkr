@@ -30,7 +30,10 @@ export default function Home(){
 
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in", body);
-        request.then((response) => {setUser(response.data); history.push("/timeline")});
+        request.then((response) => {setUser(response.data);
+           // console.log(response)
+            history.push("/timeline")
+        });
         request.catch(errors)
     }
 
@@ -64,7 +67,7 @@ export default function Home(){
                 </form>
                
                 <Link to="/sign-up">
-                    <p>First lime? Creat an account!</p>
+                    <p>First time? Creat an account!</p>
                 </Link>
                 
             </LeftSide>
