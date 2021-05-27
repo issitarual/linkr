@@ -13,8 +13,6 @@ export default function OtherUsersPosts(){
    const [pageUser,setPageUser] = useState(null)
 
     useEffect(()=>{
-        console.log(user)
-        console.log(id)
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
@@ -24,9 +22,6 @@ export default function OtherUsersPosts(){
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
 
         getPosts.then((response)=>{
-            console.log(response)
-            console.log('Os posts do usuario foram pegos')
-            console.log(response.data.posts[0].user.username)
           const newArray = response.data.posts
            setPosts(newArray)
           setPageUser(response.data.posts[0].user.username)
@@ -35,7 +30,6 @@ export default function OtherUsersPosts(){
         })
 
         getPosts.catch((responseError)=>{
-            console.log(responseError)
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
@@ -44,7 +38,6 @@ export default function OtherUsersPosts(){
 
   function goToLink(e,link){
         e.preventDefault()
-        console.log(`ir para o link: ${link}`)
        window.open(link)
     }
 
@@ -58,11 +51,9 @@ export default function OtherUsersPosts(){
     <Container>
         
         <TimelineContainer>
-            <h1>{ !serverLoading 
+            <Title>{ !serverLoading 
             ? `${pageUser}'s posts`  
-            :'Other Posts'}</h1> <button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
-                <button onClick={changeLoad}>change load</button>
-                <button onClick={()=>console.log(serverLoading)}>server load</button>
+            :'Other Posts'}</Title> 
                 
                 <TimelineContent>
 
@@ -81,7 +72,7 @@ export default function OtherUsersPosts(){
                                     <div>coracao</div> {/*icone do coracao*/}
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id}>{post.user.username}</h2>
+                                <UserName id={post.user.id}>{post.user.username}</UserName>
                                     <p>
                                         <ReactHashtag>
                                             {post.text}
@@ -91,7 +82,7 @@ export default function OtherUsersPosts(){
                                         <div>
                                             <h3>{post.linkTitle}</h3>
                                             
-                                            <p className='linkDescription'>{post.linkDescription}</p>
+                                            <PostContent className='linkDescription'>{post.linkDescription}</PostContent>
                                            
                                             <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
                                         </div>
@@ -104,15 +95,6 @@ export default function OtherUsersPosts(){
                             )
                         }
 
-                       {/* <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                        </li>
-
-                        <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                       </li>*/}
                     </TimelinePosts>
                     
                     <div className = 'trending'>
@@ -125,83 +107,58 @@ export default function OtherUsersPosts(){
 }
 
 const Container = styled.div`
+    font-family: Lato;
     width: 100%;
     height: auto;
     min-height: 100vh;
-    
     background-color: #333333;
-    
-    
     display: flex;
     justify-content: center;
-
-
 `
 
 const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
-  //  border: 1px solid white;
     height: auto;
     min-width: 900px;
     padding-bottom: 300px;
-    
-
     h1{
         color: white;
         margin-bottom: 40px;
-       //// border: 1px solid red;
         font-size: 43px;
     }
-
     .trending{
         background-color: #171717;
         width: 301px;
         height: 406px;
-       //// border: 1px solid red;
         position: fixed;
         z-index:2;
         right: 174px;
         top: 226px;
+        color: white;
     }
-
 `
-
 const TimelinePosts = styled.ul`
- width: auto;
- height: auto;
- //
- //border: 1px solid red;
- display: flex;
- flex-direction: column;
- 
- 
- 
-
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
     li{
         display: flex;
-      //  border: 1px solid green;
-        margin-bottom: 10px;
-        margin-top:5px;
+        margin-top:15px;
         min-height:276px;
         height: auto;
         border-radius:16px;
         background-color: #171717;
         color: white;
         width: 610px;
-        
-        
     }
     .postRight{
         width: 503px;
-        //min-height: 230px;
         height: auto;
-       //// border: 1px solid blueviolet;
-
        h2{
            margin: 20px 0;
        }
-
        p{
            width: 502px;
            height: auto;
@@ -212,41 +169,34 @@ const TimelinePosts = styled.ul`
         width: 87px;
         min-height: 230px;
         height: auto;
-       //// border: 1px solid blue;
        display: flex;
        flex-direction: column;
        align-items: center;
-
        img{
            border-radius:50%;
            width: 50px;
            height: 50px;
-         //  border: 1px solid red;
            margin-top: 20px;
        }
     }
 
-    
-
 `
 
-
 const TimelineContent= styled.div`
-display: flex;
-justify-content:  space-between;
-
-height: auto;
-//border: 2px solid yellow;
+    display: flex;
+    justify-content:  space-between;
+    height: auto;
  
 `
 
 const LinkDetails = styled.div`
-width: 503px;
-height:155px;
-//border: 1px solid blue;
-margin: 20px 0;
-border-radius: 16px;
-display: flex;
+    width: 503px;
+    height:auto;
+    border: 1px solid #4d4d4d;
+    margin: 20px 0;
+    border-radius: 16px;
+    display: flex;
+    color: #CECECE;
 
     div{
         width: 350px;
@@ -254,48 +204,65 @@ display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         padding-left:20px;
-
-            h3{
-                width: 250px;
-                min-height: 38px;
-                height: auto;
-                font-size: 20px;
-            }
-
-            .linkDescription{
-                width: 302px;
-                min-height: 40px;
-                height: auto;
-                font-size: 11px;
-            //  border: 1px solid red;
-            }
-
-            a{
-                font-size: 11px;
-                width: 263px;
-                height: auto;
-                color: white;
-                border: 1px solid red;
-                white-space: pre-wrap; /* CSS3 */    
-   
-                word-wrap: break-word; /* Internet Explorer 5.5+ */
-                
-            }
-            a:hover{
-                color: blue;
-                text-decoration: underline;
-                cursor: pointer;
-            }
-            
-    }
-
-    img{
-            width: 153px;
-            height: 155px;
-            border-radius: 0px 12px 13px 0px;
+        h3{
+            width: 250px;
+            min-height: 38px;
+            height: auto;
+            font-size: 20px;
         }
-
+        .linkDescription{
+            width: 302px;
+            min-height: 40px;
+            height: auto;
+            font-size: 11px;
+        }
+        a {
+            font-size: 13px;
+            width: 263px;
+            height: auto;
+            color: white;
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+            
+        }
+        a:hover{
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }            
+    }
+    img{
+        width: 153px;
+        height: 155px;
+        border-radius: 0px 12px 13px 0px;
+        }
     img:hover{
         cursor: pointer;
     }
 `
+
+const Title = styled.h1`
+    font-family: Oswald;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 64px;
+    color: white;
+`;
+const UserName = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 19px;
+    line-height: 23px;
+    color: white;
+    margin-top: 19px;
+`;
+
+const PostContent = styled.p`
+  font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    margin-top: 10px;
+    color: #B7B7B7;
+`;

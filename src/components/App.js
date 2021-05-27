@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import React from 'react';
 import { useState } from "react";
 import UserContext from './UserContext';
-import Home from './/home/Home.js';
+import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
 import Timeline from './Timeline/Timeline'
 import MyPosts from './Timeline/MyPosts'
