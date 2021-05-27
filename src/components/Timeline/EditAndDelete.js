@@ -3,11 +3,11 @@ import axios from 'axios';
 import pencil from './images/pencil.png'
 import trash from './images/trash.png'
 import UserContext from '../UserContext';
-import {useContext, useEffect} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import Modal from 'react-modal';
 import ModalDelete from './ModalDelete'
 
-export default function EditAndDelete ({post}) {
+export default function EditAndDelete ({ post}) {
 
     const { user } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +37,9 @@ export default function EditAndDelete ({post}) {
         const promise = axios.post('url', body, config).then().catch()
     }
  
-
+    function wishDelete () {
+        console.log('clicou no delete!')
+    }
     function actuallyDelete () {
         const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${post.id}`, config).then((answer)=>{
             console.log('deletou');
@@ -48,7 +50,6 @@ export default function EditAndDelete ({post}) {
             console.log(error)
             console.log(user)
             console.log(config)
-
         })
     }
 
@@ -59,35 +60,26 @@ export default function EditAndDelete ({post}) {
                 <form method="dialog">
                     <p>Você tem certeza que deseja apagar essa postagem?</p>
                     <menu>
-                    <button onClick={()=>{modalIsOpen()}} >Isso. Apaga ela.</button>
+                    <button onClick={()=>{}} >Isso. Apaga ela.</button>
                     <button onClick={()=>{console.log('nao deleta')}} >Não, deixa ela aí!</button>
                     </menu>
                 </form>
             </dialog>
         )
     }
-    function modalIsOpen () {
-        return(
-           
-        setIsOpen(true)
-    }
-    function closeModal () {
-        setIsOpen(false);
-    }
+   
 
     return (
-        <>
-
-     
-        <ModalDelete open={isOpen}/>
-
+        <> 
     {/* //    <BG> */}
            <Container>
                <Pencil 
                onClick={edit}
                src={pencil}/>
                <Trash
-               onClick={()=>{setIsOpen(true)}}
+               onClick={()=>{
+                wishDelete()
+               }}
                src={trash}/>
            </Container>
     {/* //    </BG> */}

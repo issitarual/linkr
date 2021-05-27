@@ -6,11 +6,11 @@ import Modal from 'react-modal';
 function ModalDelete ({isOpen}) {
     return (
         <Modal
-        isOpen={isOpen}
-        onRequestClose={closeModal}
+        isOpen={''}
+        onRequestClose={''}
         contentLabel="Delete Modal"
        >
-        <button onClick={closeModal}>close</button>
+        <button onClick={''}>close</button>
         <div>I am a modal</div>
         <form>
           <input />
@@ -19,6 +19,6 @@ function ModalDelete ({isOpen}) {
         </form>
       </Modal>
     )
-    )
+
 }
 

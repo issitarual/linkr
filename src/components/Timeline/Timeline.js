@@ -8,6 +8,7 @@ import {useHistory} from 'react-router-dom'
 import EditAndDelete from './EditAndDelete';
 
 export default function Timeline(){
+
     const history = useHistory()
     const {user} = useContext(UserContext)
     const [allPosts,setAllPosts] = useState([])
@@ -26,7 +27,7 @@ export default function Timeline(){
         getPosts.then((response)=>{
           //  console.log(response)
            // console.log('Os postos foram pegos')
-            const newArray = response.data.posts
+            const newArray = (response.data.posts.map((p) => ({...p, toEdit: false})))
             setAllPosts(newArray)
             setServerLoading(false)
         })
@@ -56,7 +57,11 @@ export default function Timeline(){
         
     }
   
-
+    function tryingToEdit() {
+        let postsToEdit = allPosts.map((p) => {
+            
+        })
+    }
 
 
     return( 
@@ -91,16 +96,15 @@ export default function Timeline(){
                                 <EditAndDelete post={post} />
 
                                 <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
-                                    <p>
+                                
+                                   <p>
                                         <ReactHashtag>
                                             {post.text}
                                         </ReactHashtag>
                                     </p>
-                                    
                                     <InputField readOnly  >
                                         {post.text}
                                     </InputField>
-                                    
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
