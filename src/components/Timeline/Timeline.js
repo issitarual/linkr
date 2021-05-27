@@ -11,8 +11,10 @@ import Loader from "react-loader-spinner";
 import TrendingList from './TrendingList';
 
 import { HeartOutline, HeartSharp } from 'react-ionicons';
+import EditAndDelete from './EditAndDelete';
 
 export default function Timeline(){
+
     const history = useHistory()
     const [likedPosts, SetLikedPosts] = useState([]);
     const { user } = useContext(UserContext);
@@ -81,7 +83,17 @@ export default function Timeline(){
         }
     }
     
+  
+    function tryingToEdit() {
+        let postsToEdit = allPosts.map((p) => {
+            
+        })
+    }
+
+
     return( 
+
+   
       
     <Container>
         
@@ -98,6 +110,7 @@ export default function Timeline(){
                                 ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
                                 :allPosts.map((post)=>{
                             return(
+
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
@@ -145,12 +158,17 @@ export default function Timeline(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
+                                <EditAndDelete post={post} />
+
                                 <UserName id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</UserName>
                                     <PostContent>
                                         <ReactHashtag>
                                             {post.text}
                                         </ReactHashtag>
                                     </PostContent>
+                                    <InputField readOnly  >
+                                        {post.text}
+                                    </InputField>
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
@@ -445,6 +463,18 @@ color: #CECECE;
     }
 `
 
+const InputField = styled.textarea`
+    width: 502px;
+    height: auto;
+    resize: none;
+    border-radius: 7px;
+    background-color: white;
+    padding: 5px;
+    font-family: Lato;
+    font-weight: 400;
+    color: #4c4c4c;
+    font-size: 14px;   
+`
 const Title = styled.h1`
     font-family: Oswald;
     font-style: normal;

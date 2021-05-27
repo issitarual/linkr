@@ -15,6 +15,7 @@ import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
 import Hashtag from './Timeline/Hashtag';
 
+import EditAndDelete from './Timeline/EditAndDelete';
 
 export default function App () {
     const [user, setUser] = useState([]);
@@ -49,6 +50,10 @@ export default function App () {
                 <Route path='/my-likes' exact>
                     <Header/>
                     <MyLikes />
+                </Route>
+                <Route>
+                    <EditAndDelete path='/teste' />
+                    {/* lembar de apagar essa rota */}
                 </Route>
             </Switch>
         </Router>
