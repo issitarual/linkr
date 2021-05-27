@@ -159,7 +159,8 @@ export default function Timeline(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                <EditAndDelete post={post} />
+                                    <div className = "editPost"><EditAndDelete post={post} /></div>
+                                
 
                                 <UserName id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</UserName>
                                     <PostContent>
@@ -331,6 +332,11 @@ const TimelinePosts = styled.ul`
            font-size: 19px;
            color: #fff;
            margin: 20px 20px 7px 20px;
+       }
+
+       .editPost{
+           margin-left: -150px;
+           margin-top: 15px;
        }
 
        .postText{

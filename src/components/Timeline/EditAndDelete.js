@@ -94,12 +94,13 @@ export default function EditAndDelete ({post}) {
     return (
         <> 
            <Container>
-                <CreateOutline
+               <CreateOutline
                     onClick={openModal}
                     color={'#fff'} 
                     height="25px"
                     width="25px"
                 />
+                
                <TrashOutline
                 onClick={()=>{
                     wishDelete()
