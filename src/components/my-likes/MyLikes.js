@@ -324,7 +324,7 @@ const TimelinePosts = styled.ul`
             font-family: 'Lato', sans-serif!important;
            font-size: 19px;
            color: #fff;
-           margin: 20px 20px 7px 20px;
+           margin: 20px 20px 7px 0px;
        }
 
        .postText{
@@ -411,7 +411,6 @@ display: flex;
                 width: 250px;
                 min-height: 38px;
                 height: auto;
-                font-size: 20px;
                 color: #cecece;
                 font-family: 'Lato', sans-serif!important;
                 font-size: 16px;
