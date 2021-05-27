@@ -151,7 +151,7 @@ const Container = styled.div`
 
     width: 100%;
     height: auto;
-    min-height: 1000px;
+    min-height: 100vh;
     
     background-color: #333333;
     
@@ -166,15 +166,24 @@ const TimelineContainer = styled.div`
     width: 1000px;
   //  border: 1px solid white;
     height: auto;
-    min-width: 900px;
+    //min-width: 900px;
     padding-bottom: 300px;
     
+    @media (max-width:1200px){
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 
     h1{
         color: white;
         margin-bottom: 40px;
        //// border: 1px solid red;
         font-size: 43px;
+        @media (max-width:1200px){
+            margin: 10px auto;
+        }
+        
     }
 
     .trending{
@@ -186,6 +195,12 @@ const TimelineContainer = styled.div`
         z-index:2;
         right: 174px;
         top: 226px;
+        color: white;
+        
+        @media (max-width: 1200px){
+            display: none;
+    
+        }
     }
 
 `
@@ -198,13 +213,15 @@ const TimelinePosts = styled.ul`
  display: flex;
  flex-direction: column;
  
- 
+ @media (max-width:1200px){
+            //width: 90%;
+        }
  
 
     li{
         display: flex;
       //  border: 1px solid green;
-        margin-bottom: 10px;
+       
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -212,6 +229,10 @@ const TimelinePosts = styled.ul`
         background-color: #171717;
         color: white;
         width: 610px;
+
+        @media (max-width:610px){
+            width: 100%;
+        }
         
         
     }
@@ -222,12 +243,13 @@ const TimelinePosts = styled.ul`
        //// border: 1px solid blueviolet;
 
        h2{
-           margin: 20px 0;
+           margin: 20px 20px;
        }
 
-       p{
+       .postText{
            width: 502px;
            height: auto;
+           margin-left: 20px;
        }
     }
 
@@ -260,6 +282,10 @@ justify-content:  space-between;
 
 height: auto;
 //border: 2px solid yellow;
+
+@media (max-width: 1200px){
+    justify-content: center;
+}
  
 `
 
@@ -271,12 +297,20 @@ margin: 20px 0;
 border-radius: 16px;
 display: flex;
 
+    @media (max-width:1200px){
+        width: 100%;
+    }
+
     div{
         width: 350px;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         padding-left:20px;
+        
+        @media (max-width:1200px){
+            width: 70%;
+        }
 
             h3{
                 width: 250px;
@@ -296,11 +330,11 @@ display: flex;
             a{
                 font-size: 13px;
                 width: 263px;
-                height: 13px;
+                height: auto;
                 color: white;
                 white-space: pre-wrap; /* CSS3 */    
    
-                word-wrap: break-word; /* Internet Explorer 5.5+ */
+                 word-wrap: break-word; /* Internet Explorer 5.5+ */
                 
             }
             a:hover{
@@ -308,17 +342,17 @@ display: flex;
                 text-decoration: underline;
                 cursor: pointer;
             }
-            a:visited {
-                color: pink;
-                background-color: transparent;
-                text-decoration: none;
-                }
+            
     }
 
     img{
             width: 153px;
             height: 155px;
             border-radius: 0px 12px 13px 0px;
+        
+            @media (max-width:1200px){
+            width: 30%;
+        }
         }
 
     img:hover{

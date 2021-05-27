@@ -194,10 +194,10 @@ const TimelinePosts = styled.ul`
  display: flex;
  flex-direction: column;
  
- @media (max-width:1200px){
+ @media (max-width:610px){
             //width: 90%;
+            align-items: center;
         }
- 
 
     li{
         display: flex;
@@ -212,7 +212,7 @@ const TimelinePosts = styled.ul`
         width: 610px;
 
         @media (max-width:610px){
-            width: 100%;
+            width: 90%;
         }
         
         
