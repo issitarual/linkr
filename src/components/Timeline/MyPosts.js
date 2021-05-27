@@ -1,39 +1,39 @@
-import styled from 'styled-components';
-import {useContext, useEffect,useState} from 'react';
-import NewPost from './NewPost';
+import styled from 'styled-components'
+import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
-import ReactHashtag from "react-hashtag";
+import { HeartOutline, HeartSharp } from 'react-ionicons';
+import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-import Loader from "react-loader-spinner";
-
+import ReactHashtag from "react-hashtag";
 import TrendingList from './TrendingList';
 
-import { HeartOutline, HeartSharp } from 'react-ionicons';
-
-export default function Timeline(){
-    const history = useHistory()
-    const [likedPosts, SetLikedPosts] = useState([]);
-    const { user } = useContext(UserContext);
-    const [allPosts,setAllPosts] = useState([]);
-    const [serverLoading,setServerLoading] = useState(true);
-    const [olderLikes, SetOlderLikes] = useState([]);
 
 
-    const config = {
-        headers:{
-            'Authorization' : `Bearer ${user.token}`
-        }
-    }
 
-    function update () {
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-        setServerLoading(true)
+export default function MyPosts(){
+    const history=useHistory()
+    const {user} = useContext(UserContext)
+    const [myPosts,setMyPosts] = useState([])
+   const [serverLoading,setServerLoading] = useState(true)
+   const [likedPosts, SetLikedPosts] = useState([]);
+   const [olderLikes, SetOlderLikes] = useState([]);
+
+
+
+    useEffect(()=>{
+        const config = {
+            headers:{
+                'Authorization' : `Bearer ${user.token}`
+            }
+        } 
+
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-            const newArray = response.data.posts
-            setAllPosts(newArray)
+           const newArray = response.data.posts
+           setMyPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -50,57 +50,42 @@ export default function Timeline(){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    }
-        useEffect(()=>{
-            update();
-           
-        },[]);
+    },[])
 
-    function goToLink(e,link){
+
+  function goToLink(e,link){
         e.preventDefault()
        window.open(link)
     }
 
-    function changeLoad(){
-        setServerLoading(!serverLoading)   
-    }
-
+    
     function sendToHashtag(val){
-       
+        
         const newVal = val.replace('#',"")
         
         history.push(`/hashtag/${newVal}`)
     }
-
-    function goToUserPosts(id){
-        if(id!==user.user.id){
-        history.push(`/user/${id}`)
-        }
-        else{
-            history.push(`/my-posts`)
-        }
-    }
-    
+   
     return( 
       
     <Container>
         
         <TimelineContainer>
-        <Title>timeline</Title> 
-
+        <Title>my posts</Title> 
+                
                 <TimelineContent>
-                    
+
                     <TimelinePosts>
-                    <NewPost update={update} />
+                      
                         {serverLoading 
                             ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
-                            : (allPosts.length===0 
-                                ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
-                                :allPosts.map((post)=>{
+                            : (myPosts.length===0 
+                                ? <NoPostsYet>Você ainda não postou nada</NoPostsYet>
+                                :myPosts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
-                                <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
+                                <img src={post.user.avatar}/>
                                 <div className ="ion-icon" data-tip={
                                     olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
                                     olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
@@ -114,7 +99,10 @@ export default function Timeline(){
                                     post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
                                     `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
                                 } 
-                                    onClick={() => like(post.id)}>
+                                    onClick={() => like(post.id)
+                                } 
+                                    onClick={() => like(post.id)
+                                } onClick={() => like(post.id)}>
                                     {likedPosts.map(n=>n.id).includes(post.id)?                                  
                                     <HeartSharp
                                         color={'#AC2B25'} 
@@ -141,11 +129,12 @@ export default function Timeline(){
                                     olderLikes.filter(n => n.id === post.id)[0].likes:
                                     likedPosts.map(n => n.id).includes(post.id)?
                                     likedPosts.filter(n => n.id === post.id)[0].likes:
-                                     post.likes.length} likes
+                                    post.likes.length
+                                    } likes
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
+                                <UserName id={post.user.id}>{post.user.username}</UserName>
                                     <PostContent>
                                         <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
@@ -165,22 +154,17 @@ export default function Timeline(){
                             </li>   
                             )
                         })
-                            )
+                        )
                         }
 
-                      
                     </TimelinePosts>
-
+                    
                     <TrendingList send={sendToHashtag}/>
-                   
                 </TimelineContent>
         </TimelineContainer>
 
     </Container>
     )
-
-
-
     function like (id){
         const config = {
             headers: {
@@ -234,6 +218,7 @@ const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
     height: auto;
+    //min-width: 900px;
     padding-bottom: 300px;
     
     @media (max-width:1200px){
@@ -257,12 +242,13 @@ const TimelineContainer = styled.div`
         background-color: #171717;
         width: 301px;
         height: 406px;
+        border-radius: 16px;
         position: fixed;
         z-index:2;
         right: 174px;
         top: 226px;
         color: white;
-        border-radius: 16px;
+        
         @media (max-width: 1200px){
             display: none;
     
@@ -275,16 +261,19 @@ const TimelinePosts = styled.ul`
  display: flex;
  flex-direction: column;
  
- @media (max-width:610px){
-            align-items: center;
+ @media (max-width:1200px){
+            //width: 90%;
         }
 
         svg{
             margin: 40px 180px;
         }
+ 
 
     li{
-        display: flex;       
+        display: flex;
+      //  border: 1px solid green;
+       
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -294,7 +283,7 @@ const TimelinePosts = styled.ul`
         width: 610px;
 
         @media (max-width:610px){
-            width: 90%;
+            width: 100%;
         }
         
         
@@ -302,40 +291,29 @@ const TimelinePosts = styled.ul`
     .postRight{
         width: 503px;
         height: auto;
-
-       @media (max-width:1200px){
-           width: 80%;
-       }
-
        h2{
-            font-family: 'Lato', sans-serif!important;
+           font-family: 'Lato', sans-serif!important;
            font-size: 19px;
            color: #fff;
-           margin: 20px 20px 7px 20px;
+           margin: 20px 20px 7px 0px;
        }
-
-       .postText{
+       p{
            width: 502px;
            height: auto;
            margin-left: 20px;
            color: #a3a3a3;
            font-family: 'Lato', sans-serif!important;
            font-size: 17px;
-
-           @media (max-width:1200px){
-                width: 20%;
-            }
-        }
+       }
     }
 
     .postLeft{
         width: 87px;
         min-height: 230px;
         height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
+       display: flex;
+       flex-direction: column;
+       align-items: center;
        img{
            border-radius:50%;
            width: 50px;
@@ -352,27 +330,30 @@ const TimelinePosts = styled.ul`
            height: 60px;
        }
     }
+
 `
 
 const TimelineContent= styled.div`
-    display: flex;
-    justify-content:  space-between;
-    height: auto;
+display: flex;
+justify-content:  space-between;
 
-    @media (max-width: 1200px){
-        justify-content: center;
-    }
-    
+height: auto;
+//border: 2px solid yellow;
+
+@media (max-width: 1200px){
+    justify-content: center;
+}
+ 
 `
 
 const LinkDetails = styled.div`
-width: 503px;
-height:155px;
-border: 1px solid #4D4D4D;
-margin: 20px 0;
-border-radius: 16px;
-display: flex;
-color: #CECECE;
+    width: 503px;
+    height:155px;
+    border: 1px solid #4d4d4d;
+    margin: 20px 0;
+    border-radius: 16px;
+    display: flex;
+    color: #CECECE;
 
     @media (max-width:1200px){
         width: 100%;
@@ -408,43 +389,43 @@ color: #CECECE;
                 color: #9B9595;
             }
 
-        a{
-            font-size: 13px;
-            width: 263px;
-            height: auto;
-            color: white;
-            white-space: pre-wrap;  
-            word-wrap: break-word; 
-        }
-        
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
+            a{
+                font-size: 13px;
+                width: 263px;
+                height: auto;
+                color: white;
+                white-space: pre-wrap; /* CSS3 */    
+   
+                 word-wrap: break-word; /* Internet Explorer 5.5+ */
+                
+            }
+            a:hover{
+                color: blue;
+                text-decoration: underline;
+                cursor: pointer;
+            }
             
-        }
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }            
     }
     img{
-        width: 153px;
-        height: 155px;
-        border-radius: 0px 12px 13px 0px;
-    
-        @media (max-width:1200px){
+            width: 153px;
+            height: 155px;
+            border-radius: 0px 12px 13px 0px;
+        
+            @media (max-width:1200px){
             width: 30%;
         }
-    }
-
+        }
     img:hover{
         cursor: pointer;
     }
 `
 
+const NoPostsYet = styled.p`
+font-size: 30px;
+color: white;
+margin-top: 20px;
+
+`
 const Title = styled.h1`
     font-family: Oswald;
     font-style: normal;
@@ -470,9 +451,3 @@ const PostContent = styled.p`
     margin-top: 10px;
     color: #B7B7B7;
 `;
-const NoPostsYet = styled.p`
-font-size: 30px;
-color: white;
-margin-top: 20px;
-
-`

@@ -1,40 +1,45 @@
 import styled from 'styled-components';
 import {useContext, useEffect,useState} from 'react';
-import NewPost from './NewPost';
 import UserContext from '../UserContext';
 import axios from 'axios';
 import ReactHashtag from "react-hashtag";
-import {useHistory} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
+import {useParams,useHistory} from 'react-router-dom';
 import Loader from "react-loader-spinner";
-
+import { HeartOutline, HeartSharp } from 'react-ionicons';
+import ReactTooltip from 'react-tooltip';
 import TrendingList from './TrendingList';
 
-import { HeartOutline, HeartSharp } from 'react-ionicons';
+export default function OtherUsersPosts(){
+    const {hashtag} = useParams()
 
-export default function Timeline(){
-    const history = useHistory()
-    const [likedPosts, SetLikedPosts] = useState([]);
-    const { user } = useContext(UserContext);
-    const [allPosts,setAllPosts] = useState([]);
-    const [serverLoading,setServerLoading] = useState(true);
+    const history=useHistory()
+
+    const {user} = useContext(UserContext)
+
+    const [posts,setPosts] = useState([])
+
+    const [serverLoading,setServerLoading] = useState(true)
     const [olderLikes, SetOlderLikes] = useState([]);
+    const [likedPosts, SetLikedPosts] = useState([]);
 
+    useEffect(()=>{
+        updateHashtagPosts()
+        
+    },[])
 
-    const config = {
-        headers:{
-            'Authorization' : `Bearer ${user.token}`
-        }
-    }
+    function updateHashtagPosts(newVal){
+        const config = {
+            headers:{
+                'Authorization' : `Bearer ${user.token}`
+            }
+        } 
 
-    function update () {
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-        setServerLoading(true)
+       const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${newVal || hashtag}/posts`,config)
 
         getPosts.then((response)=>{
             const newArray = response.data.posts
-            setAllPosts(newArray)
-            setServerLoading(false)
+            setPosts(newArray)
+            setServerLoading(false) 
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
@@ -42,8 +47,9 @@ export default function Timeline(){
                     sharpedHeart.push({id: post.id, likes: post.likes.length})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
+            SetLikedPosts(sharpedHeart);
             SetOlderLikes(sharpedHeart);
+
         })
 
         getPosts.catch((responseError)=>{
@@ -51,24 +57,18 @@ export default function Timeline(){
             return
         })
     }
-        useEffect(()=>{
-            update();
-           
-        },[]);
 
-    function goToLink(e,link){
+  function goToLink(e,link){
         e.preventDefault()
-       window.open(link)
-    }
-
-    function changeLoad(){
-        setServerLoading(!serverLoading)   
+        window.open(link)
     }
 
     function sendToHashtag(val){
-       
         const newVal = val.replace('#',"")
-        
+       
+        setServerLoading(true) 
+        updateHashtagPosts(newVal)
+
         history.push(`/hashtag/${newVal}`)
     }
 
@@ -80,23 +80,26 @@ export default function Timeline(){
             history.push(`/my-posts`)
         }
     }
-    
+   
     return( 
       
     <Container>
         
         <TimelineContainer>
-        <Title>timeline</Title> 
-
+            <h1>{ !serverLoading 
+            ? `#${hashtag}'s posts`  
+            :'carregando'}</h1> 
+                
                 <TimelineContent>
-                    
+
                     <TimelinePosts>
-                    <NewPost update={update} />
+                       
+
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
-                            : (allPosts.length===0 
-                                ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
-                                :allPosts.map((post)=>{
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
+                            : (posts.length===0 
+                                ? <>Você ainda não postou nada</>
+                                :posts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
@@ -145,12 +148,12 @@ export default function Timeline(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
-                                    <PostContent>
+                                <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
+                                    <p>
                                         <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
-                                    </PostContent>
+                                    </p>
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
@@ -167,20 +170,15 @@ export default function Timeline(){
                         })
                             )
                         }
-
-                      
                     </TimelinePosts>
 
                     <TrendingList send={sendToHashtag}/>
-                   
+
                 </TimelineContent>
         </TimelineContainer>
 
     </Container>
     )
-
-
-
     function like (id){
         const config = {
             headers: {
@@ -221,7 +219,6 @@ export default function Timeline(){
 }
 
 const Container = styled.div`
-    font-family: Lato;
     width: 100%;
     height: auto;
     min-height: 100vh;
@@ -253,6 +250,7 @@ const TimelineContainer = styled.div`
         }
         
     }
+
     .trending{
         background-color: #171717;
         width: 301px;
@@ -263,28 +261,30 @@ const TimelineContainer = styled.div`
         top: 226px;
         color: white;
         border-radius: 16px;
+        
         @media (max-width: 1200px){
             display: none;
     
         }
     }
 `
+
 const TimelinePosts = styled.ul`
- width: auto;
- height: auto;
- display: flex;
- flex-direction: column;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+
+    svg{
+        margin: 40px 180px;
+    }
  
- @media (max-width:610px){
-            align-items: center;
-        }
-
-        svg{
-            margin: 40px 180px;
-        }
-
+    @media (max-width:610px){
+        width: 100%;
+    }
+ 
     li{
-        display: flex;       
+        display: flex;
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -294,7 +294,7 @@ const TimelinePosts = styled.ul`
         width: 610px;
 
         @media (max-width:610px){
-            width: 90%;
+            width: 100%;
         }
         
         
@@ -303,15 +303,11 @@ const TimelinePosts = styled.ul`
         width: 503px;
         height: auto;
 
-       @media (max-width:1200px){
-           width: 80%;
-       }
-
        h2{
-            font-family: 'Lato', sans-serif!important;
+           font-family: 'Lato', sans-serif!important;
            font-size: 19px;
            color: #fff;
-           margin: 20px 20px 7px 20px;
+           margin: 20px 20px 7px 0px;
        }
 
        .postText{
@@ -321,20 +317,16 @@ const TimelinePosts = styled.ul`
            color: #a3a3a3;
            font-family: 'Lato', sans-serif!important;
            font-size: 17px;
-
-           @media (max-width:1200px){
-                width: 20%;
-            }
-        }
+       }
     }
 
     .postLeft{
         width: 87px;
         min-height: 230px;
         height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+       display: flex;
+       flex-direction: column;
+       align-items: center;
 
        img{
            border-radius:50%;
@@ -352,27 +344,27 @@ const TimelinePosts = styled.ul`
            height: 60px;
        }
     }
+    
 `
 
 const TimelineContent= styled.div`
     display: flex;
-    justify-content:  space-between;
+    justify-content: space-between;
     height: auto;
+
 
     @media (max-width: 1200px){
         justify-content: center;
     }
-    
 `
 
 const LinkDetails = styled.div`
-width: 503px;
-height:155px;
-border: 1px solid #4D4D4D;
-margin: 20px 0;
-border-radius: 16px;
-display: flex;
-color: #CECECE;
+    width: 503px;
+    height:155px;
+    margin: 20px 0;
+    border-radius: 16px;
+    display: flex;
+    border: 1px solid #4D4D4D;
 
     @media (max-width:1200px){
         width: 100%;
@@ -389,32 +381,31 @@ color: #CECECE;
             width: 70%;
         }
 
-            h3{
-                width: 250px;
-                min-height: 38px;
-                height: auto;
-                font-size: 20px;
-                color: #cecece;
-                font-family: 'Lato', sans-serif!important;
-                font-size: 16px;
-            }
+        h3{
+            width: 250px;
+            min-height: 38px;
+            height: auto;
+            color: #cecece;
+            font-family: 'Lato', sans-serif!important;
+            font-size: 16px;
+        }
 
-            .linkDescription{
-                width: 302px;
-                min-height: 40px;
-                height: auto;
-                font-size: 11px;
-                font-family: 'Lato', sans-serif!important;
-                color: #9B9595;
-            }
+        .linkDescription{
+            width: 302px;
+            min-height: 40px;
+            height: auto;
+            font-size: 11px;
+            font-family: 'Lato', sans-serif!important;
+            color: #9B9595;
+        }
 
         a{
             font-size: 13px;
             width: 263px;
             height: auto;
             color: white;
-            white-space: pre-wrap;  
-            word-wrap: break-word; 
+            white-space: pre-wrap;   
+            word-wrap: break-word;
         }
         
         a:hover{
@@ -423,20 +414,15 @@ color: #CECECE;
             cursor: pointer;
         }
             
-        }
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }            
     }
+
     img{
         width: 153px;
         height: 155px;
         border-radius: 0px 12px 13px 0px;
     
         @media (max-width:1200px){
-            width: 30%;
+        width: 30%;
         }
     }
 
@@ -444,35 +430,9 @@ color: #CECECE;
         cursor: pointer;
     }
 `
-
-const Title = styled.h1`
-    font-family: Oswald;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 43px;
-    line-height: 64px;
-    color: white;
-`;
-const UserName = styled.p`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 19px;
-    line-height: 23px;
-    color: white;
-    margin-top: 19px;
-`;
-
-const PostContent = styled.p`
-  font-style: normal;
-    font-weight: normal;
-    font-size: 17px;
-    line-height: 20px;
-    margin-top: 10px;
-    color: #B7B7B7;
-`;
 const NoPostsYet = styled.p`
-font-size: 30px;
-color: white;
-margin-top: 20px;
-
+    font-size: 30px;
+    color: white;
+    margin-top: 20px;
+    margin-left: 20px;
 `
