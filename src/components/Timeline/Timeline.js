@@ -147,15 +147,24 @@ const TimelineContainer = styled.div`
     width: 1000px;
   //  border: 1px solid white;
     height: auto;
-    min-width: 900px;
+    //min-width: 900px;
     padding-bottom: 300px;
     
+    @media (max-width:1200px){
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 
     h1{
         color: white;
         margin-bottom: 40px;
        //// border: 1px solid red;
         font-size: 43px;
+        @media (max-width:1200px){
+            margin: 10px auto;
+        }
+        
     }
 
     .trending{
@@ -168,6 +177,11 @@ const TimelineContainer = styled.div`
         right: 174px;
         top: 226px;
         color: white;
+        
+        @media (max-width: 1200px){
+            display: none;
+    
+        }
     }
 
 `
@@ -180,7 +194,9 @@ const TimelinePosts = styled.ul`
  display: flex;
  flex-direction: column;
  
- 
+ @media (max-width:1200px){
+            //width: 90%;
+        }
  
 
     li{
@@ -194,6 +210,10 @@ const TimelinePosts = styled.ul`
         background-color: #171717;
         color: white;
         width: 610px;
+
+        @media (max-width:610px){
+            width: 100%;
+        }
         
         
     }
@@ -243,6 +263,10 @@ justify-content:  space-between;
 
 height: auto;
 //border: 2px solid yellow;
+
+@media (max-width: 1200px){
+    justify-content: center;
+}
  
 `
 
@@ -254,12 +278,20 @@ margin: 20px 0;
 border-radius: 16px;
 display: flex;
 
+    @media (max-width:1200px){
+        width: 100%;
+    }
+
     div{
         width: 350px;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         padding-left:20px;
+        
+        @media (max-width:1200px){
+            width: 70%;
+        }
 
             h3{
                 width: 250px;
@@ -298,6 +330,10 @@ display: flex;
             width: 153px;
             height: 155px;
             border-radius: 0px 12px 13px 0px;
+        
+            @media (max-width:1200px){
+            width: 30%;
+        }
         }
 
     img:hover{
