@@ -4,9 +4,10 @@ import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
 import Loader from "react-loader-spinner";
+import {useHistory} from 'react-router-dom'
 
 export default function MyPosts(){
-     
+    const history=useHistory()
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
    const [serverLoading,setServerLoading] = useState(true)
@@ -47,6 +48,13 @@ export default function MyPosts(){
         setServerLoading(!serverLoading)
         
     }
+
+    function sendToHashtag(val){
+        console.log(val)
+        const newVal = val.replace('#',"")
+        console.log(newVal)
+        history.push(`/hashtag/${newVal}`)
+    }
    
     return( 
       
@@ -77,7 +85,7 @@ export default function MyPosts(){
                                 <div className='postRight'>
                                 <h2 id={post.user.id}>{post.user.username}</h2>
                                     <p>
-                                        <ReactHashtag>
+                                    <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
                                     </p>

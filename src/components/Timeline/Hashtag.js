@@ -3,11 +3,13 @@ import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
-import {useParams} from 'react-router-dom'
+import {useParams,useHistory} from 'react-router-dom'
 import Loader from "react-loader-spinner";
 
 export default function OtherUsersPosts(){
      const {hashtag} = useParams()
+
+     const history=useHistory()
     
      const {user} = useContext(UserContext)
     
@@ -20,13 +22,18 @@ export default function OtherUsersPosts(){
     useEffect(()=>{
         console.log(user)
         console.log(hashtag)
+        updateHashtagPosts()
+        
+    },[])
+
+    function updateHashtagPosts(newVal){
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
             }
         } 
 
-       const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${hashtag}/posts`,config)
+       const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${newVal || hashtag}/posts`,config)
 
         getPosts.then((response)=>{
             console.log(response)
@@ -44,8 +51,7 @@ export default function OtherUsersPosts(){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    },[])
-
+    }
 
   function goToLink(e,link){
         e.preventDefault()
@@ -56,6 +62,26 @@ export default function OtherUsersPosts(){
     function changeLoad(){
         setServerLoading(!serverLoading)
         
+    }
+
+    function sendToHashtag(val){
+        console.log(val)
+        const newVal = val.replace('#',"")
+        console.log(newVal)
+       
+        setServerLoading(true) 
+        updateHashtagPosts(newVal)
+
+        history.push(`/hashtag/${newVal}`)
+    }
+
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
     }
    
     return( 
@@ -77,20 +103,20 @@ export default function OtherUsersPosts(){
                        
 
                         {serverLoading 
-                            ? <p>Loading</p> 
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (posts.length===0 
-                                ? <p>Você ainda não postou nada</p>
+                                ? <>Você ainda não postou nada</>
                                 :posts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
-                                <img src={post.user.avatar}/>
+                                <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
                                     <div>coracao</div> {/*icone do coracao*/}
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id}>{post.user.username}</h2>
+                                <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
                                     <p>
-                                        <ReactHashtag>
+                                    <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
                                     </p>
@@ -196,9 +222,13 @@ const TimelinePosts = styled.ul`
  //border: 1px solid red;
  display: flex;
  flex-direction: column;
+
+ svg{
+            margin: 40px 180px;
+        }
  
- @media (max-width:1200px){
-            //width: 90%;
+ @media (max-width:610px){
+            width: 100%;
         }
  
 
@@ -342,4 +372,13 @@ display: flex;
     img:hover{
         cursor: pointer;
     }
+`
+
+
+const NoPostsYet = styled.p`
+font-size: 30px;
+color: white;
+margin-top: 20px;
+margin-left: 20px;
+
 `

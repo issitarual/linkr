@@ -3,7 +3,7 @@ import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
-import {useParams} from 'react-router-dom'
+import {useParams,useHistory} from 'react-router-dom'
 import Loader from "react-loader-spinner";
 
 export default function OtherUsersPosts(){
@@ -12,6 +12,7 @@ export default function OtherUsersPosts(){
     const [posts,setPosts] = useState([])
    const [serverLoading,setServerLoading] = useState(true)
    const [pageUser,setPageUser] = useState(null)
+   const history=useHistory()
 
     useEffect(()=>{
         console.log(user)
@@ -53,6 +54,14 @@ export default function OtherUsersPosts(){
         setServerLoading(!serverLoading)
         
     }
+
+    function sendToHashtag(val){
+        console.log(val)
+        const newVal = val.replace('#',"")
+        console.log(newVal)
+        history.push(`/hashtag/${newVal}`)
+    }
+   
    
     return( 
       
@@ -86,9 +95,9 @@ export default function OtherUsersPosts(){
                                 <div className='postRight'>
                                 <h2 id={post.user.id}>{post.user.username}</h2>
                                     <p>
-                                        <ReactHashtag>
+                                    <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
-                                        </ReactHashtag>
+                                    </ReactHashtag>
                                     </p>
                                     <LinkDetails>
                                         <div>

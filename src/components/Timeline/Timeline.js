@@ -6,6 +6,7 @@ import axios from 'axios'
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom'
 import Loader from "react-loader-spinner";
+import TrendingList from './TrendingList'
 
 export default function Timeline(){
     const history = useHistory()
@@ -38,7 +39,7 @@ export default function Timeline(){
         })
     }
         useEffect(()=>{
-             console.log(user)
+           //  console.log(user)
             update();
            
          },[]);
@@ -58,7 +59,7 @@ export default function Timeline(){
         
     }
 
-    function sendoToHashtag(val){
+    function sendToHashtag(val){
         console.log(val)
         const newVal = val.replace('#',"")
         console.log(newVal)
@@ -101,9 +102,9 @@ export default function Timeline(){
                                     <div>coracao</div> {/*icone do coracao* <----------*/}
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
+                                <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
                                     <p className='postText'>
-                                        <ReactHashtag onHashtagClick={(val) => sendoToHashtag(val)}>
+                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
                                         
@@ -128,9 +129,10 @@ export default function Timeline(){
                       
                     </TimelinePosts>
                     
-                    <div className = 'trending'>
-                        'lista de hashtag'
-                    </div> {/* add o trendin aqui*/}
+                    
+                    
+                    <TrendingList send={sendToHashtag}/>
+                   
                 </TimelineContent>
         </TimelineContainer>
 
