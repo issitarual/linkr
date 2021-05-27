@@ -5,12 +5,13 @@ import axios from 'axios';
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-
+import Loader from "react-loader-spinner";
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 
 export default function MyLikes(){
     const history = useHistory()
     const [likedPosts, SetLikedPosts] = useState([]);
+    const [olderLikes, SetOlderLikes] = useState([]);
     const { user } = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true)
@@ -30,9 +31,13 @@ export default function MyLikes(){
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
+                post.likes.forEach(n =>{
                     sharpedHeart.push({id: post.id, likes: post.likes.length})
                 })
-            SetLikedPosts(sharpedHeart)})
+            })
+            SetLikedPosts(sharpedHeart)
+            SetOlderLikes(sharpedHeart);
+        })
 
         getPosts.catch((responseError)=>{
            // console.log(responseError)
@@ -63,7 +68,7 @@ export default function MyLikes(){
                     <TimelinePosts>
 
                         {serverLoading 
-                            ? <p>Loading</p> 
+                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (allPosts.length===0 
                                 ? <p>Nenhum post encontrado</p>
                                 :allPosts.map((post)=>{
@@ -72,7 +77,23 @@ export default function MyLikes(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
-                                <div className ="ion-icon" data-tip={post.likes.length === 0? "0 pessoas": likedPosts.map(n => n.id).includes(post.id)? `Você e outras ${likedPosts.filter(n => n.id === post.id)[0].likes} pessoas`:`${post.likes.length} pessoas`} onClick={() => like(post.id)}>
+                                <div className ="ion-icon" data-tip={
+                                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
+                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
+                                    likedPosts.map(n => n.id).includes(post.id)? 
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
+                                    post.likes.length === 0? "0 pessoas":
+                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
+                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
+                                } 
+                                    onClick={() => like(post.id)
+                                } 
+                                    onClick={() => like(post.id)
+                                } onClick={() => like(post.id)}>
                                     {likedPosts.map(n=>n.id).includes(post.id)?                                  
                                     <HeartSharp
                                         color={'#AC2B25'} 
@@ -94,12 +115,18 @@ export default function MyLikes(){
                                     />
                                 </div> 
                                 <h6>
-                                    {likedPosts.map(n => n.id).includes(post.id)? post.likes.length + 1:post.likes.length} likes
+                                    {
+                                    olderLikes.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes:
+                                    likedPosts.map(n => n.id).includes(post.id)?
+                                    likedPosts.filter(n => n.id === post.id)[0].likes:
+                                    post.likes.length
+                                    } likes
                                 </h6>
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
-                                    <p>
+                                    <p className = "postText">
                                         <ReactHashtag>
                                             {post.text}
                                         </ReactHashtag>
@@ -141,11 +168,26 @@ export default function MyLikes(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(likedPosts.map(n => n.id).includes(id)){
+        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            request.then(success => {
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
+                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(olderLikes.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            request.then(success => {
+                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
                 SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-                console.log(success);
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
@@ -153,7 +195,6 @@ export default function MyLikes(){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
                 SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                console.log(success);
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
@@ -176,28 +217,45 @@ const Container = styled.div`
 
 const TimelineContainer = styled.div`
     margin-top: 125px;
-    width: 70%;
+    width: 1000px;
+  //  border: 1px solid white;
     height: auto;
-    padding-bottom: 50px;
+    //min-width: 900px;
+    padding-bottom: 300px;
     
+    @media (max-width:1200px){
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 
     h1{
-        color: #fff;
+        color: white;
         margin-bottom: 40px;
         font-size: 43px;
-        font-family: 'Oswald', sans-serif;
+        font-family: 'Oswald', sans-serif !important;
         font-weight: bold;
+        @media (max-width:1200px){
+            margin: 10px auto;
+        }
+        
     }
 
     .trending{
         background-color: #171717;
         width: 301px;
         height: 406px;
+       //// border: 1px solid red;
         position: fixed;
         z-index:2;
-        right: calc(50% - 500px);
-        top: 213px;
+        right: 174px;
+        top: 226px;
         color: white;
+        
+        @media (max-width: 1200px){
+            display: none;
+    
+        }
     }
 
 `
@@ -205,61 +263,91 @@ const TimelineContainer = styled.div`
 const TimelinePosts = styled.ul`
  width: auto;
  height: auto;
+ //
+ //border: 1px solid red;
  display: flex;
  flex-direction: column;
  
+ @media (max-width:610px){
+            //width: 90%;
+            align-items: center;
+        }
+
+        svg{
+            margin: 40px 180px;
+        }
+
     li{
         display: flex;
-        margin-bottom: 10px;
-        margin-top:5px;
+      //  border: 1px solid green;
+       
+        margin-top:10px;
         min-height:276px;
         height: auto;
         border-radius:16px;
         background-color: #171717;
         color: white;
-        width: 70%;      
-        padding: 20px;
+        width: 610px;
+
+        @media (max-width:610px){
+            width: 90%;
+        }
+        
+        
     }
     .postRight{
-        width: 100%;
+        width: 503px;
+        //min-height: 230px;
         height: auto;
+       //// border: 1px solid blueviolet;
 
-       h2{
-           font-family: 'Lato', sans-serif!important;
-           font-size: 19px;
-           color: #fff;
-
+       @media (max-width:1200px){
+           width: 80%;
        }
 
-       p{
+       h2{
+            font-family: 'Lato', sans-serif!important;
+           font-size: 19px;
+           color: #fff;
+           margin: 20px 20px 7px 20px;
+       }
+
+       .postText{
+           width: 502px;
+           height: auto;
+           margin-left: 20px;
            color: #a3a3a3;
            font-family: 'Lato', sans-serif!important;
-            font-size: 17px;
-            margin-top: 5px;
+           font-size: 17px;
+
+           @media (max-width:1200px){
+           width: 20%;
+       }
        }
     }
 
     .postLeft{
-        width: 10%;
+        width: 87px;
         min-height: 230px;
         height: auto;
        display: flex;
        flex-direction: column;
        align-items: center;
-       margin-right: 10px;
+
        img{
            border-radius:50%;
            width: 50px;
            height: 50px;
-
+           margin-top: 20px;
        }
        h6{
         font-family: 'Lato', sans-serif!important;
         font-size: 11px;
-        margin-top: 5px;
+        margin-top: 10px;
        }
        .ion-icon{
-           margin-top: 20px;
+           margin-top: -30px;
+           height: 60px;
        }
     }
 
@@ -274,23 +362,39 @@ justify-content:  space-between;
 
 height: auto;
 //border: 2px solid yellow;
+
+@media (max-width: 1200px){
+    justify-content: center;
+}
  
 `
 
 const LinkDetails = styled.div`
-width: 95%;
+width: 503px;
+height:155px;
 border: 1px solid #4D4D4D;
-margin: 20px 0 0 0 ;
-border-radius: 11px;
+margin: 20px 0;
+border-radius: 16px;
 display: flex;
 
+    @media (max-width:1200px){
+        width: 100%;
+    }
+
     div{
-        width: 90%;
+        width: 350px;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        padding: 10px;
+        padding-left:20px;
+        
+        @media (max-width:1200px){
+            width: 70%;
+        }
+
             h3{
+                width: 250px;
+                min-height: 38px;
                 height: auto;
                 font-size: 20px;
                 color: #cecece;
@@ -299,6 +403,8 @@ display: flex;
             }
 
             .linkDescription{
+                width: 302px;
+                min-height: 40px;
                 height: auto;
                 font-size: 11px;
                 font-family: 'Lato', sans-serif!important;
@@ -306,12 +412,10 @@ display: flex;
             }
 
             a{
-                font-size: 11px;
+                font-size: 13px;
                 width: 263px;
                 height: auto;
-                color: #cecece;
-                font-family: 'Lato', sans-serif!important;
-
+                color: white;
                 white-space: pre-wrap; /* CSS3 */    
    
                  word-wrap: break-word; /* Internet Explorer 5.5+ */
@@ -329,9 +433,21 @@ display: flex;
             width: 153px;
             height: 155px;
             border-radius: 0px 12px 13px 0px;
+        
+            @media (max-width:1200px){
+            width: 30%;
+        }
         }
 
     img:hover{
         cursor: pointer;
     }
+`
+
+const NoPostsYet = styled.p`
+font-size: 30px;
+color: white;
+margin-top: 20px;
+margin-left: 20px;
+
 `

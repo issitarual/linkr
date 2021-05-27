@@ -10,10 +10,10 @@ import Timeline from './Timeline/Timeline';
 import MyPosts from './Timeline/MyPosts';
 import OtherUsersPosts from './Timeline/OtherUsersPosts';
 
-
 import GlobalStyle from './GlobalStyles';
 import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
+import Hashtag from './hashtag/Hashtag';
 
 
 export default function App () {
@@ -40,6 +40,7 @@ export default function App () {
                 </Route>
                 <Route path='/hashtag/:hashtag' exact>
                     <Header/>
+                    <Hashtag/>
                 </Route>
                 <Route path='/user/:id' exact>
                     <Header/>
