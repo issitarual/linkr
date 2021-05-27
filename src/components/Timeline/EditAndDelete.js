@@ -113,7 +113,10 @@ export default function EditAndDelete ({post}) {
                         style={customStyles}
                         contentLabel="Example Modal"
 
-                        ></Modal>
+                        >
+                            <p>Texto aqui!</p>
+                            <button>Botão de fechar aqui!</button>
+                        </Modal>
            </Container>
         </>
     );
