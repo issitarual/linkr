@@ -7,6 +7,9 @@ import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import ReactHashtag from "react-hashtag";
+import TrendingList from './TrendingList';
+
+
 
 
 export default function MyPosts(){
@@ -160,8 +163,7 @@ export default function MyPosts(){
 
                     </TimelinePosts>
                     
-                    <div className = 'trending'>
-                    </div> 
+                    <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>
 

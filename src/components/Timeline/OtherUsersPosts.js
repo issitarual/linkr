@@ -7,6 +7,8 @@ import {useParams, useHistory} from 'react-router-dom'
 import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import { HeartOutline, HeartSharp } from 'react-ionicons';
+import TrendingList from './TrendingList';
+
 
 export default function OtherUsersPosts(){
      const {id} = useParams()
@@ -164,8 +166,8 @@ export default function OtherUsersPosts(){
 
                     </TimelinePosts>
                     
-                    <div className = 'trending'>
-                    </div> {/* add o trendin aqui*/}
+                    <TrendingList send={sendToHashtag}/>
+
                 </TimelineContent>
         </TimelineContainer>
 
