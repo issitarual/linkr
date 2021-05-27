@@ -7,6 +7,7 @@ import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
+import Modal from 'react-modal';
 
 import TrendingList from './TrendingList';
 

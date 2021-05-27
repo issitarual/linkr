@@ -4,16 +4,32 @@ import pencil from './images/pencil.png'
 import trash from './images/trash.png'
 import UserContext from '../UserContext';
 import {useContext, useState, useEffect} from 'react';
-import Modal from 'react-modal';
 import ModalDelete from './ModalDelete';
 import { TrashOutline, CreateOutline } from 'react-ionicons'
+import Modal from 'react-modal';
 
 
 export default function EditAndDelete ({post}) {
 
     const { user } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
-
+    function openModal() {
+      setIsOpen(true);
+    }
+    
+      function closeModal(){
+        setIsOpen(false);
+      }
+      const customStyles = {
+        content : {
+          top                   : '50%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)'
+        }
+      };
 
     if (post.user.id !== user.user.id) { //garante que so vai aparecer a caixinha se o post for usuario logado
         return null;
@@ -79,21 +95,26 @@ export default function EditAndDelete ({post}) {
         <> 
            <Container>
                 <CreateOutline
-                    onClick={edit}
-                    color={'#00000'} 
-                    title={}
-                    height="250px"
-                    width="250px"
+                    onClick={openModal}
+                    color={'#fff'} 
+                    height="25px"
+                    width="25px"
                 />
                <TrashOutline
                 onClick={()=>{
                     wishDelete()
                 }}
-                    color={'#00000'} 
-                    title={}
+                    color={'#fff'} 
                     height="25px"
                     width="25px"
                 />
+                        <Modal
+                        isOpen={isOpen}
+                        onRequestClose={closeModal}
+                        style={customStyles}
+                        contentLabel="Example Modal"
+
+                        ></Modal>
            </Container>
         </>
     );
@@ -116,11 +137,4 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     background-color: lightskyblue; /* apagar depois */
-`;
-
-const Pencil = styled.img`
-
-`;
-const Trash = styled.img`
-
 `;
