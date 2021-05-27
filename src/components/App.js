@@ -13,7 +13,7 @@ import OtherUsersPosts from './Timeline/OtherUsersPosts';
 import GlobalStyle from './GlobalStyles';
 import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
-import Hashtag from './hashtag/Hashtag';
+import Hashtag from './Timeline/Hashtag';
 
 
 export default function App () {
@@ -52,7 +52,7 @@ export default function App () {
                 </Route>
             </Switch>
         </Router>
-    </UserContext.Provider>
-    )
+        </UserContext.Provider>
+    );
 }
 

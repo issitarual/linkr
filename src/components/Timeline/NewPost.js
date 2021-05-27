@@ -125,8 +125,12 @@ const Form = styled.form`
 const Icon = styled.div`
   width: 50px;
   height: 50px;
+<<<<<<< HEAD
   
   border-radius: 30px;
+=======
+  border-radius: 25px;
+>>>>>>> main
   margin-top: 16px;
   margin-left: 18px;
   margin-right: 18px;

@@ -75,13 +75,9 @@ export default function OtherUsersPosts(){
     <Container>
         
         <TimelineContainer>
-            <h1>{ !serverLoading 
+            <Title>{ !serverLoading 
             ? `${pageUser}'s posts`  
-            :'Carregando posts'}</h1> 
-            
-           {/*} (<button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
-                <button onClick={changeLoad}>change load</button>
-            <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
+            :'Other Posts'}</Title> 
                 
                 <TimelineContent>
 
@@ -143,7 +139,7 @@ export default function OtherUsersPosts(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id}>{post.user.username}</h2>
+                                <UserName id={post.user.id}>{post.user.username}</UserName>
                                     <p>
                                     <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
@@ -153,7 +149,7 @@ export default function OtherUsersPosts(){
                                         <div>
                                             <h3>{post.linkTitle}</h3>
                                             
-                                            <p className='linkDescription'>{post.linkDescription}</p>
+                                            <PostContent className='linkDescription'>{post.linkDescription}</PostContent>
                                            
                                             <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
                                         </div>
@@ -166,15 +162,6 @@ export default function OtherUsersPosts(){
                             )
                         }
 
-                       {/* <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                        </li>
-
-                        <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                       </li>*/}
                     </TimelinePosts>
                     
                     <div className = 'trending'>
@@ -224,23 +211,18 @@ export default function OtherUsersPosts(){
 }
 
 const Container = styled.div`
-
+    font-family: Lato;
     width: 100%;
     height: auto;
     min-height: 100vh;
-    
     background-color: #333333;
-    
-    
     display: flex;
     justify-content: center;
-
 `
 
 const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
-  //  border: 1px solid white;
     height: auto;
     //min-width: 900px;
     padding-bottom: 300px;
@@ -262,7 +244,6 @@ const TimelineContainer = styled.div`
         }
         
     }
-
     .trending{
         background-color: #171717;
         width: 301px;
@@ -279,14 +260,10 @@ const TimelineContainer = styled.div`
     
         }
     }
-
 `
-
 const TimelinePosts = styled.ul`
  width: auto;
  height: auto;
- //
- //border: 1px solid red;
  display: flex;
  flex-direction: column;
  
@@ -300,8 +277,6 @@ const TimelinePosts = styled.ul`
 
     li{
         display: flex;
-      //  border: 1px solid green;
-       
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -318,10 +293,7 @@ const TimelinePosts = styled.ul`
     }
     .postRight{
         width: 503px;
-        //min-height: 230px;
         height: auto;
-       //// border: 1px solid blueviolet;
-
        h2{
            font-family: 'Lato', sans-serif!important;
            font-size: 19px;
@@ -343,16 +315,13 @@ const TimelinePosts = styled.ul`
         width: 87px;
         min-height: 230px;
         height: auto;
-       //// border: 1px solid blue;
        display: flex;
        flex-direction: column;
        align-items: center;
-
        img{
            border-radius:50%;
            width: 50px;
            height: 50px;
-         //  border: 1px solid red;
            margin-top: 20px;
        }
        h6{
@@ -366,10 +335,7 @@ const TimelinePosts = styled.ul`
        }
     }
 
-    
-
 `
-
 
 const TimelineContent= styled.div`
 display: flex;
@@ -385,12 +351,13 @@ height: auto;
 `
 
 const LinkDetails = styled.div`
-width: 503px;
-height:155px;
-border: 1px solid #4D4D4D;
-margin: 20px 0;
-border-radius: 16px;
-display: flex;
+    width: 503px;
+    height:auto;
+    border: 1px solid #4d4d4d;
+    margin: 20px 0;
+    border-radius: 16px;
+    display: flex;
+    color: #CECECE;
 
     @media (max-width:1200px){
         width: 100%;
@@ -442,8 +409,13 @@ display: flex;
                 cursor: pointer;
             }
             
+        }
+        a:hover{
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }            
     }
-
     img{
             width: 153px;
             height: 155px;
@@ -453,11 +425,36 @@ display: flex;
             width: 30%;
         }
         }
-
     img:hover{
         cursor: pointer;
     }
 `
+
+const Title = styled.h1`
+    font-family: Oswald;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 64px;
+    color: white;
+`;
+const UserName = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 19px;
+    line-height: 23px;
+    color: white;
+    margin-top: 19px;
+`;
+
+const PostContent = styled.p`
+  font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    margin-top: 10px;
+    color: #B7B7B7;
+`;
 
 const NoPostsYet = styled.p`
 font-size: 30px;

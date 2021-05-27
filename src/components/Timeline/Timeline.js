@@ -52,13 +52,9 @@ export default function Timeline(){
         })
     }
         useEffect(()=>{
-           //  console.log(user)
             update();
            
-         },[]);
-    
-
-   
+        },[]);
 
     function goToLink(e,link){
         e.preventDefault()
@@ -66,8 +62,7 @@ export default function Timeline(){
     }
 
     function changeLoad(){
-        setServerLoading(!serverLoading)
-        
+        setServerLoading(!serverLoading)   
     }
 
     function sendToHashtag(val){
@@ -91,11 +86,8 @@ export default function Timeline(){
     <Container>
         
         <TimelineContainer>
-            <h1>timeline</h1> 
-            {/*<button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
-                <button onClick={changeLoad}>server load</button>
-    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
-            
+        <Title>timeline</Title> 
+
                 <TimelineContent>
                     
                     <TimelinePosts>
@@ -153,13 +145,12 @@ export default function Timeline(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
-                                    <p className='postText'>
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
+                                <UserName id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</UserName>
+                                    <PostContent>
+                                        <ReactHashtag>
                                             {post.text}
                                         </ReactHashtag>
-                                        
-                                    </p>
+                                    </PostContent>
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
@@ -230,17 +221,13 @@ export default function Timeline(){
 }
 
 const Container = styled.div`
-
+    font-family: Lato;
     width: 100%;
     height: auto;
     min-height: 100vh;
-    
     background-color: #333333;
-    
-    
     display: flex;
     justify-content: center;
-
 `
 
 const TimelineContainer = styled.div`
@@ -266,7 +253,6 @@ const TimelineContainer = styled.div`
         }
         
     }
-
     .trending{
         background-color: #171717;
         width: 301px;
@@ -282,9 +268,7 @@ const TimelineContainer = styled.div`
     
         }
     }
-
 `
-
 const TimelinePosts = styled.ul`
  width: auto;
  height: auto;
@@ -300,9 +284,7 @@ const TimelinePosts = styled.ul`
         }
 
     li{
-        display: flex;
-      //  border: 1px solid green;
-       
+        display: flex;       
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -372,7 +354,6 @@ const TimelinePosts = styled.ul`
     }
 `
 
-
 const TimelineContent= styled.div`
     display: flex;
     justify-content:  space-between;
@@ -391,6 +372,7 @@ border: 1px solid #4D4D4D;
 margin: 20px 0;
 border-radius: 16px;
 display: flex;
+color: #CECECE;
 
     @media (max-width:1200px){
         width: 100%;
@@ -441,8 +423,13 @@ display: flex;
             cursor: pointer;
         }
             
+        }
+        a:hover{
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }            
     }
-
     img{
         width: 153px;
         height: 155px;
@@ -458,9 +445,34 @@ display: flex;
     }
 `
 
-const NoPostsYet = styled.p`
-    font-size: 30px;
+const Title = styled.h1`
+    font-family: Oswald;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 64px;
     color: white;
-    margin-top: 20px;
-    margin-left: 20px;
+`;
+const UserName = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 19px;
+    line-height: 23px;
+    color: white;
+    margin-top: 19px;
+`;
+
+const PostContent = styled.p`
+  font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    margin-top: 10px;
+    color: #B7B7B7;
+`;
+const NoPostsYet = styled.p`
+font-size: 30px;
+color: white;
+margin-top: 20px;
+
 `

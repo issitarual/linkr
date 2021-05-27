@@ -72,16 +72,12 @@ export default function MyPosts(){
     <Container>
         
         <TimelineContainer>
-            <h1>My Posts</h1> 
-            {/*<button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
-                <button onClick={changeLoad}>server load</button>
-    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
+        <Title>my posts</Title> 
                 
                 <TimelineContent>
 
                     <TimelinePosts>
                       
-
                         {serverLoading 
                             ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (myPosts.length===0 
@@ -139,12 +135,12 @@ export default function MyPosts(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                <h2 id={post.user.id}>{post.user.username}</h2>
-                                    <p>
-                                    <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
+                                <UserName id={post.user.id}>{post.user.username}</UserName>
+                                    <PostContent>
+                                        <ReactHashtag>
                                             {post.text}
                                         </ReactHashtag>
-                                    </p>
+                                    </PostContent>
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
@@ -159,22 +155,13 @@ export default function MyPosts(){
                             </li>   
                             )
                         })
-                            )
+                        )
                         }
 
-                       {/* <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                        </li>
-
-                        <li>
-                            <div className='postLeft'></div>
-                            <div className='postRight'></div>
-                       </li>*/}
                     </TimelinePosts>
                     
                     <div className = 'trending'>
-                    </div> {/* add o trendin aqui*/}
+                    </div> 
                 </TimelineContent>
         </TimelineContainer>
 
@@ -220,23 +207,18 @@ export default function MyPosts(){
 }
 
 const Container = styled.div`
-
+    font-family: Lato;
     width: 100%;
     height: auto;
     min-height: 100vh;
-    
     background-color: #333333;
-    
-    
     display: flex;
     justify-content: center;
-
 `
 
 const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
-  //  border: 1px solid white;
     height: auto;
     //min-width: 900px;
     padding-bottom: 300px;
@@ -258,7 +240,6 @@ const TimelineContainer = styled.div`
         }
         
     }
-
     .trending{
         background-color: #171717;
         width: 301px;
@@ -275,14 +256,10 @@ const TimelineContainer = styled.div`
     
         }
     }
-
 `
-
 const TimelinePosts = styled.ul`
  width: auto;
  height: auto;
- //
- //border: 1px solid red;
  display: flex;
  flex-direction: column;
  
@@ -315,18 +292,14 @@ const TimelinePosts = styled.ul`
     }
     .postRight{
         width: 503px;
-        //min-height: 230px;
         height: auto;
-       //// border: 1px solid blueviolet;
-
        h2{
            font-family: 'Lato', sans-serif!important;
            font-size: 19px;
            color: #fff;
            margin: 20px 20px 7px 0px;
        }
-
-       .postText{
+       p{
            width: 502px;
            height: auto;
            margin-left: 20px;
@@ -340,16 +313,13 @@ const TimelinePosts = styled.ul`
         width: 87px;
         min-height: 230px;
         height: auto;
-       //// border: 1px solid blue;
        display: flex;
        flex-direction: column;
        align-items: center;
-
        img{
            border-radius:50%;
            width: 50px;
            height: 50px;
-         //  border: 1px solid red;
            margin-top: 20px;
        }
        h6{
@@ -363,10 +333,7 @@ const TimelinePosts = styled.ul`
        }
     }
 
-    
-
 `
-
 
 const TimelineContent= styled.div`
 display: flex;
@@ -382,12 +349,13 @@ height: auto;
 `
 
 const LinkDetails = styled.div`
-width: 503px;
-height:155px;
-border: 1px solid #4D4D4D;
-margin: 20px 0;
-border-radius: 16px;
-display: flex;
+    width: 503px;
+    height:155px;
+    border: 1px solid #4d4d4d;
+    margin: 20px 0;
+    border-radius: 16px;
+    display: flex;
+    color: #CECECE;
 
     @media (max-width:1200px){
         width: 100%;
@@ -440,7 +408,6 @@ display: flex;
             }
             
     }
-
     img{
             width: 153px;
             height: 155px;
@@ -450,7 +417,6 @@ display: flex;
             width: 30%;
         }
         }
-
     img:hover{
         cursor: pointer;
     }
@@ -462,3 +428,28 @@ color: white;
 margin-top: 20px;
 
 `
+const Title = styled.h1`
+    font-family: Oswald;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 64px;
+    color: white;
+`;
+const UserName = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 19px;
+    line-height: 23px;
+    color: white;
+    margin-top: 19px;
+`;
+
+const PostContent = styled.p`
+  font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    margin-top: 10px;
+    color: #B7B7B7;
+`;
