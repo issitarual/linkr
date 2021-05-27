@@ -17,6 +17,7 @@ export default function MyLikes(){
     const [allPosts,setAllPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true)
 
+  
     useEffect(()=>{
         const config = {
             headers:{
@@ -33,15 +34,15 @@ export default function MyLikes(){
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
+                if(n.username === user.user.username){
                     sharpedHeart.push({id: post.id, likes: post.likes.length})
-                })
+                }})
             })
             SetLikedPosts(sharpedHeart)
             SetOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
-           // console.log(responseError)
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
@@ -49,7 +50,6 @@ export default function MyLikes(){
 
     function goToLink(e,link){
         e.preventDefault()
-        console.log(`ir para o link: ${link}`)
        window.open(link)
     }
 
@@ -59,9 +59,7 @@ export default function MyLikes(){
     }
 
     function sendToHashtag(val){
-        console.log(val)
         const newVal = val.replace('#',"")
-        console.log(newVal)
         history.push(`/hashtag/${newVal}`)
     }
 
@@ -97,15 +95,15 @@ export default function MyLikes(){
                                 <div className ="ion-icon" data-tip={
                                     olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
                                     olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
+                                    `${post.likes.map(n => n.username).filter(n => n !== user.user.username)[0]} ${post.likes.length -2 > 0? `e outra(s) ${post.likes.length -2} pessoas`: ""} `:                      
                                     likedPosts.map(n => n.id).includes(post.id)? 
                                     likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
+                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n.username).filter(n => n !== user.user.username)[0]}`:
+                                    `Você, ${post.likes.map(n => n.username).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
                                     post.likes.length === 0? "0 pessoas":
-                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
+                                    post.likes.length === 1? `${post.likes.map(n => n.username).filter(n => n !== user.user.username)[0]}`:
+                                    post.likes.length === 2? `${post.likes.map(n => n.username).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n.username).filter(n => n !== user.user.username)[1]}`:
+                                    `${post.likes.map(n => n.username).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n.username).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
                                 } 
                                     onClick={() => like(post.id)
                                 } 
