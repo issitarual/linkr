@@ -63,7 +63,7 @@ export default function OtherUsersPosts(){
         
         <TimelineContainer>
             <h1>{ !serverLoading 
-            ? `${hashtag}'s posts`  
+            ? `#${hashtag}'s posts`  
             :'carregando'}</h1> 
             
             {/*(<button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
