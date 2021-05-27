@@ -4,6 +4,7 @@ import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
 import {useParams} from 'react-router-dom'
+import Loader from "react-loader-spinner";
 
 export default function OtherUsersPosts(){
      const {id} = useParams()
@@ -60,9 +61,9 @@ export default function OtherUsersPosts(){
         <TimelineContainer>
             <h1>{ !serverLoading 
             ? `${pageUser}'s posts`  
-            :'carregando'}</h1> 
+            :'Carregando posts'}</h1> 
             
-            {/*(<button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
+           {/*} (<button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>change load</button>
             <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
                 
@@ -72,7 +73,7 @@ export default function OtherUsersPosts(){
                        
 
                         {serverLoading 
-                            ? <p>Loading</p> 
+                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (posts.length===0 
                                 ? <p>Você ainda não postou nada</p>
                                 :posts.map((post)=>{
@@ -195,7 +196,10 @@ const TimelinePosts = styled.ul`
  @media (max-width:1200px){
             //width: 90%;
         }
- 
+        
+        svg{
+            margin: 40px 180px;
+        }
 
     li{
         display: flex;

@@ -85,6 +85,11 @@ const Post = styled.div`
   padding-right: 22px;
   padding-bottom: 16px;
   font-family: Lato;
+
+  @media (max-width:610px){
+            width: 90%;
+            
+        }
 `;
 
 const Form = styled.form`

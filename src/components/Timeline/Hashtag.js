@@ -4,6 +4,7 @@ import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
 import {useParams} from 'react-router-dom'
+import Loader from "react-loader-spinner";
 
 export default function OtherUsersPosts(){
      const {hashtag} = useParams()

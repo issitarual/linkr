@@ -3,6 +3,7 @@ import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
+import Loader from "react-loader-spinner";
 
 export default function MyPosts(){
      
@@ -53,47 +54,17 @@ export default function MyPosts(){
         
         <TimelineContainer>
             <h1>My Posts</h1> 
-            {/*<button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
+            <button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>server load</button>
-    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
+    <button onClick={()=>console.log(serverLoading)}>server load</button>
                 
                 <TimelineContent>
 
                     <TimelinePosts>
-                       {/*} <li>
-                            <div className='postLeft'>
-                                <img src='https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg'/>
-                                <div>coracao</div> {/*icone do coracao
-
-                            </div>
-                            <div className='postRight'>
-                                <h2>Nome da pessoa</h2>
-                                <p>
-                                    <ReactHashtag>
-                                        Muito maneiro esse tutorial de Material UI 
-                                        com React, deem uma olhada! #react 
-                                        #material
-                                    </ReactHashtag>    
-                                </p>
-                                <LinkDetails>
-                                    <div>
-                                        <h3>Como aplicar o Material UI em um 
-                                            projeto React</h3>
-                                        
-                                        <p className='linkDescription'>Hey! I have moved this tutorial to my personal blog. 
-                                            Same content, new location. 
-                                            Sorry about making you click through to another page.</p>
-                                       
-                                        <a href='#'>https://medium.com/@pshrmn/a-simple-react-router</a>
-                                    </div>
-                                    <img/>
-                                </LinkDetails>
-
-                            </div>
-                                </li> */}
+                      
 
                         {serverLoading 
-                            ? <p>Loading</p> 
+                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (myPosts.length===0 
                                 ? <p>Você ainda não postou nada</p>
                                 :myPosts.map((post)=>{
@@ -215,6 +186,10 @@ const TimelinePosts = styled.ul`
  
  @media (max-width:1200px){
             //width: 90%;
+        }
+
+        svg{
+            margin: 40px 180px;
         }
  
 

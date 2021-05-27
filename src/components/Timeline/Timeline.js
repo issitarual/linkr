@@ -5,6 +5,7 @@ import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom'
+import Loader from "react-loader-spinner";
 
 export default function Timeline(){
     const history = useHistory()
@@ -70,17 +71,17 @@ export default function Timeline(){
         
         <TimelineContainer>
             <h1>timeline</h1> 
-            {/*<button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
+            <button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>server load</button>
-    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
-                
+    <button onClick={()=>console.log(serverLoading)}>server load</button>
+            
                 <TimelineContent>
                     
                     <TimelinePosts>
                     <NewPost update={update} />
-
+{/*<p>Loading</p> */}
                         {serverLoading 
-                            ? <p>Loading</p> 
+                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (allPosts.length===0 
                                 ? <p>Nenhum post encontrado</p>
                                 :allPosts.map((post)=>{
@@ -199,6 +200,10 @@ const TimelinePosts = styled.ul`
             align-items: center;
         }
 
+        svg{
+            margin: 40px 180px;
+        }
+
     li{
         display: flex;
       //  border: 1px solid green;
@@ -223,6 +228,10 @@ const TimelinePosts = styled.ul`
         height: auto;
        //// border: 1px solid blueviolet;
 
+       @media (max-width:1200px){
+           width: 80%;
+       }
+
        h2{
            margin: 20px 20px;
        }
@@ -231,6 +240,10 @@ const TimelinePosts = styled.ul`
            width: 502px;
            height: auto;
            margin-left: 20px;
+
+           @media (max-width:1200px){
+           width: 20%;
+       }
        }
     }
 
