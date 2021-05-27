@@ -3,6 +3,7 @@ import GlobalStyle from './GlobalStyles';
 import React from 'react';
 import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
+import Hashtag from './hashtag/Hashtag.js';
 import { useState } from "react";
 import UserContext from './UserContext';
 import Timeline from './Timeline/Timeline';
@@ -29,8 +30,9 @@ export default function App () {
                 <Route path='/my-posts' exact>
                     <Header/>
                 </Route>
-                <Route path='/hashtag/:hashtag' exact>
+                <Route path='/hashtag' exact>
                     <Header/>
+                    <Hashtag />
                 </Route>
                 <Route path='/user/:id' exact>
                     <Header/>
