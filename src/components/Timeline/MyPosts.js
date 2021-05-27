@@ -13,6 +13,8 @@ export default function MyPosts(){
     const [myPosts,setMyPosts] = useState([])
    const [serverLoading,setServerLoading] = useState(true)
    const [likedPosts, SetLikedPosts] = useState([]);
+   const [olderLikes, SetOlderLikes] = useState([]);
+
 
 
     useEffect(()=>{
@@ -36,6 +38,7 @@ export default function MyPosts(){
                 }})
             })
             SetLikedPosts(sharpedHeart)
+            SetOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
@@ -110,7 +113,13 @@ export default function MyPosts(){
                                     />
                                 </div> 
                                 <h6>
-                                    {likedPosts.map(n => n.id).includes(post.id)? likedPosts.filter(n => n.id === post.id)[0].likes: post.likes.length} likes
+                                    {
+                                    olderLikes.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes:
+                                    likedPosts.map(n => n.id).includes(post.id)?
+                                    likedPosts.filter(n => n.id === post.id)[0].likes:
+                                    post.likes.length
+                                    } likes
                                 </h6>
                                 </div>
                                 <div className='postRight'>
@@ -161,7 +170,23 @@ export default function MyPosts(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(likedPosts.map(n => n.id).includes(id)){
+        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            request.then(success => {
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
+                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(olderLikes.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            request.then(success => {
+                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
                 SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))

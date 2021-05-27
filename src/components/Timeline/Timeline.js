@@ -12,8 +12,10 @@ export default function Timeline(){
     const history = useHistory()
     const [likedPosts, SetLikedPosts] = useState([]);
     const { user } = useContext(UserContext);
-    const [allPosts,setAllPosts] = useState([])
-    const [serverLoading,setServerLoading] = useState(true)
+    const [allPosts,setAllPosts] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
+    const [olderLikes, SetOlderLikes] = useState([]);
+
 
     useEffect(()=>{
         const config = {
@@ -36,6 +38,7 @@ export default function Timeline(){
                 }})
             })
             SetLikedPosts(sharpedHeart)
+            SetOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
@@ -74,7 +77,7 @@ export default function Timeline(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
-                                <div className ="ion-icon" data-tip={                                    
+                                <div className ="ion-icon" data-tip={                           
                                     likedPosts.map(n => n.id).includes(post.id)? 
                                     likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
                                     likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
@@ -105,7 +108,13 @@ export default function Timeline(){
                                     />
                                 </div> 
                                 <h6>
-                                    {likedPosts.map(n => n.id).includes(post.id)? likedPosts.filter(n => n.id === post.id)[0].likes: post.likes.length} likes
+                                    {
+                                    olderLikes.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes:
+                                    likedPosts.map(n => n.id).includes(post.id)?
+                                    likedPosts.filter(n => n.id === post.id)[0].likes:
+                                     post.likes.length
+                                     } likes
                                 </h6>
                                 </div>
                                 <div className='postRight'>
@@ -152,7 +161,23 @@ export default function Timeline(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(likedPosts.map(n => n.id).includes(id)){
+        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            request.then(success => {
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
+                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(olderLikes.map(n => n.id).includes(id)){
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            request.then(success => {
+                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
+            });
+            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
+        }
+        else if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
                 SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
