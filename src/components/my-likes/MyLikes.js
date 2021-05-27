@@ -96,7 +96,7 @@ export default function MyLikes(){
                                 <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
                                 <div className ="ion-icon" data-tip={
                                     olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
+                                    olderLikes.filter(n => n.id === post.id)[0].likes === 1? "Somente você":
                                     `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} ${post.likes.length -2 > 1? `e outra(s) ${post.likes.length -2}pessoas`: ""} `:                      
                                     likedPosts.map(n => n.id).includes(post.id)? 
                                     likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
