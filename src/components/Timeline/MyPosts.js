@@ -54,9 +54,9 @@ export default function MyPosts(){
         
         <TimelineContainer>
             <h1>My Posts</h1> 
-            <button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
+            {/*<button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>server load</button>
-    <button onClick={()=>console.log(serverLoading)}>server load</button>
+    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
                 
                 <TimelineContent>
 
@@ -66,7 +66,7 @@ export default function MyPosts(){
                         {serverLoading 
                             ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (myPosts.length===0 
-                                ? <p>Você ainda não postou nada</p>
+                                ? <NoPostsYet>Você ainda não postou nada</NoPostsYet>
                                 :myPosts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
@@ -333,4 +333,11 @@ display: flex;
     img:hover{
         cursor: pointer;
     }
+`
+
+const NoPostsYet = styled.p`
+font-size: 30px;
+color: white;
+margin-top: 20px;
+
 `

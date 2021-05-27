@@ -38,7 +38,7 @@ export default function Timeline(){
         })
     }
         useEffect(()=>{
-            // console.log(user)
+             console.log(user)
             update();
            
          },[]);
@@ -64,6 +64,15 @@ export default function Timeline(){
         console.log(newVal)
         history.push(`/hashtag/${newVal}`)
     }
+
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }
     
     return( 
       
@@ -71,9 +80,9 @@ export default function Timeline(){
         
         <TimelineContainer>
             <h1>timeline</h1> 
-            <button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
+            {/*<button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>server load</button>
-    <button onClick={()=>console.log(serverLoading)}>server load</button>
+    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
             
                 <TimelineContent>
                     
@@ -83,12 +92,12 @@ export default function Timeline(){
                         {serverLoading 
                             ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (allPosts.length===0 
-                                ? <p>Nenhum post encontrado</p>
+                                ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
                                 :allPosts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
-                                <img src={post.user.avatar} onClick={()=>(history.push(`/user/${post.user.id}`))}/>
+                                <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
                                     <div>coracao</div> {/*icone do coracao* <----------*/}
                                 </div>
                                 <div className='postRight'>
@@ -352,4 +361,12 @@ display: flex;
     img:hover{
         cursor: pointer;
     }
+`
+
+const NoPostsYet = styled.p`
+font-size: 30px;
+color: white;
+margin-top: 20px;
+margin-left: 20px;
+
 `

@@ -27,7 +27,7 @@ export default function OtherUsersPosts(){
         getPosts.then((response)=>{
             console.log(response)
             console.log('Os posts do usuario foram pegos')
-            console.log(response.data.posts[0].user.username)
+            //console.log(response.data.posts[0].user.username)
           const newArray = response.data.posts
            setPosts(newArray)
           setPageUser(response.data.posts[0].user.username)
@@ -75,7 +75,7 @@ export default function OtherUsersPosts(){
                         {serverLoading 
                             ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
                             : (posts.length===0 
-                                ? <p>Você ainda não postou nada</p>
+                                ? <NoPostsYet>Este usuário ainda não postou nada</NoPostsYet>
                                 :posts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
@@ -341,4 +341,11 @@ display: flex;
     img:hover{
         cursor: pointer;
     }
+`
+
+const NoPostsYet = styled.p`
+font-size: 30px;
+color: white;
+margin-top: 20px;
+
 `
