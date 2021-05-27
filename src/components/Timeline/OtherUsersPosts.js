@@ -60,9 +60,11 @@ export default function OtherUsersPosts(){
         <TimelineContainer>
             <h1>{ !serverLoading 
             ? `${pageUser}'s posts`  
-            :'Other Posts'}</h1> <button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
+            :'carregando'}</h1> 
+            
+            {/*(<button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>change load</button>
-                <button onClick={()=>console.log(serverLoading)}>server load</button>
+            <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
                 
                 <TimelineContent>
 
@@ -275,7 +277,7 @@ display: flex;
                 width: 263px;
                 height: auto;
                 color: white;
-                border: 1px solid red;
+                //border: 1px solid red;
                 white-space: pre-wrap; /* CSS3 */    
    
                 word-wrap: break-word; /* Internet Explorer 5.5+ */

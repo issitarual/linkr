@@ -21,7 +21,7 @@ export default function Header (){
                     color={'#fff'} 
                     height="32px"
                     width="32px" 
-                />
+                /> 
                 }
                 <img src="https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg"/>
             </span>
@@ -38,7 +38,7 @@ export default function Header (){
             localStorage.clear();
         }
         setState(!state);
-        history.push(url);
+        history.push(url); 
     }
 }
 

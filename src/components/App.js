@@ -8,6 +8,7 @@ import { useState } from "react";
 import UserContext from './UserContext';
 import Timeline from './Timeline/Timeline';
 import Header from './Header';
+import Hashtag from './Timeline/Hashtag'
 
 export default function App () {
     const [user, setUser] = useState([]);
@@ -32,7 +33,11 @@ export default function App () {
                 </Route>
                 <Route path='/hashtag' exact>
                     <Header/>
+<<<<<<< HEAD
                     <Hashtag />
+=======
+                    <Hashtag/>
+>>>>>>> hashtag2.0agoravai
                 </Route>
                 <Route path='/user/:id' exact>
                     <Header/>

@@ -56,14 +56,23 @@ export default function Timeline(){
         setServerLoading(!serverLoading)
         
     }
+
+    function sendoToHashtag(val){
+        console.log(val)
+        const newVal = val.replace('#',"")
+        console.log(newVal)
+        history.push(`/hashtag/${newVal}`)
+    }
+    
     return( 
       
     <Container>
         
         <TimelineContainer>
-            <h1>timeline</h1> <button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
+            <h1>timeline</h1> 
+            {/*<button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>server load</button>
-                <button onClick={()=>console.log(serverLoading)}>server load</button>
+    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
                 
                 <TimelineContent>
                     
@@ -83,10 +92,11 @@ export default function Timeline(){
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
-                                    <p>
-                                        <ReactHashtag>
+                                    <p className='postText'>
+                                        <ReactHashtag onHashtagClick={(val) => sendoToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
+                                        
                                     </p>
                                     <LinkDetails>
                                         <div>
@@ -176,8 +186,8 @@ const TimelinePosts = styled.ul`
     li{
         display: flex;
       //  border: 1px solid green;
-        margin-bottom: 10px;
-        margin-top:5px;
+       
+        margin-top:10px;
         min-height:276px;
         height: auto;
         border-radius:16px;
@@ -194,12 +204,13 @@ const TimelinePosts = styled.ul`
        //// border: 1px solid blueviolet;
 
        h2{
-           margin: 20px 0;
+           margin: 20px 20px;
        }
 
-       p{
+       .postText{
            width: 502px;
            height: auto;
+           margin-left: 20px;
        }
     }
 
