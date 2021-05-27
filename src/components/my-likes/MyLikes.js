@@ -176,10 +176,9 @@ const Container = styled.div`
 
 const TimelineContainer = styled.div`
     margin-top: 125px;
-    width: 1000px;
+    width: 70%;
     height: auto;
-    min-width: 900px;
-    padding-bottom: 300px;
+    padding-bottom: 50px;
     
 
     h1{
@@ -194,11 +193,10 @@ const TimelineContainer = styled.div`
         background-color: #171717;
         width: 301px;
         height: 406px;
-       //// border: 1px solid red;
         position: fixed;
         z-index:2;
-        right: 174px;
-        top: 226px;
+        right: calc(50% - 500px);
+        top: 213px;
         color: white;
     }
 
@@ -207,17 +205,11 @@ const TimelineContainer = styled.div`
 const TimelinePosts = styled.ul`
  width: auto;
  height: auto;
- //
- //border: 1px solid red;
  display: flex;
  flex-direction: column;
  
- 
- 
-
     li{
         display: flex;
-      //  border: 1px solid green;
         margin-bottom: 10px;
         margin-top:5px;
         min-height:276px;
@@ -225,41 +217,41 @@ const TimelinePosts = styled.ul`
         border-radius:16px;
         background-color: #171717;
         color: white;
-        width: 610px;
-        
-        
+        width: 70%;      
+        padding: 20px;
     }
     .postRight{
-        width: 503px;
-        //min-height: 230px;
+        width: 100%;
         height: auto;
-       //// border: 1px solid blueviolet;
 
        h2{
-           margin: 20px 0;
+           font-family: 'Lato', sans-serif!important;
+           font-size: 19px;
+           color: #fff;
+
        }
 
        p{
-           width: 502px;
-           height: auto;
+           color: #a3a3a3;
+           font-family: 'Lato', sans-serif!important;
+            font-size: 17px;
+            margin-top: 5px;
        }
     }
 
     .postLeft{
-        width: 87px;
+        width: 10%;
         min-height: 230px;
         height: auto;
-       //// border: 1px solid blue;
        display: flex;
        flex-direction: column;
        align-items: center;
-
+       margin-right: 10px;
        img{
            border-radius:50%;
            width: 50px;
            height: 50px;
-         //  border: 1px solid red;
-           margin-top: 20px;
+
        }
        h6{
         font-family: 'Lato', sans-serif!important;
@@ -286,40 +278,40 @@ height: auto;
 `
 
 const LinkDetails = styled.div`
-width: 503px;
-height:155px;
-//border: 1px solid blue;
-margin: 20px 0;
-border-radius: 16px;
+width: 95%;
+border: 1px solid #4D4D4D;
+margin: 20px 0 0 0 ;
+border-radius: 11px;
 display: flex;
 
     div{
-        width: 350px;
+        width: 90%;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        padding-left:20px;
-
+        padding: 10px;
             h3{
-                width: 250px;
-                min-height: 38px;
                 height: auto;
                 font-size: 20px;
+                color: #cecece;
+                font-family: 'Lato', sans-serif!important;
+                font-size: 16px;
             }
 
             .linkDescription{
-                width: 302px;
-                min-height: 40px;
                 height: auto;
                 font-size: 11px;
-            //  border: 1px solid red;
+                font-family: 'Lato', sans-serif!important;
+                color: #9B9595;
             }
 
             a{
-                font-size: 13px;
+                font-size: 11px;
                 width: 263px;
                 height: auto;
-                color: white;
+                color: #cecece;
+                font-family: 'Lato', sans-serif!important;
+
                 white-space: pre-wrap; /* CSS3 */    
    
                  word-wrap: break-word; /* Internet Explorer 5.5+ */
