@@ -14,6 +14,8 @@ export default function Timeline(){
     const {user} = useContext(UserContext)
     const [allPosts,setAllPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true)
+
+    console.log(user)
     
     const config = {
         headers:{

@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 import { Link, useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from 'axios';
+
+import UserContext from '../UserContext';
 
 export default function Register(){
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [pictureUrl, setPictureUrl] = useState("");
+
+    const {setUser} = useContext(UserContext);
 
     const [charging, setCharging] = useState(false);
 
@@ -29,7 +33,7 @@ export default function Register(){
         }
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-up", body)
-        request.then(() => history.push("/"));
+        request.then((response) => {setUser(response.data); history.push("/")});
         request.catch(errors)
 
         function errors(error){
