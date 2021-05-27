@@ -8,6 +8,12 @@ import Register from './sign-up/SignUp.js';
 import GlobalStyle from './GlobalStyles';
 import Header from './Header';
 
+import Timeline from './Timeline/Timeline'
+import MyPosts from './Timeline/MyPosts'
+import Hashtag from './Timeline/Hashtag'
+import OtherUsersPosts from './Timeline/OtherUsersPosts'
+
+
 
 export default function App () {
     const [user, setUser] = useState([]);
@@ -25,15 +31,19 @@ export default function App () {
                     </Route>
                     <Route path='/timeline' exact>
                         <Header/>
+                        <Timeline />
                     </Route>
                     <Route path='/my-posts' exact>
                         <Header/>
+                        <MyPosts />
                     </Route>
                     <Route path='/hashtag/:hashtag' exact>
                         <Header/>
+                        <Hashtag />
                     </Route>
                     <Route path='/user/:id' exact>
                         <Header/>
+                        <OtherUsersPosts />
                     </Route>
                     <Route path='/my-likes' exact>
                         <Header/>
