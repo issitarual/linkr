@@ -14,6 +14,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 
 export default function Timeline(){
     const history = useHistory()
+<<<<<<< HEAD
     const [likedPosts, SetLikedPosts] = useState([]);
     const { user } = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
@@ -21,6 +22,14 @@ export default function Timeline(){
     const [olderLikes, SetOlderLikes] = useState([]);
 
 
+=======
+    const {user} = useContext(UserContext)
+    const [allPosts,setAllPosts] = useState([])
+    const [serverLoading,setServerLoading] = useState(true)
+
+    console.log(user)
+    
+>>>>>>> hashtag2.0agoravai
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`

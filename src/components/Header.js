@@ -10,6 +10,7 @@ export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
     const { user } = useContext(UserContext);
+    
     return(
         <ContainerHeader state={state}>
             <Link to ="/timeline">

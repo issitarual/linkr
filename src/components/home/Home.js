@@ -19,8 +19,8 @@ export default function Home(){
         {if (localStorage.length !== 0){
             const listString = localStorage.getItem("list");
             const list = JSON.parse(listString);
-            setUser(list);
-            history.push("/timeline");
+            setUser(list)
+            history.push("/timeline")
         }
 
     }, [])
