@@ -3,29 +3,39 @@ import {useContext, useEffect,useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
+import {useParams} from 'react-router-dom'
 
-export default function MyPosts(){
-     
-    const {user} = useContext(UserContext)
-    const [myPosts,setMyPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
+export default function OtherUsersPosts(){
+     const {hashtag} = useParams()
+    
+     const {user} = useContext(UserContext)
+    
+     const [posts,setPosts] = useState([])
+   
+     const [serverLoading,setServerLoading] = useState(true)
+   
+     const [pageUser,setPageUser] = useState(null)
 
     useEffect(()=>{
         console.log(user)
+        console.log(hashtag)
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
             }
         } 
 
-        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
+       const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${hashtag}/posts`,config)
 
         getPosts.then((response)=>{
             console.log(response)
-            console.log('Os meus posts foram pegos')
-           const newArray = response.data.posts
-           setMyPosts(newArray)
-            setServerLoading(false)
+            console.log('Os posts da hashtag foram pegos')
+            //console.log(response.data.posts[0].user.username)
+          const newArray = response.data.posts
+           setPosts(newArray)
+         // setPageUser(response.data.posts[0].user.username)
+           setServerLoading(false) 
+
         })
 
         getPosts.catch((responseError)=>{
@@ -52,51 +62,24 @@ export default function MyPosts(){
     <Container>
         
         <TimelineContainer>
-            <h1>My Posts</h1> 
-            {/*<button onClick={()=>console.log(myPosts)}>ver se posts foram salvos</button>
-                <button onClick={changeLoad}>server load</button>
-    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
+            <h1>{ !serverLoading 
+            ? `${hashtag}'s posts`  
+            :'carregando'}</h1> 
+            
+            {/*(<button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
+                <button onClick={changeLoad}>change load</button>
+            <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
                 
                 <TimelineContent>
 
                     <TimelinePosts>
-                       {/*} <li>
-                            <div className='postLeft'>
-                                <img src='https://i.pinimg.com/originals/13/1f/10/131f107bd3d676d0526c8da763e6ea58.jpg'/>
-                                <div>coracao</div> {/*icone do coracao
-
-                            </div>
-                            <div className='postRight'>
-                                <h2>Nome da pessoa</h2>
-                                <p>
-                                    <ReactHashtag>
-                                        Muito maneiro esse tutorial de Material UI 
-                                        com React, deem uma olhada! #react 
-                                        #material
-                                    </ReactHashtag>    
-                                </p>
-                                <LinkDetails>
-                                    <div>
-                                        <h3>Como aplicar o Material UI em um 
-                                            projeto React</h3>
-                                        
-                                        <p className='linkDescription'>Hey! I have moved this tutorial to my personal blog. 
-                                            Same content, new location. 
-                                            Sorry about making you click through to another page.</p>
-                                       
-                                        <a href='#'>https://medium.com/@pshrmn/a-simple-react-router</a>
-                                    </div>
-                                    <img/>
-                                </LinkDetails>
-
-                            </div>
-                                </li> */}
+                       
 
                         {serverLoading 
                             ? <p>Loading</p> 
-                            : (myPosts.length===0 
+                            : (posts.length===0 
                                 ? <p>Você ainda não postou nada</p>
-                                :myPosts.map((post)=>{
+                                :posts.map((post)=>{
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
@@ -148,16 +131,16 @@ export default function MyPosts(){
 }
 
 const Container = styled.div`
-
     width: 100%;
     height: auto;
-    min-height: 1000px;
+    min-height: 100vh;
     
     background-color: #333333;
     
     
     display: flex;
     justify-content: center;
+
 
 `
 
@@ -205,7 +188,7 @@ const TimelinePosts = styled.ul`
         display: flex;
       //  border: 1px solid green;
         margin-bottom: 10px;
-        margin-top:10px;
+        margin-top:5px;
         min-height:276px;
         height: auto;
         border-radius:16px;
@@ -294,10 +277,11 @@ display: flex;
             }
 
             a{
-                font-size: 13px;
+                font-size: 11px;
                 width: 263px;
-                height: 13px;
+                height: auto;
                 color: white;
+                //border: 1px solid red;
                 white-space: pre-wrap; /* CSS3 */    
    
                 word-wrap: break-word; /* Internet Explorer 5.5+ */
@@ -308,11 +292,7 @@ display: flex;
                 text-decoration: underline;
                 cursor: pointer;
             }
-            a:visited {
-                color: pink;
-                background-color: transparent;
-                text-decoration: none;
-                }
+            
     }
 
     img{

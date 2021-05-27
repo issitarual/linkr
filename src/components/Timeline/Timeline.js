@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import {useContext, useEffect,useState} from 'react'
+import NewPost from './NewPost';
+import {useContext, useEffect, useState} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios'
 import ReactHashtag from "react-hashtag";
@@ -10,19 +11,16 @@ export default function Timeline(){
     const {user} = useContext(UserContext)
     const [allPosts,setAllPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true)
-   
-   
-   
     
-    useEffect(()=>{
-       // console.log(user)
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
         }
+    }
 
+    function update () {
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        setServerLoading(true)
 
         getPosts.then((response)=>{
           //  console.log(response)
@@ -37,7 +35,15 @@ export default function Timeline(){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    },[])
+    }
+        useEffect(()=>{
+            // console.log(user)
+            update();
+           
+         },[]);
+    
+
+   
 
 
     function goToLink(e,link){
@@ -50,19 +56,28 @@ export default function Timeline(){
         setServerLoading(!serverLoading)
         
     }
+
+    function sendoToHashtag(val){
+        console.log(val)
+        const newVal = val.replace('#',"")
+        console.log(newVal)
+        history.push(`/hashtag/${newVal}`)
+    }
+    
     return( 
       
     <Container>
         
         <TimelineContainer>
-            <h1>timeline</h1> <button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
+            <h1>timeline</h1> 
+            {/*<button onClick={()=>console.log(allPosts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>server load</button>
-                <button onClick={()=>console.log(serverLoading)}>server load</button>
+    <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
                 
                 <TimelineContent>
-
+                    
                     <TimelinePosts>
-                        {/*Adicone o componente de criar post aqui*/}
+                    <NewPost update={update} />
 
                         {serverLoading 
                             ? <p>Loading</p> 
@@ -77,8 +92,8 @@ export default function Timeline(){
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id} onClick={()=>(history.push(`/user/${post.user.id}`))}>{post.user.username}</h2>
-                                    <p>
-                                        <ReactHashtag>
+                                    <p className='postText'>
+                                        <ReactHashtag onHashtagClick={(val) => sendoToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
                                         
@@ -171,8 +186,8 @@ const TimelinePosts = styled.ul`
     li{
         display: flex;
       //  border: 1px solid green;
-        margin-bottom: 10px;
-        margin-top:5px;
+       
+        margin-top:10px;
         min-height:276px;
         height: auto;
         border-radius:16px;
@@ -189,12 +204,13 @@ const TimelinePosts = styled.ul`
        //// border: 1px solid blueviolet;
 
        h2{
-           margin: 20px 0;
+           margin: 20px 20px;
        }
 
-       p{
+       .postText{
            width: 502px;
            height: auto;
+           margin-left: 20px;
        }
     }
 

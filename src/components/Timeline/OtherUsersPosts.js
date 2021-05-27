@@ -60,9 +60,11 @@ export default function OtherUsersPosts(){
         <TimelineContainer>
             <h1>{ !serverLoading 
             ? `${pageUser}'s posts`  
-            :'carregando'}</h1> <button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
+            :'carregando'}</h1> 
+            
+            {/*(<button onClick={()=>console.log(posts)}>ver se posts foram salvos</button>
                 <button onClick={changeLoad}>change load</button>
-                <button onClick={()=>console.log(serverLoading)}>server load</button>
+            <button onClick={()=>console.log(serverLoading)}>server load</button>*/}
                 
                 <TimelineContent>
 
