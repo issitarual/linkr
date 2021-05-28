@@ -12,7 +12,6 @@ import Modal from 'react-modal';
 import ActionsPost from './ActionsPost';
 import TrendingList from './TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
-import EditAndDelete from './EditAndDelete';
 import InputNewText from './InputNewText';
 
 export default function Timeline(){

@@ -18,14 +18,13 @@ export default function DeleteModal ({modalIsOpen, toggleModal, update, id}) {
 
     function DeletePost () {
         const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, config).then((answer)=>{
-            console.log('deletou');
-            console.log(answer);
+
             toggleModal();
             update();
 
         }).catch((error)=>{
-            console.log(id)
             toggleModal();
+            alert("Não foi possível excluir seu post, tente novamente!")
 
 
         })
