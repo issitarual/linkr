@@ -53,11 +53,9 @@ export default function MyLikes(){
        window.open(link)
     }
 
-    function changeLoad(){
-        setServerLoading(!serverLoading)
-        
-    }
+   
 
+    
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
@@ -71,6 +69,13 @@ export default function MyLikes(){
             history.push(`/my-posts`)
         }
     }
+
+    function sendToHashtag(val){
+      
+        const newVal = val.replace('#',"")
+        
+        history.push(`/hashtag/${newVal}`)
+    }
     return( 
       
     <Container>
@@ -83,7 +88,7 @@ export default function MyLikes(){
                     <TimelinePosts>
 
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (allPosts.length===0 
                                 ? <p>Nenhum post encontrado</p>
                                 :allPosts.map((post)=>{
@@ -142,7 +147,7 @@ export default function MyLikes(){
                                 <div className='postRight'>
                                 <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
                                     <p className = "postText">
-                                        <ReactHashtag>
+                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
                                     </p>
