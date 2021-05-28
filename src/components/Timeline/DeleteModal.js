@@ -36,35 +36,17 @@ export default function DeleteModal ({modalIsOpen, toggleModal, update, id}) {
             <Modal
             isOpen={modalIsOpen}
             aria-labelledby="modal-title"
+            className="mobileModal"
             style={{
                 overlay: {
                   position: 'fixed',
                   top: 0,
                   left: 0,
                   right: 0,
-                  bottom: 0,
+                 bottom: 0,
                   backgroundColor: 'rgba(255, 255, 255, 0.75)'
-                },
-                content: {
-                  position: 'absolute',
-                  top: '30%',
-                  left: '30%',
-                  bottom: '30%',
-                  right: '30%',
-                  width: '597px',
-                  height: '262px',
-                  border: '1px solid #ccc',
-                  background: '#333',
-                  overflow: 'auto',
-                  WebkitOverflowScrolling: 'touch',
-                  borderRadius: '50px',
-                  outline: 'none',
-                  padding: '38px 110px 66px 110px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
                 }
+                
               }}
             >
                     <p 

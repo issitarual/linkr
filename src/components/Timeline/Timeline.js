@@ -87,12 +87,11 @@ export default function Timeline(){
         let postsToEdit = allPosts.map((p) => {
             if(p.id === id){
                 p.toEdit = !p.toEdit;
-                console.log(`cliquei no post ${id}`)
-                console.log(p.id)
+               
             }
             return {...p};
         })   
-        console.log(postsToEdit)
+        
         setAllPosts([...postsToEdit]);
     }
 
@@ -508,6 +507,8 @@ const PostContent = styled.p`
     margin-top: 10px;
     color: #B7B7B7;
     display: ${(props) => (props.open) ? 'initial' : 'none'};
+    white-space: pre-wrap;  
+            word-wrap: break-word; 
 
 `;
 
