@@ -14,7 +14,7 @@ import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
 import Hashtag from './Timeline/Hashtag';
 
-import EditAndDelete from './Timeline/EditAndDelete';
+
 
 export default function App () {
     const [user, setUser] = useState(localStorage.lenght!==0 ? JSON.parse(localStorage.getItem('list')) : []);
