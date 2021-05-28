@@ -84,12 +84,9 @@ export default function Timeline(){
         let postsToEdit = allPosts.map((p) => {
             if(p.id === id){
                 p.toEdit = !p.toEdit;
-                console.log(`cliquei no post ${id}`)
-                console.log(p.id)
             }
             return {...p};
         })   
-        console.log(postsToEdit)
         setAllPosts([...postsToEdit]);
     }
 
