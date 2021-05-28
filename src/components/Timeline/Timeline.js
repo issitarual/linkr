@@ -22,16 +22,10 @@ export default function Timeline(){
 
   
    
-    useEffect(()=>{
+   useEffect(()=>{
             
-        
-            const listString = localStorage.getItem("list");
-            
-            if(listString){
-            const list = JSON.parse(listString);
+       
            
-            setUser(list)
-            }
         update();
        
     },[]);
@@ -45,9 +39,10 @@ export default function Timeline(){
         }
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
-
+        
         getPosts.then((response)=>{
             const newArray = response.data.posts
+            
             setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
@@ -62,6 +57,7 @@ export default function Timeline(){
         })
 
         getPosts.catch((responseError)=>{
+           
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
@@ -105,7 +101,7 @@ export default function Timeline(){
                     <TimelinePosts>
                     <NewPost update={update} />
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (allPosts.length===0 
                                 ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
                                 :allPosts.map((post)=>{

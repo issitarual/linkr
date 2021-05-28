@@ -16,7 +16,7 @@ import Hashtag from './Timeline/Hashtag';
 
 
 export default function App () {
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState(localStorage.lenght!==0 ? JSON.parse(localStorage.getItem('list')) : []);
 
 
   

@@ -11,25 +11,11 @@ export default function NewPost ({update}) {
   const [buttonText, letButtonText] = useState('Publicar');
   const { user ,setUser} = useContext(UserContext);
 
-  const [localLoad,setLocalLoad] = useState(false)
+  
 
-    useEffect(()=>{
-            
-        
-        const listString = localStorage.getItem("list");
-        
-        if(listString){
-        const list = JSON.parse(listString);
-        
-        
-        setUser(list)
-        setLocalLoad(true)
-
-        }
-      
     
    
-},[]);
+
   function createNewPost (event) {
 
     event.preventDefault();

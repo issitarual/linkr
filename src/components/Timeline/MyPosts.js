@@ -75,7 +75,7 @@ export default function MyPosts(){
                     <TimelinePosts>
                       
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (myPosts.length===0 
                                 ? <NoPostsYet>Você ainda não postou nada</NoPostsYet>
                                 :myPosts.map((post)=>{
