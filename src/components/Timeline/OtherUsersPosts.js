@@ -87,7 +87,7 @@ export default function OtherUsersPosts(){
                        
 
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (posts.length===0 
                                 ? <NoPostsYet>Este usuário ainda não postou nada</NoPostsYet>
                                 :posts.map((post)=>{

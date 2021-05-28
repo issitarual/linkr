@@ -25,7 +25,7 @@ export default function OtherUsersPosts(){
     useEffect(()=>{
         updateHashtagPosts()
         
-    },[])
+    },[hashtag])
 
     function updateHashtagPosts(newVal){
         const config = {
