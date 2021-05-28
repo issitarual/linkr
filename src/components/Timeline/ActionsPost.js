@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import UserContext from '../UserContext';
 import {useContext, useState } from 'react';
-import { TrashOutline, CreateOutline } from 'react-ionicons'
 import DeleteModal from './DeleteModal';
 import pencil from './images/pencil.png';
 import trash from './images/trash.png';
