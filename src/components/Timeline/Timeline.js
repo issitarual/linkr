@@ -270,7 +270,7 @@ const TimelineContainer = styled.div`
         width: 301px;
         height: 406px;
         position: fixed;
-        z-index:2;
+        z-index:0;
         right: 174px;
         top: 226px;
         color: white;
