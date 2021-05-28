@@ -98,7 +98,7 @@ const FrontPage = styled.div`
 `;
 
 const RightSide = styled.div`
-    width: 905px;
+    width: 70%;
     height: 1000px;
     background: #151515;
     color: #fff;
@@ -148,8 +148,8 @@ const RightSide = styled.div`
     }
 `;
 
-const LeftSide = styled.div` 
-    width: 600px;
+const LeftSide = styled.div`
+    width: 30%;
     height: 1000px;
     background: #333333;
     display: flex;
@@ -171,6 +171,12 @@ const LeftSide = styled.div`
         font-family: 'Oswald', sans-serif;
         font-size: 27px;
         padding-left: 15px;
+
+        @media (max-width:1500px){
+            width: 95%;
+        }
+
+       
     }
 
     button{
@@ -184,6 +190,10 @@ const LeftSide = styled.div`
         color: #fff;
         font-size: 27px;
         line-height: 40px;
+       
+        @media (max-width:1500px){
+            width: 95%;
+        }
     }
 
     p{
