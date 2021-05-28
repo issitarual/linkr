@@ -20,8 +20,6 @@ export default function Timeline(){
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, SetOlderLikes] = useState([]); 
 
-   
-   
     useEffect(()=>{
         update();    
     },[]);
@@ -291,6 +289,7 @@ const TimelinePosts = styled.ul`
  
     @media (max-width:610px){
         align-items: center;
+        width: 100%;
     }
 
     svg{
