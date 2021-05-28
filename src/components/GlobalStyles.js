@@ -59,6 +59,10 @@ const GlobalStyle = createGlobalStyle`
     a{
         text-decoration: none;
     }
+
+    @media (max-width:1200px){
+
+
     
 `;
 export default GlobalStyle;

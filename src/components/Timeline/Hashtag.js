@@ -434,5 +434,5 @@ const NoPostsYet = styled.p`
     font-size: 30px;
     color: white;
     margin-top: 20px;
-    margin-left: 20px;
+    margin-left: 20px; 
 `

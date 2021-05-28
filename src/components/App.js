@@ -2,9 +2,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import React from 'react';
 import { useState ,useEffect} from "react";
 import GlobalStyle from './GlobalStyles';
-
 import UserContext from './UserContext';
-
 import Home from './home/Home.js';
 import Register from './sign-up/SignUp.js';
 import Timeline from './Timeline/Timeline';
@@ -13,6 +11,7 @@ import OtherUsersPosts from './Timeline/OtherUsersPosts';
 import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
 import Hashtag from './Timeline/Hashtag';
+
 
 
 export default function App () {
@@ -52,6 +51,7 @@ export default function App () {
                     <Header/>
                     <MyLikes />
                 </Route>
+                
             </Switch>
         </Router>
         </UserContext.Provider>

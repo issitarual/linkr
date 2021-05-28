@@ -8,6 +8,8 @@ import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import ReactHashtag from "react-hashtag";
 import TrendingList from './TrendingList';
+import InputNewText from './InputNewText';
+import ActionsPost from './ActionsPost';
 
 
 
@@ -20,19 +22,21 @@ export default function MyPosts(){
    const [likedPosts, SetLikedPosts] = useState([]);
    const [olderLikes, SetOlderLikes] = useState([]);
 
-
+   const config = {
+    headers:{
+        'Authorization' : `Bearer ${user.token}`
+    }
+} 
 
     useEffect(()=>{
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
-        } 
+        update();
+    },[])
 
-        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
+        function update () {
+            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-           const newArray = response.data.posts
+             const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
            setMyPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
@@ -50,7 +54,18 @@ export default function MyPosts(){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    },[])
+        }
+
+    function tryingToEdit(id) {
+        let postsToEdit = myPosts.map((p) => {
+            if(p.id === id){
+                p.toEdit = !p.toEdit;
+            }
+            return {...p};
+        })   
+        setMyPosts([...postsToEdit]);
+    }
+
 
 
   function goToLink(e,link){
@@ -132,12 +147,16 @@ export default function MyPosts(){
                                 </div>
 
                                 <div className='postRight'>
+                                <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+
                                 <UserName id={post.user.id}>{post.user.username}</UserName>
-                                    <PostContent>
+                                <PostContent open={!post.toEdit} >
                                         <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
-                                    </PostContent>
+                                    </PostContent>    
+                                    <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
+
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
@@ -241,7 +260,7 @@ const TimelineContainer = styled.div`
         height: 406px;
         border-radius: 16px;
         position: fixed;
-        z-index:2;
+        z-index:0;
         right: 174px;
         top: 226px;
         color: white;
@@ -257,6 +276,11 @@ const TimelinePosts = styled.ul`
     height: auto;
     display: flex;
     flex-direction: column;
+
+    @media (max-width:610px){
+            width: 100%;
+            align-items: center;
+        }
 
     svg{
         margin: 40px 180px;
@@ -274,13 +298,17 @@ const TimelinePosts = styled.ul`
         width: 610px;
 
         @media (max-width:610px){
-            width: 100%;
+            width: 90%;
         }
     }
 
     .postRight{
         width: 503px;
         height: auto;
+
+        @media (max-width:1200px){
+           width: 80%;
+       }
        h2{
            font-family: 'Lato', sans-serif!important;
            font-size: 19px;
@@ -431,11 +459,14 @@ const UserName = styled.p`
     margin-top: 19px;
 `;
 
+
 const PostContent = styled.p`
-  font-style: normal;
+    font-style: normal;
     font-weight: normal;
     font-size: 17px;
     line-height: 20px;
     margin-top: 10px;
     color: #B7B7B7;
+    display: ${(props) => (props.open) ? 'initial' : 'none'};
+
 `;
