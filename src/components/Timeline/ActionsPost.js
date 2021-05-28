@@ -3,6 +3,8 @@ import UserContext from '../UserContext';
 import {useContext, useState } from 'react';
 import { TrashOutline, CreateOutline } from 'react-ionicons'
 import DeleteModal from './DeleteModal';
+import pencil from './images/pencil.png';
+import trash from './images/trash.png';
 
 
 export default function ActionsPost ({tryingToEdit, toggleModal, update, post, id}) {
@@ -31,9 +33,9 @@ export default function ActionsPost ({tryingToEdit, toggleModal, update, post, i
            <Container>
               <button onClick={() => {
                   tryingToEdit(id);
-              }}>edita</button>
+              }}><img src={pencil}/></button>
                
-              <button onClick={toggleModal} >apaga</button>
+              <button onClick={toggleModal} ><img src={trash}/></button>
               <DeleteModal 
               config={config} 
               modalIsOpen={modalIsOpen} 
@@ -51,4 +53,8 @@ export default function ActionsPost ({tryingToEdit, toggleModal, update, post, i
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        button{
+            background-color:#171717;
+            margin-top: 20px;
+        }
     `;
