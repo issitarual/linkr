@@ -7,15 +7,12 @@ import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
-import Modal from 'react-modal';
-
 import ActionsPost from './ActionsPost';
 import TrendingList from './TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
 
 export default function Timeline(){
-
     const history = useHistory()
     const [likedPosts, SetLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
@@ -23,8 +20,6 @@ export default function Timeline(){
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, SetOlderLikes] = useState([]); 
 
-   
-   
     useEffect(()=>{
         update();    
     },[]);
@@ -87,17 +82,13 @@ export default function Timeline(){
         let postsToEdit = allPosts.map((p) => {
             if(p.id === id){
                 p.toEdit = !p.toEdit;
-               
             }
             return {...p};
         })   
-        
         setAllPosts([...postsToEdit]);
     }
 
     return( 
-
-   
       
     <Container>
         
@@ -113,7 +104,6 @@ export default function Timeline(){
                                 ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
                                 :allPosts.map((post)=>{
                             return(
-
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
@@ -280,7 +270,7 @@ const TimelineContainer = styled.div`
         width: 301px;
         height: 406px;
         position: fixed;
-        z-index: 0;
+        z-index:2;
         right: 174px;
         top: 226px;
         color: white;
@@ -334,11 +324,6 @@ const TimelinePosts = styled.ul`
            font-size: 19px;
            color: #fff;
            margin: 20px 20px 7px 20px;
-       }
-
-       .editPost{
-           margin-left: -150px;
-           margin-top: 15px;
        }
 
        .postText{
@@ -470,18 +455,6 @@ const LinkDetails = styled.div`
     }
 `;
 
-const InputField = styled.textarea`
-    width: 502px;
-    height: auto;
-    resize: none;
-    border-radius: 7px;
-    background-color: white;
-    padding: 5px;
-    font-family: Lato;
-    font-weight: 400;
-    color: #4c4c4c;
-    font-size: 14px;   
-`
 const Title = styled.h1`
     font-family: Oswald;
     font-style: normal;
@@ -508,8 +481,6 @@ const PostContent = styled.p`
     margin-top: 10px;
     color: #B7B7B7;
     display: ${(props) => (props.open) ? 'initial' : 'none'};
-    white-space: pre-wrap;  
-            word-wrap: break-word; 
 
 `;
 
