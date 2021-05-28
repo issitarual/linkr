@@ -30,19 +30,11 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         console.log(body)
 
         const promise = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, body, config).then((success)=>{
-            alert('obaaa!!')
-            console.log(success.data)
-            console.log(id)
-            console.log(body)
-            console.log(config)
             tryingToEdit(id);
             update();
         }).catch((error)=>{
             alert('não foi possível salvar as alterações')
-            console.log(error.response)
-            console.log(id)
-            console.log(body)
-            console.log(config)
+
         })
     }
     
