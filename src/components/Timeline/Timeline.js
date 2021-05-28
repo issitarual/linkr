@@ -69,9 +69,7 @@ export default function Timeline(){
        window.open(link)
     }
 
-    function changeLoad(){
-        setServerLoading(!serverLoading)   
-    }
+   
 
     function sendToHashtag(val){
        
