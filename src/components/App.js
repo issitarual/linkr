@@ -53,10 +53,7 @@ export default function App () {
                     <Header/>
                     <MyLikes />
                 </Route>
-                <Route>
-                    <EditAndDelete path='/teste' />
-                    {/* lembar de apagar essa rota */}
-                </Route>
+                
             </Switch>
         </Router>
         </UserContext.Provider>
