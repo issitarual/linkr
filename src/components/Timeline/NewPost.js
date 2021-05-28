@@ -103,6 +103,11 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  @media (max-width:610px){
+            width: 100%;
+            
+        }
   p {
     color: #707070;
     font-size: 20px;

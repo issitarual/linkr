@@ -258,6 +258,11 @@ const TimelinePosts = styled.ul`
     display: flex;
     flex-direction: column;
 
+    @media (max-width:610px){
+            width: 100%;
+            align-items: center;
+        }
+
     svg{
         margin: 40px 180px;
     }
@@ -274,13 +279,17 @@ const TimelinePosts = styled.ul`
         width: 610px;
 
         @media (max-width:610px){
-            width: 100%;
+            width: 90%;
         }
     }
 
     .postRight{
         width: 503px;
         height: auto;
+
+        @media (max-width:1200px){
+           width: 80%;
+       }
        h2{
            font-family: 'Lato', sans-serif!important;
            font-size: 19px;
