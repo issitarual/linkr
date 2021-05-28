@@ -23,11 +23,11 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     function textToServer (text) {
 
         console.clear()
-        console.log(text)
+        
         const body = {
             "text": text
         }
-        console.log(body)
+        
 
         const promise = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, body, config).then((success)=>{
             tryingToEdit(id);
