@@ -75,7 +75,7 @@ export default function MyPosts(){
                     <TimelinePosts>
                       
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (myPosts.length===0 
                                 ? <NoPostsYet>Você ainda não postou nada</NoPostsYet>
                                 :myPosts.map((post)=>{
@@ -216,7 +216,7 @@ const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
     height: auto;
-    padding-bottom: 300px;
+    padding-bottom: 30px;
     
     @media (max-width:1200px){
         width: 100%;

@@ -137,7 +137,7 @@ const RightSide = styled.div`
     }
 `;
 
-const LeftSide = styled.div`
+const LeftSide = styled.div` 
     width: 30%;
     height: 1000px;
     background: #333333;
@@ -165,7 +165,6 @@ const LeftSide = styled.div`
             width: 95%;
         }
 
-       
     }
 
     button{
@@ -179,7 +178,8 @@ const LeftSide = styled.div`
         color: #fff;
         font-size: 27px;
         line-height: 40px;
-       
+
+
         @media (max-width:1500px){
             width: 95%;
         }

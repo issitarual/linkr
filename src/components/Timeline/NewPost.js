@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState, useContext } from 'react';
+import { useState, useContext ,useEffect} from 'react';
 import UserContext from '../UserContext';
 
 export default function NewPost ({update}) {
@@ -9,7 +9,12 @@ export default function NewPost ({update}) {
   const [linkDescription, setLinkDescription] = useState('');
   const [disabled, letDisabled] = useState(false);
   const [buttonText, letButtonText] = useState('Publicar');
-  const { user } = useContext(UserContext);
+  const { user ,setUser} = useContext(UserContext);
+
+  
+
+    
+   
 
   function createNewPost (event) {
 
@@ -47,32 +52,33 @@ export default function NewPost ({update}) {
     letButtonText('Publicando...')
     
   }
-
-  return (
-      <Post>
-        <Icon>
-          <img src={user.user.avatar}/>
-        </Icon>
-        <Form onSubmit={createNewPost}>
-          <p>O que você tem para favoritar hoje?</p>
-          <InputLink
-            value={linkToPost} 
-            disabled={disabled} 
-            type="url" 
-            placeholder={"http://..."} 
-            onChange={e => setLinkToPost(e.target.value)} 
-          />
-          <InputDescription
-            value={linkDescription}
-            disabled={disabled}
-            type="text"
-            placeholder={"Muito irado esse link falando de #javascript"}
-            onChange={e => setLinkDescription(e.target.value)}
-          />
-          <Button disabled={disabled}>{buttonText}</Button>
-        </Form>
-      </Post>
-  );
+  
+      return (
+          <Post>
+            <Icon>
+              <img src={user.user.avatar}/>
+            </Icon>
+            <Form onSubmit={createNewPost}>
+              <p>O que você tem para favoritar hoje?</p>
+              <InputLink
+                value={linkToPost} 
+                disabled={disabled} 
+                type="url" 
+                placeholder={"http://..."} 
+                onChange={e => setLinkToPost(e.target.value)} 
+              />
+              <InputDescription
+                value={linkDescription}
+                disabled={disabled}
+                type="text"
+                placeholder={"Muito irado esse link falando de #javascript"}
+                onChange={e => setLinkDescription(e.target.value)}
+              />
+              <Button disabled={disabled}>{buttonText}</Button>
+            </Form>
+          </Post>
+      );
+  
 
 }
 

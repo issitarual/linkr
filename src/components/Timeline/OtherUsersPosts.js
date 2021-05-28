@@ -87,7 +87,7 @@ export default function OtherUsersPosts(){
                        
 
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (posts.length===0 
                                 ? <NoPostsYet>Este usuário ainda não postou nada</NoPostsYet>
                                 :posts.map((post)=>{
@@ -227,7 +227,7 @@ const TimelineContainer = styled.div`
     width: 1000px;
     height: auto;
     //min-width: 900px;
-    padding-bottom: 300px;
+    padding-bottom: 30px;
     
     @media (max-width:1200px){
         width: 100%;

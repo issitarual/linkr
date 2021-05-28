@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useContext } from 'react';
+import { useState, useContext,useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
 import UserContext from './UserContext';
@@ -9,7 +9,12 @@ import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
-    const { user } = useContext(UserContext);
+    const { user ,setUser} = useContext(UserContext);
+    
+    
+   
+
+
     
     return(
         <ContainerHeader state={state}>
@@ -38,6 +43,8 @@ export default function Header (){
             </div>
         </ContainerHeader>
     )
+
+            
 
     function link (url){
         if(url === "/"){

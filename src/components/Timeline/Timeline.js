@@ -15,24 +15,34 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 export default function Timeline(){
     const history = useHistory()
     const [likedPosts, SetLikedPosts] = useState([]);
-    const { user } = useContext(UserContext);
+    const { user ,setUser} = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, SetOlderLikes] = useState([]);
 
-
-    const config = {
-        headers:{
-            'Authorization' : `Bearer ${user.token}`
-        }
-    }
+  
+   
+   useEffect(()=>{
+            
+       
+           
+        update();
+       
+    },[]);
 
     function update () {
+      
+        const config = {
+            headers:{
+                'Authorization' : `Bearer ${user.token}`
+            }
+        }
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
-
+        
         getPosts.then((response)=>{
             const newArray = response.data.posts
+            
             setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
@@ -47,14 +57,12 @@ export default function Timeline(){
         })
 
         getPosts.catch((responseError)=>{
+           
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
     }
-        useEffect(()=>{
-            update();
-           
-        },[]);
+        
 
     function goToLink(e,link){
         e.preventDefault()
@@ -93,7 +101,7 @@ export default function Timeline(){
                     <TimelinePosts>
                     <NewPost update={update} />
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (allPosts.length===0 
                                 ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
                                 :allPosts.map((post)=>{
@@ -234,7 +242,7 @@ const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
     height: auto;
-    padding-bottom: 300px;
+    padding-bottom: 30px;
     
     @media (max-width:1200px){
         width: 100%;

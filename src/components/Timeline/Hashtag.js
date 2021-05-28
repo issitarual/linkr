@@ -25,7 +25,7 @@ export default function OtherUsersPosts(){
     useEffect(()=>{
         updateHashtagPosts()
         
-    },[])
+    },[hashtag])
 
     function updateHashtagPosts(newVal){
         const config = {
@@ -231,7 +231,7 @@ const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
     height: auto;
-    padding-bottom: 300px;
+    padding-bottom: 30px;
     
     @media (max-width:1200px){
         width: 100%;

@@ -88,7 +88,7 @@ export default function MyLikes(){
                     <TimelinePosts>
 
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (allPosts.length===0 
                                 ? <p>Nenhum post encontrado</p>
                                 :allPosts.map((post)=>{

@@ -41,7 +41,7 @@ export default function Home(){
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in", body);
         request.then((response) => {setUser(response.data);
-            console.log(response.data);
+            
             const infos = {token: response.data.token, user: response.data.user};
             const infosString = JSON.stringify(infos);
             localStorage.setItem('list', infosString);
@@ -148,7 +148,7 @@ const RightSide = styled.div`
     }
 `;
 
-const LeftSide = styled.div`
+const LeftSide = styled.div` 
     width: 30%;
     height: 1000px;
     background: #333333;
