@@ -9,19 +9,26 @@ import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
-    
-
     const { user ,setUser} = useContext(UserContext);
+    const [localLoad,setLocalLoad] = useState(false)
 
-  useEffect(() =>
-  {if (localStorage.length !== 0){
-      const listString = localStorage.getItem("list");
-      const list = JSON.parse(listString);
-      setUser(list)
-     // history.push("/timeline")
-  }
+    useEffect(()=>{
+            
+        
+        const listString = localStorage.getItem("list");
+        
+        if(listString){
+        const list = JSON.parse(listString);
+        
+        
+        setUser(list)
+        setLocalLoad(true)
 
-}, [])
+        }
+        
+    
+   
+},[]);
 
     
     return(
@@ -51,6 +58,8 @@ export default function Header (){
             </div>
         </ContainerHeader>
     )
+
+            
 
     function link (url){
         if(url === "/"){

@@ -227,7 +227,7 @@ const TimelineContainer = styled.div`
     width: 1000px;
     height: auto;
     //min-width: 900px;
-    padding-bottom: 300px;
+    padding-bottom: 30px;
     
     @media (max-width:1200px){
         width: 100%;

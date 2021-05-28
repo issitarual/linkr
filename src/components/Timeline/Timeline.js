@@ -22,13 +22,27 @@ export default function Timeline(){
 
   
    
-    const config = {
-        headers:{
-            'Authorization' : `Bearer ${user.token}`
-        }
-    }
+    useEffect(()=>{
+            
+        
+            const listString = localStorage.getItem("list");
+            
+            if(listString){
+            const list = JSON.parse(listString);
+           
+            setUser(list)
+            }
+        update();
+       
+    },[]);
 
     function update () {
+      
+        const config = {
+            headers:{
+                'Authorization' : `Bearer ${user.token}`
+            }
+        }
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
 
@@ -52,17 +66,7 @@ export default function Timeline(){
             return
         })
     }
-        useEffect(()=>{
-            
-            if (localStorage.length !== 0){
-                const listString = localStorage.getItem("list");
-                const list = JSON.parse(listString);
-                
-                setUser(list)
-            }
-            update();
-           
-        },[]);
+        
 
     function goToLink(e,link){
         e.preventDefault()
@@ -242,7 +246,7 @@ const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
     height: auto;
-    padding-bottom: 300px;
+    padding-bottom: 30px;
     
     @media (max-width:1200px){
         width: 100%;
