@@ -8,9 +8,7 @@ import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import ActionsPost from './ActionsPost';
-
 import TrendingList from './TrendingList';
-
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
 
@@ -21,6 +19,8 @@ export default function Timeline(){
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, SetOlderLikes] = useState([]); 
+
+   
    
     useEffect(()=>{
         update();    
@@ -156,8 +156,10 @@ export default function Timeline(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                <ActionsPost post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+
+                                <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
                                 <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
+
                                      <PostContent open={!post.toEdit} >
                                         <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}

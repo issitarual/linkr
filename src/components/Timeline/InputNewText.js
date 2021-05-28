@@ -52,6 +52,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         }} readOnly={!post.toEdit} open={post.toEdit} >
             {post.text}
         </InputField>
+        
     )
 
 }
