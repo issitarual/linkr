@@ -9,10 +9,11 @@ import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import Modal from 'react-modal';
 
+import ActionsPost from './ActionsPost';
 import TrendingList from './TrendingList';
-
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import EditAndDelete from './EditAndDelete';
+import InputNewText from './InputNewText';
 
 export default function Timeline(){
 
@@ -21,30 +22,27 @@ export default function Timeline(){
     const { user ,setUser} = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
-    const [olderLikes, SetOlderLikes] = useState([]);
+    const [olderLikes, SetOlderLikes] = useState([]); 
 
-  
    
-   useEffect(()=>{
-            
-       
-           
-        update();
-       
+   
+    useEffect(()=>{
+        update();    
     },[]);
 
-    function update () {
-      
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
         }
+    }
+
+    function update () {
+         
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
         
         getPosts.then((response)=>{
-            const newArray = response.data.posts
+            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
             
             setAllPosts(newArray)
             setServerLoading(false)
@@ -59,20 +57,16 @@ export default function Timeline(){
             SetOlderLikes(sharpedHeart);
         })
 
-        getPosts.catch((responseError)=>{
-           
+        getPosts.catch((responseError)=>{           
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
     }
         
-
     function goToLink(e,link){
         e.preventDefault()
        window.open(link)
-    }
-
-   
+    }  
 
     function sendToHashtag(val){
        
@@ -89,14 +83,19 @@ export default function Timeline(){
             history.push(`/my-posts`)
         }
     }
-    
-  
-    function tryingToEdit() {
-        let postsToEdit = allPosts.map((p) => {
-            
-        })
-    }
 
+    function tryingToEdit(id) {
+        let postsToEdit = allPosts.map((p) => {
+            if(p.id === id){
+                p.toEdit = !p.toEdit;
+                console.log(`cliquei no post ${id}`)
+                console.log(p.id)
+            }
+            return {...p};
+        })   
+        console.log(postsToEdit)
+        setAllPosts([...postsToEdit]);
+    }
 
     return( 
 
@@ -108,7 +107,6 @@ export default function Timeline(){
         <Title>timeline</Title> 
 
                 <TimelineContent>
-                    
                     <TimelinePosts>
                     <NewPost update={update} />
                         {serverLoading 
@@ -165,18 +163,18 @@ export default function Timeline(){
                                 </h6>
                                 </div>
                                 <div className='postRight'>
-                                    <div className = "editPost"><EditAndDelete post={post} /></div>
-                                
 
+                                <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
                                 <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
-                                    <PostContent>
+
+                                     <PostContent open={!post.toEdit} >
                                         <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
-                                    </PostContent>
-                                    <InputField readOnly  >
-                                        {post.text}
-                                    </InputField>
+                                    </PostContent>    
+
+                                    <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
+
                                     <LinkDetails>
                                         <div>
                                             <h3>{post.linkTitle}</h3>
@@ -284,7 +282,7 @@ const TimelineContainer = styled.div`
         width: 301px;
         height: 406px;
         position: fixed;
-        z-index:2;
+        z-index: 0;
         right: 174px;
         top: 226px;
         color: white;
@@ -510,6 +508,8 @@ const PostContent = styled.p`
     line-height: 20px;
     margin-top: 10px;
     color: #B7B7B7;
+    display: ${(props) => (props.open) ? 'initial' : 'none'};
+
 `;
 
 const NoPostsYet = styled.p`
