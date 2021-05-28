@@ -78,7 +78,7 @@ export default function MyPosts(){
         history.push(`/hashtag/${newVal}`)
     }
    
-    return( 
+     return( 
       
     <Container>
         

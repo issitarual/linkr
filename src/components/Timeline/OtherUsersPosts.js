@@ -431,7 +431,7 @@ const LinkDetails = styled.div`
             @media (max-width:1200px){
             width: 30%;
         }
-        }
+        
     img:hover{
         cursor: pointer;
     }
