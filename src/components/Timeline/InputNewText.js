@@ -21,8 +21,6 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     },[toEdit,newValue])
 
     function textToServer (text) {
-
-        console.clear()
         
         const body = {
             "text": text
