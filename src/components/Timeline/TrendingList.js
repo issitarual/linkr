@@ -24,7 +24,7 @@ export default function TrendingList({send}){
         })
 
         request.catch((responseError)=>{
-            console.log('erro ao obter trendings')
+           
         }) 
 
     },[])

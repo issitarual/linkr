@@ -58,15 +58,8 @@ export default function MyPosts(){
        window.open(link)
     }
 
-    function changeLoad(){
-        setServerLoading(!serverLoading)
-        
-    }
-
     function sendToHashtag(val){
-        console.log(val)
         const newVal = val.replace('#',"")
-        console.log(newVal)
         history.push(`/hashtag/${newVal}`)
     }
    
@@ -82,7 +75,7 @@ export default function MyPosts(){
                     <TimelinePosts>
                       
                         {serverLoading 
-                            ? <Loader type="Circles" color="#00BFFF" height={200} width={200} />
+                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
                             : (myPosts.length===0 
                                 ? <NoPostsYet>Você ainda não postou nada</NoPostsYet>
                                 :myPosts.map((post)=>{
@@ -137,10 +130,11 @@ export default function MyPosts(){
                                     } likes
                                 </h6>
                                 </div>
+
                                 <div className='postRight'>
                                 <UserName id={post.user.id}>{post.user.username}</UserName>
                                     <PostContent>
-                                        <ReactHashtag>
+                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
                                             {post.text}
                                         </ReactHashtag>
                                     </PostContent>
@@ -222,8 +216,7 @@ const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
     height: auto;
-    //min-width: 900px;
-    padding-bottom: 300px;
+    padding-bottom: 30px;
     
     @media (max-width:1200px){
         width: 100%;
@@ -237,10 +230,10 @@ const TimelineContainer = styled.div`
         font-size: 43px;
         font-family: 'Oswald', sans-serif !important;
         font-weight: bold;
+        
         @media (max-width:1200px){
             margin: 10px auto;
         }
-        
     }
     .trending{
         background-color: #171717;
@@ -260,24 +253,18 @@ const TimelineContainer = styled.div`
     }
 `
 const TimelinePosts = styled.ul`
- width: auto;
- height: auto;
- display: flex;
- flex-direction: column;
- 
- @media (max-width:1200px){
-            //width: 90%;
-        }
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
 
-        svg{
-            margin: 40px 180px;
-        }
+    svg{
+        margin: 40px 180px;
+    }
  
 
     li{
         display: flex;
-      //  border: 1px solid green;
-       
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -289,9 +276,8 @@ const TimelinePosts = styled.ul`
         @media (max-width:610px){
             width: 100%;
         }
-        
-        
     }
+
     .postRight{
         width: 503px;
         height: auto;
@@ -338,16 +324,13 @@ const TimelinePosts = styled.ul`
 `
 
 const TimelineContent= styled.div`
-display: flex;
-justify-content:  space-between;
+    display: flex;
+    justify-content:  space-between;
+    height: auto;
 
-height: auto;
-//border: 2px solid yellow;
-
-@media (max-width: 1200px){
-    justify-content: center;
-}
- 
+    @media (max-width: 1200px){
+        justify-content: center;
+    }
 `
 
 const LinkDetails = styled.div`
@@ -374,60 +357,61 @@ const LinkDetails = styled.div`
             width: 70%;
         }
 
-            h3{
-                width: 250px;
-                min-height: 38px;
-                height: auto;
-                font-size: 20px;
-                color: #cecece;
-                font-family: 'Lato', sans-serif!important;
-                font-size: 16px;
-            }
+        h3{
+            width: 250px;
+            min-height: 38px;
+            height: auto;
+            font-size: 20px;
+            color: #cecece;
+            font-family: 'Lato', sans-serif!important;
+            font-size: 16px;
+        }
 
-            .linkDescription{
-                width: 302px;
-                min-height: 40px;
-                height: auto;
-                font-size: 11px;
-                font-family: 'Lato', sans-serif!important;
-                color: #9B9595;
-            }
+        .linkDescription{
+            width: 302px;
+            min-height: 40px;
+            height: auto;
+            font-size: 11px;
+            font-family: 'Lato', sans-serif!important;
+            color: #9B9595;
+        }
 
-            a{
-                font-size: 13px;
-                width: 263px;
-                height: auto;
-                color: white;
-                white-space: pre-wrap; /* CSS3 */    
-   
-                 word-wrap: break-word; /* Internet Explorer 5.5+ */
-                
-            }
-            a:hover{
-                color: blue;
-                text-decoration: underline;
-                cursor: pointer;
-            }
+        a{
+            font-size: 13px;
+            width: 263px;
+            height: auto;
+            color: white;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        a:hover{
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
             
     }
+
     img{
-            width: 153px;
-            height: 155px;
-            border-radius: 0px 12px 13px 0px;
-        
-            @media (max-width:1200px){
+        width: 153px;
+        height: 155px;
+        border-radius: 0px 12px 13px 0px;
+    
+        @media (max-width:1200px){
             width: 30%;
         }
-        }
+    }
+    
     img:hover{
         cursor: pointer;
     }
 `
 
 const NoPostsYet = styled.p`
-font-size: 30px;
-color: white;
-margin-top: 20px;
+    font-size: 30px;
+    color: white;
+    margin-top: 20px;
 
 `
 const Title = styled.h1`

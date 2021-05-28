@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link, useHistory } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from 'axios';
 
 import UserContext from '../UserContext';
@@ -11,9 +11,19 @@ export default function Home(){
 
     const [charging, setCharging] = useState(false);
 
-    const {setUser} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
 
     let history = useHistory();
+
+    useEffect(() =>
+        {if (localStorage.length !== 0){
+            const listString = localStorage.getItem("list");
+            const list = JSON.parse(listString);
+            setUser(list)
+            history.push("/timeline")
+        }
+
+    }, [])
 
     const body = {
         email,
@@ -31,8 +41,13 @@ export default function Home(){
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in", body);
         request.then((response) => {setUser(response.data);
-            history.push("/timeline")
+            
+            const infos = {token: response.data.token, user: response.data.user};
+            const infosString = JSON.stringify(infos);
+            localStorage.setItem('list', infosString);
+            history.push("/timeline");
         });
+
         request.catch(errors)
     }
 
@@ -76,10 +91,14 @@ export default function Home(){
 
 const FrontPage = styled.div`
     display: flex;
+
+    @media(max-width: 600px){
+        flex-direction: column;
+    }
 `;
 
 const RightSide = styled.div`
-    width: 905px;
+    width: 70%;
     height: 1000px;
     background: #151515;
     color: #fff;
@@ -88,33 +107,60 @@ const RightSide = styled.div`
     justify-content: center;
     align-items: center;
 
+    @media(max-width: 600px){
+        width: 100%;
+        height: 175px;
+    }
+
     h1{
         font-size: 106px;
         letter-spacing: 10px;
         line-height: 116px;
         font-family: 'Passion One', cursive;
+
+        @media(max-width: 600px){
+            font-size: 76px;
+            letter-spacing: 7px;
+            line-height: 83px;
+        }
     }
 
     p{
         font-size: 43px;
         line-height: 63px;
         font-family: 'Oswald', sans-serif;
+
+        @media(max-width: 600px){
+            font-size: 23px;
+            letter-spacing: 7px;
+            line-height: 34px;
+        }
     }
+
 
     div{
         display: flex;
         flex-direction: column;
+
+        @media(max-width: 600px){
+            align-items: center;
+        }
     }
 `;
 
 const LeftSide = styled.div` 
-    width: 600px;
+    width: 30%;
     height: 1000px;
     background: #333333;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    @media(max-width: 600px){
+        width: 100%;
+        height: 500px;
+    }
 
     input{
         width: 429px;
@@ -125,6 +171,12 @@ const LeftSide = styled.div`
         font-family: 'Oswald', sans-serif;
         font-size: 27px;
         padding-left: 15px;
+
+        @media (max-width:1500px){
+            width: 95%;
+        }
+
+       
     }
 
     button{
@@ -138,6 +190,10 @@ const LeftSide = styled.div`
         color: #fff;
         font-size: 27px;
         line-height: 40px;
+       
+        @media (max-width:1500px){
+            width: 95%;
+        }
     }
 
     p{
@@ -152,5 +208,4 @@ const LeftSide = styled.div`
         justify-content: center;
         align-items: center;
     }
-
 `;
