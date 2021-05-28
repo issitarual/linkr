@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 import { Link, useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from 'axios';
+
+import UserContext from '../UserContext';
 
 export default function Register(){
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [pictureUrl, setPictureUrl] = useState("");
+
+    const {setUser} = useContext(UserContext);
 
     const [charging, setCharging] = useState(false);
 
@@ -29,7 +33,7 @@ export default function Register(){
         }
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-up", body)
-        request.then(() => history.push("/"));
+        request.then((response) => {setUser(response.data); history.push("/")});
         request.catch(errors)
 
         function errors(error){
@@ -133,7 +137,7 @@ const RightSide = styled.div`
     }
 `;
 
-const LeftSide = styled.div`
+const LeftSide = styled.div` 
     width: 30%;
     height: 1000px;
     background: #333333;
@@ -161,7 +165,6 @@ const LeftSide = styled.div`
             width: 95%;
         }
 
-       
     }
 
     button{
@@ -175,7 +178,8 @@ const LeftSide = styled.div`
         color: #fff;
         font-size: 27px;
         line-height: 40px;
-       
+
+
         @media (max-width:1500px){
             width: 95%;
         }
