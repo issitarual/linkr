@@ -10,7 +10,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import TrendingList from '../Timeline/TrendingList';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag} from '../timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag,PostComment} from '../timelineStyledComponents'
 
 export default function MyLikes(){
     const history = useHistory()
@@ -149,11 +149,16 @@ export default function MyLikes(){
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
-                                    <p className = "postText">
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
+                                    <PostComment>
+                                        <ReactHashtag 
+                                            onHashtagClick={(val) => sendToHashtag(val)}
+                                            renderHashtag={(hashtagValue) => (
+                                                <Hashtag>{hashtagValue}</Hashtag>
+                                           )}
+                                        >
                                             {post.text}
                                         </ReactHashtag>
-                                    </p>
+                                    </PostComment>
                                     <LinkDetails>
                                         <PostInfo>
                                             <h3>{post.linkTitle}</h3>
@@ -318,7 +323,7 @@ const TimelinePosts = styled.ul`
            margin: 20px 20px 7px 20px;
        }
 
-       .postText{
+       /*.postText{
            width: 502px;
            height: auto;
            margin-left: 20px;
@@ -329,7 +334,7 @@ const TimelinePosts = styled.ul`
            @media (max-width:1200px){
                 width: 20%;
             }
-        }
+        }*/
     }
 
     .postLeft{
@@ -382,7 +387,7 @@ const LinkDetails = styled.div`
     color: #CECECE;
 
     @media (max-width:1200px){
-        width: 100%;
+        width: 95%;
     }
 
     img{

@@ -451,6 +451,10 @@ const PostContent = styled.p`
     margin-top: 10px;
     color: #B7B7B7;
     display: ${(props) => (props.open) ? 'initial' : 'none'};
+    width: 90%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    
 
 `;
 

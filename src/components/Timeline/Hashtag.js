@@ -386,7 +386,7 @@ const LinkDetails = styled.div`
     color: #CECECE;
 
     @media (max-width:1200px){
-        width: 100%;
+        width: 95%;
     }
 
     img{

@@ -10,7 +10,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import TrendingList from './TrendingList';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag} from '../timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag, PostComment} from '../timelineStyledComponents'
 
 
 export default function OtherUsersPosts(){
@@ -146,7 +146,7 @@ export default function OtherUsersPosts(){
                                 </div>
                                 <div className='postRight'>
                                 <UserName id={post.user.id}>{post.user.username}</UserName>
-                                    <p>
+                                    <PostComment>
                                     <ReactHashtag 
                                         onHashtagClick={(val) => sendToHashtag(val)}
                                         renderHashtag={(hashtagValue) => (
@@ -155,7 +155,7 @@ export default function OtherUsersPosts(){
                                     >
                                             {post.text}
                                     </ReactHashtag>
-                                    </p>
+                                    </PostComment>
                                     <LinkDetails>
                                         <PostInfo>
                                             <h3>{post.linkTitle}</h3>
@@ -381,7 +381,7 @@ const LinkDetails = styled.div`
     color: #CECECE;
 
     @media (max-width:1200px){
-        width: 100%;
+        width: 95%;
     }
 
     img{
