@@ -152,13 +152,13 @@ export default function OtherUsersPosts(){
                                     </ReactHashtag>
                                     </p>
                                     <LinkDetails>
-                                        <div>
+                                        <PostInfo>
                                             <h3>{post.linkTitle}</h3>
                                             
-                                            <PostContent className='linkDescription'>{post.linkDescription}</PostContent>
+                                            <LinkDescription >{post.linkDescription}</LinkDescription>
                                            
-                                            <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
-                                        </div>
+                                            <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+                                        </PostInfo>
                                         <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
                                     </LinkDetails>
                                 </div>
@@ -224,13 +224,12 @@ const Container = styled.div`
     background-color: #333333;
     display: flex;
     justify-content: center;
-`
+`;
 
 const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
     height: auto;
-    //min-width: 900px;
     padding-bottom: 30px;
     
     @media (max-width:1200px){
@@ -254,36 +253,37 @@ const TimelineContainer = styled.div`
         background-color: #171717;
         width: 301px;
         height: 406px;
-        border-radius: 16px;
         position: fixed;
-        z-index:2;
+        z-index:0;
         right: 174px;
         top: 226px;
         color: white;
-        
+        border-radius: 16px;
         @media (max-width: 1200px){
             display: none;
     
         }
     }
-`
+`;
 const TimelinePosts = styled.ul`
- width: auto;
- height: auto;
- display: flex;
- flex-direction: column;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    
  
- @media (max-width:1200px){
-    align-items: center;
-           width: 100%;
-        }
-        
-        svg{
-            margin: 40px 180px;
-        }
+    @media (max-width:610px){
+        align-items: center;
+        width: 100%;
+        min-width:360px;
+    }
+
+    svg{
+        margin: 40px 180px;
+    }
 
     li{
-        display: flex;
+        display: flex;       
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -295,21 +295,21 @@ const TimelinePosts = styled.ul`
         @media (max-width:610px){
             width: 90%;
         }
-        
-        
     }
+
     .postRight{
         width: 503px;
         height: auto;
-       h2{
-           font-family: 'Lato', sans-serif!important;
-           font-size: 19px;
-           color: #fff;
-           margin: 20px 20px 7px 0px;
-       }
 
        @media (max-width:1200px){
            width: 80%;
+       }
+
+       h2{
+            font-family: 'Lato', sans-serif!important;
+           font-size: 19px;
+           color: #fff;
+           margin: 20px 20px 7px 20px;
        }
 
        .postText{
@@ -319,16 +319,25 @@ const TimelinePosts = styled.ul`
            color: #a3a3a3;
            font-family: 'Lato', sans-serif!important;
            font-size: 17px;
-       }
+
+           @media (max-width:1200px){
+                width: 20%;
+            }
+        }
     }
 
     .postLeft{
         width: 87px;
         min-height: 230px;
         height: auto;
-       display: flex;
-       flex-direction: column;
-       align-items: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @media (max-width:1200px){
+           width: 20%;
+       }
+
        img{
            border-radius:50%;
            width: 50px;
@@ -345,26 +354,22 @@ const TimelinePosts = styled.ul`
            height: 60px;
        }
     }
-
-`
+`;
 
 const TimelineContent= styled.div`
-display: flex;
-justify-content:  space-between;
+    display: flex;
+    justify-content:  space-between;
+    height: auto;
 
-height: auto;
-//border: 2px solid yellow;
-
-@media (max-width: 1200px){
-    justify-content: center;
-}
- 
-`
+    @media (max-width: 1200px){
+        justify-content: center;
+    }  
+`;
 
 const LinkDetails = styled.div`
     width: 503px;
-    height:auto;
-    border: 1px solid #4d4d4d;
+    height:155px;
+    border: 1px solid #4D4D4D;
     margin: 20px 0;
     border-radius: 16px;
     display: flex;
@@ -374,72 +379,24 @@ const LinkDetails = styled.div`
         width: 100%;
     }
 
-    div{
-        width: 350px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding-left:20px;
-        
-        @media (max-width:1200px){
-            width: 70%;
-        }
-
-            h3{
-                width: 250px;
-                min-height: 38px;
-                height: auto;
-                font-size: 20px;
-                color: #cecece;
-                font-family: 'Lato', sans-serif!important;
-                font-size: 16px;
-            }
-
-            .linkDescription{
-                width: 302px;
-                min-height: 40px;
-                height: auto;
-                font-size: 11px;
-                font-family: 'Lato', sans-serif!important;
-                color: #9B9595;
-            }
-
-            a{
-                font-size: 13px;
-                width: 263px;
-                height: auto;
-                color: white;
-                white-space: pre-wrap; /* CSS3 */    
-   
-                 word-wrap: break-word; /* Internet Explorer 5.5+ */
-                
-            }
-            a:hover{
-                color: blue;
-                text-decoration: underline;
-                cursor: pointer;
-            }
-            
-        }
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }            
-    }
     img{
-            width: 153px;
-            height: 155px;
-            border-radius: 0px 12px 13px 0px;
-        
-            @media (max-width:1200px){
+        width: 153px;
+        height: 155px;
+        border-radius: 0px 12px 13px 0px;
+    
+        @media (max-width:1200px){
             width: 30%;
         }
-        
+    }
+
     img:hover{
         cursor: pointer;
     }
-`
+
+   
+`;
+
+
 
 const Title = styled.h1`
     font-family: Oswald;
@@ -449,6 +406,7 @@ const Title = styled.h1`
     line-height: 64px;
     color: white;
 `;
+
 const UserName = styled.p`
     font-style: normal;
     font-weight: normal;
@@ -459,7 +417,7 @@ const UserName = styled.p`
 `;
 
 const PostContent = styled.p`
-  font-style: normal;
+    font-style: normal;
     font-weight: normal;
     font-size: 17px;
     line-height: 20px;
@@ -468,8 +426,7 @@ const PostContent = styled.p`
 `;
 
 const NoPostsYet = styled.p`
-font-size: 30px;
-color: white;
-margin-top: 20px;
-
-`
+    font-size: 30px;
+    color: white;
+    margin-top: 20px;
+`;
