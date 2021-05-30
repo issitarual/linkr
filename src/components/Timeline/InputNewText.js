@@ -49,7 +49,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
 
 const InputField = styled.textarea`
     display: ${(props) => (props.open) ? 'initial' : 'none'};
-    width: 502px;
+    
     height: auto;
     resize: none;
     border-radius: 7px;
@@ -58,6 +58,9 @@ const InputField = styled.textarea`
     font-family: Lato;
     font-weight: 400;
     color: #4c4c4c;
-    font-size: 14px;   
+    font-size: 14px; 
+    width: 90%;
+    word-wrap: break-word;
+    white-space: pre-wrap;  
   
 `

@@ -12,6 +12,11 @@ import TrendingList from './TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
 
+/*import de style components*/
+import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
+
+
 export default function Timeline(){
     const history = useHistory()
     const [likedPosts, SetLikedPosts] = useState([]);
@@ -99,7 +104,7 @@ export default function Timeline(){
                     <TimelinePosts>
                     <NewPost update={update} />
                         {serverLoading 
-                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
+                            ? <Loader type="Circles" className='loader' color="#FFF"  />
                             : (allPosts.length===0 
                                 ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
                                 :allPosts.map((post)=>{
@@ -156,22 +161,29 @@ export default function Timeline(){
                                 <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
 
                                      <PostContent open={!post.toEdit} >
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
-                                            {post.text}
+                                        <ReactHashtag 
+                                        onHashtagClick={(val) => sendToHashtag(val)}
+                                        renderHashtag={(hashtagValue) => (
+                                             <Hashtag>{hashtagValue}</Hashtag>
+                                        )}
+                                        >
+                                            {post.text}  
                                         </ReactHashtag>
                                     </PostContent>    
 
                                     <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
 
                                     <LinkDetails>
-                                        <div>
+                                        <PostInfo>
                                             <h3>{post.linkTitle}</h3>
                                             
-                                            <p className='linkDescription'>{post.linkDescription}</p>
+                                            <LinkDescription>{post.linkDescription}</LinkDescription>
                                            
-                                            <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
-                                        </div>
+                                            <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+                                        
+                                        </PostInfo> 
                                         <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
+                                                                           
                                     </LinkDetails>
                                 </div>
                             </li>   
@@ -232,7 +244,7 @@ export default function Timeline(){
     }
 }
 
-const Container = styled.div`
+/*const Container = styled.div`
     font-family: Lato;
     width: 100%;
     height: auto;
@@ -240,9 +252,9 @@ const Container = styled.div`
     background-color: #333333;
     display: flex;
     justify-content: center;
-`;
+`;*/
 
-const TimelineContainer = styled.div`
+/*const TimelineContainer = styled.div`
     margin-top: 125px;
     width: 1000px;
     height: auto;
@@ -280,16 +292,18 @@ const TimelineContainer = styled.div`
     
         }
     }
-`;
-const TimelinePosts = styled.ul`
+`;*/
+/*const TimelinePosts = styled.ul`
     width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
+    
  
     @media (max-width:610px){
         align-items: center;
         width: 100%;
+        min-width:360px;
     }
 
     svg{
@@ -348,6 +362,10 @@ const TimelinePosts = styled.ul`
         flex-direction: column;
         align-items: center;
 
+        @media (max-width:1200px){
+           width: 20%;
+       }
+
        img{
            border-radius:50%;
            width: 50px;
@@ -364,9 +382,9 @@ const TimelinePosts = styled.ul`
            height: 60px;
        }
     }
-`;
+`;*/
 
-const TimelineContent= styled.div`
+/*const TimelineContent= styled.div`
     display: flex;
     justify-content:  space-between;
     height: auto;
@@ -374,9 +392,9 @@ const TimelineContent= styled.div`
     @media (max-width: 1200px){
         justify-content: center;
     }  
-`;
+`;*/
 
-const LinkDetails = styled.div`
+/*const LinkDetails = styled.div`
     width: 503px;
     height:155px;
     border: 1px solid #4D4D4D;
@@ -386,60 +404,9 @@ const LinkDetails = styled.div`
     color: #CECECE;
 
     @media (max-width:1200px){
-        width: 100%;
+        width: 95%;
     }
 
-    div{
-        width: 350px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding-left:20px;
-        
-        @media (max-width:1200px){
-            width: 70%;
-        }
-
-            h3{
-                width: 250px;
-                min-height: 38px;
-                height: auto;
-                font-size: 20px;
-                color: #cecece;
-                font-family: 'Lato', sans-serif!important;
-                font-size: 16px;
-            }
-
-            .linkDescription{
-                width: 302px;
-                min-height: 40px;
-                height: auto;
-                font-size: 11px;
-                font-family: 'Lato', sans-serif!important;
-                color: #9B9595;
-            }
-
-        a{
-            font-size: 13px;
-            width: 263px;
-            height: auto;
-            color: white;
-            white-space: pre-wrap;  
-            word-wrap: break-word; 
-        }
-        
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-            
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }            
-    }
     img{
         width: 153px;
         height: 155px;
@@ -453,27 +420,31 @@ const LinkDetails = styled.div`
     img:hover{
         cursor: pointer;
     }
-`;
 
-const Title = styled.h1`
+   
+`;*/
+
+
+
+/*const Title = styled.h1`
     font-family: Oswald;
     font-style: normal;
     font-weight: 700;
     font-size: 43px;
     line-height: 64px;
     color: white;
-`;
+`;*/
 
-const UserName = styled.p`
+/*const UserName = styled.p`
     font-style: normal;
     font-weight: normal;
     font-size: 19px;
     line-height: 23px;
     color: white;
     margin-top: 19px;
-`;
+`;*/
 
-const PostContent = styled.p`
+/*const PostContent = styled.p`
     font-style: normal;
     font-weight: normal;
     font-size: 17px;
@@ -481,11 +452,15 @@ const PostContent = styled.p`
     margin-top: 10px;
     color: #B7B7B7;
     display: ${(props) => (props.open) ? 'initial' : 'none'};
+    width: 90%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    
 
-`;
+`;*/
 
-const NoPostsYet = styled.p`
+/*const NoPostsYet = styled.p`
     font-size: 30px;
     color: white;
     margin-top: 20px;
-`;
+`;*/

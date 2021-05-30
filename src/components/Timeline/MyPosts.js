@@ -11,6 +11,9 @@ import TrendingList from './TrendingList';
 import InputNewText from './InputNewText';
 import ActionsPost from './ActionsPost';
 
+/*import de style components*/
+import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
 
 
 
@@ -90,7 +93,7 @@ export default function MyPosts(){
                     <TimelinePosts>
                       
                         {serverLoading 
-                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
+                            ? <Loader type="Circles" className='loader'  color="#FFF" />
                             : (myPosts.length===0 
                                 ? <NoPostsYet>Você ainda não postou nada</NoPostsYet>
                                 :myPosts.map((post)=>{
@@ -151,20 +154,25 @@ export default function MyPosts(){
 
                                 <UserName id={post.user.id}>{post.user.username}</UserName>
                                 <PostContent open={!post.toEdit} >
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
+                                        <ReactHashtag 
+                                            onHashtagClick={(val) => sendToHashtag(val)}
+                                            renderHashtag={(hashtagValue) => (
+                                                <Hashtag>{hashtagValue}</Hashtag>
+                                           )}
+                                        >
                                             {post.text}
                                         </ReactHashtag>
-                                    </PostContent>    
+                                </PostContent>    
                                     <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
 
                                     <LinkDetails>
-                                        <div>
+                                        <PostInfo>
                                             <h3>{post.linkTitle}</h3>
                                             
-                                            <p className='linkDescription'>{post.linkDescription}</p>
+                                            <LinkDescription>{post.linkDescription}</LinkDescription>
                                            
-                                            <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
-                                        </div>
+                                            <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+                                        </PostInfo>
                                         <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
                                     </LinkDetails>
                                 </div>
@@ -221,252 +229,222 @@ export default function MyPosts(){
     }
 }
 
-const Container = styled.div`
-    font-family: Lato;
-    width: 100%;
-    height: auto;
-    min-height: 100vh;
-    background-color: #333333;
-    display: flex;
-    justify-content: center;
-`
+// const Container = styled.div`
+//     font-family: Lato;
+//     width: 100%;
+//     height: auto;
+//     min-height: 100vh;
+//     background-color: #333333;
+//     display: flex;
+//     justify-content: center;
+// `;
 
-const TimelineContainer = styled.div`
-    margin-top: 125px;
-    width: 1000px;
-    height: auto;
-    padding-bottom: 30px;
+// const TimelineContainer = styled.div`
+//     margin-top: 125px;
+//     width: 1000px;
+//     height: auto;
+//     padding-bottom: 30px;
     
-    @media (max-width:1200px){
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+//     @media (max-width:1200px){
+//         width: 100%;
+//         display: flex;
+//         flex-direction: column;
+//     }
 
-    h1{
-        color: white;
-        margin-bottom: 40px;
-        font-size: 43px;
-        font-family: 'Oswald', sans-serif !important;
-        font-weight: bold;
+//     h1{
+//         color: white;
+//         margin-bottom: 40px;
+//         font-size: 43px;
+//         font-family: 'Oswald', sans-serif !important;
+//         font-weight: bold;
+//         @media (max-width:1200px){
+//             margin: 10px auto;
+//         }
         
-        @media (max-width:1200px){
-            margin: 10px auto;
-        }
-    }
-    .trending{
-        background-color: #171717;
-        width: 301px;
-        height: 406px;
-        border-radius: 16px;
-        position: fixed;
-        z-index:0;
-        right: 174px;
-        top: 226px;
-        color: white;
-        
-        @media (max-width: 1200px){
-            display: none;
+//     }
+//     .trending{
+//         background-color: #171717;
+//         width: 301px;
+//         height: 406px;
+//         position: fixed;
+//         z-index:0;
+//         right: 174px;
+//         top: 226px;
+//         color: white;
+//         border-radius: 16px;
+//         @media (max-width: 1200px){
+//             display: none;
     
-        }
-    }
-`
-const TimelinePosts = styled.ul`
-    width: auto;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-
-    @media (max-width:610px){
-            width: 100%;
-            align-items: center;
-        }
-
-    svg{
-        margin: 40px 180px;
-    }
+//         }
+//     }
+// `;
+// const TimelinePosts = styled.ul`
+//     width: auto;
+//     height: auto;
+//     display: flex;
+//     flex-direction: column;
+    
  
+//     @media (max-width:610px){
+//         align-items: center;
+//         width: 100%;
+//         min-width:360px;
+//     }
 
-    li{
-        display: flex;
-        margin-top:10px;
-        min-height:276px;
-        height: auto;
-        border-radius:16px;
-        background-color: #171717;
-        color: white;
-        width: 610px;
+//     svg{
+//         margin: 40px 180px;
+//     }
 
-        @media (max-width:610px){
-            width: 90%;
-        }
-    }
+//     li{
+//         display: flex;       
+//         margin-top:10px;
+//         min-height:276px;
+//         height: auto;
+//         border-radius:16px;
+//         background-color: #171717;
+//         color: white;
+//         width: 610px;
 
-    .postRight{
-        width: 503px;
-        height: auto;
+//         @media (max-width:610px){
+//             width: 90%;
+//         }
+//     }
 
-        @media (max-width:1200px){
-           width: 80%;
-       }
-       h2{
-           font-family: 'Lato', sans-serif!important;
-           font-size: 19px;
-           color: #fff;
-           margin: 20px 20px 7px 0px;
-       }
-       p{
-           width: 502px;
-           height: auto;
-           margin-left: 20px;
-           color: #a3a3a3;
-           font-family: 'Lato', sans-serif!important;
-           font-size: 17px;
-       }
-    }
+//     .postRight{
+//         width: 503px;
+//         height: auto;
 
-    .postLeft{
-        width: 87px;
-        min-height: 230px;
-        height: auto;
-       display: flex;
-       flex-direction: column;
-       align-items: center;
-       img{
-           border-radius:50%;
-           width: 50px;
-           height: 50px;
-           margin-top: 20px;
-       }
-       h6{
-        font-family: 'Lato', sans-serif!important;
-        font-size: 11px;
-        margin-top: 10px;
-       }
-       .ion-icon{
-           margin-top: -30px;
-           height: 60px;
-       }
-    }
+//        @media (max-width:1200px){
+//            width: 80%;
+//        }
 
-`
+//        h2{
+//             font-family: 'Lato', sans-serif!important;
+//            font-size: 19px;
+//            color: #fff;
+//            margin: 20px 20px 7px 20px;
+//        }
 
-const TimelineContent= styled.div`
-    display: flex;
-    justify-content:  space-between;
-    height: auto;
+//        .postText{
+//            width: 502px;
+//            height: auto;
+//            margin-left: 20px;
+//            color: #a3a3a3;
+//            font-family: 'Lato', sans-serif!important;
+//            font-size: 17px;
 
-    @media (max-width: 1200px){
-        justify-content: center;
-    }
-`
+//            @media (max-width:1200px){
+//                 width: 20%;
+//             }
+//         }
+//     }
 
-const LinkDetails = styled.div`
-    width: 503px;
-    height:155px;
-    border: 1px solid #4d4d4d;
-    margin: 20px 0;
-    border-radius: 16px;
-    display: flex;
-    color: #CECECE;
+//     .postLeft{
+//         width: 87px;
+//         min-height: 230px;
+//         height: auto;
+//         display: flex;
+//         flex-direction: column;
+//         align-items: center;
 
-    @media (max-width:1200px){
-        width: 100%;
-    }
+//         @media (max-width:1200px){
+//            width: 20%;
+//        }
 
-    div{
-        width: 350px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding-left:20px;
-        
-        @media (max-width:1200px){
-            width: 70%;
-        }
+//        img{
+//            border-radius:50%;
+//            width: 50px;
+//            height: 50px;
+//            margin-top: 20px;
+//        }
+//        h6{
+//         font-family: 'Lato', sans-serif!important;
+//         font-size: 11px;
+//         margin-top: 10px;
+//        }
+//        .ion-icon{
+//            margin-top: -30px;
+//            height: 60px;
+//        }
+//     }
+// `;
 
-        h3{
-            width: 250px;
-            min-height: 38px;
-            height: auto;
-            font-size: 20px;
-            color: #cecece;
-            font-family: 'Lato', sans-serif!important;
-            font-size: 16px;
-        }
+// const TimelineContent= styled.div`
+//     display: flex;
+//     justify-content:  space-between;
+//     height: auto;
 
-        .linkDescription{
-            width: 302px;
-            min-height: 40px;
-            height: auto;
-            font-size: 11px;
-            font-family: 'Lato', sans-serif!important;
-            color: #9B9595;
-        }
+//     @media (max-width: 1200px){
+//         justify-content: center;
+//     }  
+// `;
 
-        a{
-            font-size: 13px;
-            width: 263px;
-            height: auto;
-            color: white;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-            
-    }
+// const LinkDetails = styled.div`
+//     width: 503px;
+//     height:155px;
+//     border: 1px solid #4D4D4D;
+//     margin: 20px 0;
+//     border-radius: 16px;
+//     display: flex;
+//     color: #CECECE;
 
-    img{
-        width: 153px;
-        height: 155px;
-        border-radius: 0px 12px 13px 0px;
+//     @media (max-width:1200px){
+//         width: 95%;
+//     }
+
+//     img{
+//         width: 153px;
+//         height: 155px;
+//         border-radius: 0px 12px 13px 0px;
     
-        @media (max-width:1200px){
-            width: 30%;
-        }
-    }
-    
-    img:hover{
-        cursor: pointer;
-    }
-`
+//         @media (max-width:1200px){
+//             width: 30%;
+//         }
+//     }
 
-const NoPostsYet = styled.p`
-    font-size: 30px;
-    color: white;
-    margin-top: 20px;
+//     img:hover{
+//         cursor: pointer;
+//     }
 
-`
-const Title = styled.h1`
-    font-family: Oswald;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 43px;
-    line-height: 64px;
-    color: white;
-`;
-const UserName = styled.p`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 19px;
-    line-height: 23px;
-    color: white;
-    margin-top: 19px;
-`;
+   
+// `;
 
 
-const PostContent = styled.p`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 17px;
-    line-height: 20px;
-    margin-top: 10px;
-    color: #B7B7B7;
-    display: ${(props) => (props.open) ? 'initial' : 'none'};
 
-`;
+// const Title = styled.h1`
+//     font-family: Oswald;
+//     font-style: normal;
+//     font-weight: 700;
+//     font-size: 43px;
+//     line-height: 64px;
+//     color: white;
+// `;
+
+// const UserName = styled.p`
+//     font-style: normal;
+//     font-weight: normal;
+//     font-size: 19px;
+//     line-height: 23px;
+//     color: white;
+//     margin-top: 19px;
+// `;
+
+// const PostContent = styled.p`
+//     font-style: normal;
+//     font-weight: normal;
+//     font-size: 17px;
+//     line-height: 20px;
+//     margin-top: 10px;
+//     color: #B7B7B7;
+//     display: ${(props) => (props.open) ? 'initial' : 'none'};
+//     width: 90%;
+//     word-wrap: break-word;
+//     white-space: pre-wrap;
+
+// `;
+
+// const NoPostsYet = styled.p`
+//     font-size: 30px;
+//     color: white;
+//     margin-top: 20px;
+// `;
