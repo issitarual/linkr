@@ -19,11 +19,11 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 
 export default function Timeline(){
     const history = useHistory()
-    const [likedPosts, SetLikedPosts] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
-    const [olderLikes, SetOlderLikes] = useState([]); 
+    const [olderLikes, setOlderLikes] = useState([]); 
 
     useEffect(()=>{
         update();    
@@ -49,11 +49,11 @@ export default function Timeline(){
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{           
@@ -112,27 +112,30 @@ export default function Timeline(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
-                                <div className ="ion-icon" data-tip={
-                                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
-                                    likedPosts.map(n => n.id).includes(post.id)? 
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
-                                    post.likes.length === 0? "0 pessoas":
-                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
-                                } 
-                                    onClick={() => like(post.id)}>
+                                <div className ="ion-icon" 
+                                    data-tip={
+                                        olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
+                                        olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
+                                        `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`: 
+                                        likedPosts.map(n => n.id).includes(post.id)? 
+                                        likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
+                                        likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                        `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -2} pessoas`:                                        
+                                        post.likes.length === 0? "0 pessoas":
+                                        post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                        post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
+                                        `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
+                                    } 
+                                >
                                     {likedPosts.map(n=>n.id).includes(post.id)?                                  
-                                    <HeartSharp
+                                    <HeartSharp 
+                                    onClick={() => like(post.id)}
                                         color={'#AC2B25'} 
                                         height="25px"
                                         width="25px"
                                     />:
-                                    <HeartOutline
+                                    <HeartOutline 
+                                    onClick={() => like(post.id)}
                                         color={'#fff'} 
                                         height="25px"
                                         width="25px"
@@ -148,10 +151,10 @@ export default function Timeline(){
                                 </div> 
                                 <h6>
                                     {
-                                    olderLikes.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes:
                                     likedPosts.map(n => n.id).includes(post.id)?
                                     likedPosts.filter(n => n.id === post.id)[0].likes:
+                                    olderLikes.map(n => n.id).includes(post.id)?
+                                    olderLikes.filter(n => n.id === post.id)[0].likes:
                                      post.likes.length} likes
                                 </h6>
                                 </div>
@@ -211,33 +214,22 @@ export default function Timeline(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+        if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(olderLikes.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }

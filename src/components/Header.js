@@ -60,7 +60,7 @@ const ContainerHeader = styled.header`
     z-index:2;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 72px;
     padding: 0px 17px;
     box-sizing: border-box;
