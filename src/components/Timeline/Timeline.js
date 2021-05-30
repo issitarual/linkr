@@ -12,6 +12,10 @@ import TrendingList from './TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
 
+/*import de style components*/
+import {PostInfo,LinkDescription,Links} from '../timelineComponents'
+
+
 export default function Timeline(){
     const history = useHistory()
     const [likedPosts, SetLikedPosts] = useState([]);
@@ -157,21 +161,23 @@ export default function Timeline(){
 
                                      <PostContent open={!post.toEdit} >
                                         <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
-                                            {post.text}
+                                            {post.text}  
                                         </ReactHashtag>
                                     </PostContent>    
 
                                     <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
 
                                     <LinkDetails>
-                                        <div>
+                                        <PostInfo>
                                             <h3>{post.linkTitle}</h3>
                                             
-                                            <p className='linkDescription'>{post.linkDescription}</p>
+                                            <LinkDescription>{post.linkDescription}</LinkDescription>
                                            
-                                            <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
-                                        </div>
+                                            <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+                                        
+                                        </PostInfo> 
                                         <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
+                                                                           
                                     </LinkDetails>
                                 </div>
                             </li>   
@@ -286,10 +292,12 @@ const TimelinePosts = styled.ul`
     height: auto;
     display: flex;
     flex-direction: column;
+    
  
     @media (max-width:610px){
         align-items: center;
         width: 100%;
+        min-width:360px;
     }
 
     svg{
@@ -348,6 +356,10 @@ const TimelinePosts = styled.ul`
         flex-direction: column;
         align-items: center;
 
+        @media (max-width:1200px){
+           width: 20%;
+       }
+
        img{
            border-radius:50%;
            width: 50px;
@@ -389,57 +401,6 @@ const LinkDetails = styled.div`
         width: 100%;
     }
 
-    div{
-        width: 350px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding-left:20px;
-        
-        @media (max-width:1200px){
-            width: 70%;
-        }
-
-            h3{
-                width: 250px;
-                min-height: 38px;
-                height: auto;
-                font-size: 20px;
-                color: #cecece;
-                font-family: 'Lato', sans-serif!important;
-                font-size: 16px;
-            }
-
-            .linkDescription{
-                width: 302px;
-                min-height: 40px;
-                height: auto;
-                font-size: 11px;
-                font-family: 'Lato', sans-serif!important;
-                color: #9B9595;
-            }
-
-        a{
-            font-size: 13px;
-            width: 263px;
-            height: auto;
-            color: white;
-            white-space: pre-wrap;  
-            word-wrap: break-word; 
-        }
-        
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-            
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }            
-    }
     img{
         width: 153px;
         height: 155px;
@@ -453,7 +414,11 @@ const LinkDetails = styled.div`
     img:hover{
         cursor: pointer;
     }
+
+   
 `;
+
+
 
 const Title = styled.h1`
     font-family: Oswald;

@@ -9,6 +9,9 @@ import Loader from "react-loader-spinner";
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import TrendingList from './TrendingList';
 
+/*import de style components*/
+import {PostInfo,LinkDescription,Links} from '../timelineComponents'
+
 
 export default function OtherUsersPosts(){
      const {id} = useParams()
@@ -18,6 +21,7 @@ export default function OtherUsersPosts(){
    const [pageUser,setPageUser] = useState(null)
    const [likedPosts, SetLikedPosts] = useState([]);
    const [olderLikes, SetOlderLikes] = useState([]);
+
 
 
    const history=useHistory()
