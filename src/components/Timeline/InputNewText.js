@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id}) {
+export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id,inputRef}) {
 
     const [newValue, setNewValue] = useState(post.text);
+    
 
     /*function escape(event,id){
         console.log(event)
@@ -34,10 +35,14 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         window.addEventListener("keydown", nomeQualquer);
         return() => {
             window.removeEventListener('keydown', nomeQualquer);
-        }
+        }   
 
+       
+        
         
     }
+   // inputRef.current.focus()
+
     },[toEdit,newValue])
 
     function textToServer (text) {
@@ -59,7 +64,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     return ( 
         <InputField onChange={(e)=>{
             setNewValue(e.target.value);
-        }} readOnly={!post.toEdit} open={post.toEdit}  value={newValue===post.text ? post.text : newValue}>
+        }} readOnly={!post.toEdit} open={post.toEdit} ref={el => inputRef.current[id] = el} value={newValue===post.text ? post.text : newValue}>
             {post.text}
         </InputField>
         
