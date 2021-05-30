@@ -4,19 +4,39 @@ import axios from 'axios';
 
 export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id}) {
 
-    const [newValue, setNewValue] = useState('');
+    const [newValue, setNewValue] = useState(post.text);
 
+    /*function escape(event,id){
+        console.log(event)
+        if(event.keyCode===27){
+           
+            tryingToEdit(id)
+           
+            
+            event.target.value=oldValue
+        }
+        
+    }
+*/
     useEffect(()=>{
         if (toEdit){
         const nomeQualquer = (event)=> {
             if (event.keyCode===13){
                 textToServer(newValue);
             }
+
+            if (event.keyCode===27){
+                tryingToEdit(id)
+                setNewValue(post.text)
+                //event.target.value=newValue
+            }
         }
         window.addEventListener("keydown", nomeQualquer);
         return() => {
             window.removeEventListener('keydown', nomeQualquer);
         }
+
+        
     }
     },[toEdit,newValue])
 
@@ -39,7 +59,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     return ( 
         <InputField onChange={(e)=>{
             setNewValue(e.target.value);
-        }} readOnly={!post.toEdit} open={post.toEdit} >
+        }} readOnly={!post.toEdit} open={post.toEdit}  value={newValue===post.text ? post.text : newValue}>
             {post.text}
         </InputField>
         
