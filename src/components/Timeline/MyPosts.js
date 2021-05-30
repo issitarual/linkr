@@ -26,6 +26,7 @@ export default function MyPosts(){
    const [olderLikes, SetOlderLikes] = useState([]);
 
    const inputRef = useRef([])
+   
 
    const config = {
     headers:{
@@ -61,7 +62,7 @@ export default function MyPosts(){
         })
         }
 
-    function tryingToEdit(id) {
+    function tryingToEdit(id,canCallRef) {
         let postsToEdit = myPosts.map((p) => {
             if(p.id === id){
                 p.toEdit = !p.toEdit;
@@ -80,10 +81,12 @@ export default function MyPosts(){
           }
       })*/
 
+      
       setTimeout(()=>{
 
         inputRef.current[id].focus()
        },100) 
+    
     }
 
 

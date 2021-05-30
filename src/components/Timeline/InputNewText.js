@@ -2,7 +2,7 @@ import { useEffect, useState,useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id,inputRef}) {
+export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id,inputRef,setTimeLineRef}) {
 
     const [newValue, setNewValue] = useState(post.text);
     
@@ -51,9 +51,9 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
             "text": text
         }
         
-
+        tryingToEdit(id);
         const promise = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, body, config).then((success)=>{
-            tryingToEdit(id);
+           // tryingToEdit(id);
             update();
         }).catch((error)=>{
             alert('não foi possível salvar as alterações')
