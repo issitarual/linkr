@@ -10,7 +10,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import TrendingList from './TrendingList';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links} from '../timelineComponents'
+import {PostInfo,LinkDescription,Links} from '../timelineStyledComponents'
 
 
 export default function OtherUsersPosts(){

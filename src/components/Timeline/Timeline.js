@@ -13,7 +13,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links} from '../timelineComponents'
+import {PostInfo,LinkDescription,Links,Hashtag} from '../timelineStyledComponents'
 
 
 export default function Timeline(){
@@ -160,7 +160,12 @@ export default function Timeline(){
                                 <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
 
                                      <PostContent open={!post.toEdit} >
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
+                                        <ReactHashtag 
+                                        onHashtagClick={(val) => sendToHashtag(val)}
+                                        renderHashtag={(hashtagValue) => (
+                                             <Hashtag>{hashtagValue}</Hashtag>
+                                        )}
+                                        >
                                             {post.text}  
                                         </ReactHashtag>
                                     </PostContent>    
@@ -398,7 +403,7 @@ const LinkDetails = styled.div`
     color: #CECECE;
 
     @media (max-width:1200px){
-        width: 100%;
+        width: 95%;
     }
 
     img{

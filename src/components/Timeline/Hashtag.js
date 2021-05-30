@@ -9,6 +9,9 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import ReactTooltip from 'react-tooltip';
 import TrendingList from './TrendingList';
 
+/*import de style components*/
+import {PostInfo,LinkDescription,Links} from '../timelineStyledComponents'
+
 export default function OtherUsersPosts(){
     const {hashtag} = useParams()
 
@@ -155,13 +158,13 @@ export default function OtherUsersPosts(){
                                         </ReactHashtag>
                                     </p>
                                     <LinkDetails>
-                                        <div>
+                                        <PostInfo>
                                             <h3>{post.linkTitle}</h3>
                                             
-                                            <p className='linkDescription'>{post.linkDescription}</p>
+                                            <LinkDescription className='linkDescription'>{post.linkDescription}</LinkDescription>
                                            
-                                            <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
-                                        </div>
+                                            <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+                                        </PostInfo>
                                         <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
                                     </LinkDetails>
                                 </div>
@@ -219,13 +222,14 @@ export default function OtherUsersPosts(){
 }
 
 const Container = styled.div`
+    font-family: Lato;
     width: 100%;
     height: auto;
     min-height: 100vh;
     background-color: #333333;
     display: flex;
     justify-content: center;
-`
+`;
 
 const TimelineContainer = styled.div`
     margin-top: 125px;
@@ -250,41 +254,41 @@ const TimelineContainer = styled.div`
         }
         
     }
-
     .trending{
         background-color: #171717;
         width: 301px;
         height: 406px;
         position: fixed;
-        z-index:2;
+        z-index:0;
         right: 174px;
         top: 226px;
         color: white;
         border-radius: 16px;
-        
         @media (max-width: 1200px){
             display: none;
     
         }
     }
-`
-
+`;
 const TimelinePosts = styled.ul`
     width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
+    
+ 
+    @media (max-width:610px){
+        align-items: center;
+        width: 100%;
+        min-width:360px;
+    }
 
     svg{
         margin: 40px 180px;
     }
- 
-    @media (max-width:610px){
-        width: 100%;
-    }
- 
+
     li{
-        display: flex;
+        display: flex;       
         margin-top:10px;
         min-height:276px;
         height: auto;
@@ -294,20 +298,23 @@ const TimelinePosts = styled.ul`
         width: 610px;
 
         @media (max-width:610px){
-            width: 100%;
+            width: 90%;
         }
-        
-        
     }
+
     .postRight{
         width: 503px;
         height: auto;
 
+       @media (max-width:1200px){
+           width: 80%;
+       }
+
        h2{
-           font-family: 'Lato', sans-serif!important;
+            font-family: 'Lato', sans-serif!important;
            font-size: 19px;
            color: #fff;
-           margin: 20px 20px 7px 0px;
+           margin: 20px 20px 7px 20px;
        }
 
        .postText{
@@ -317,16 +324,24 @@ const TimelinePosts = styled.ul`
            color: #a3a3a3;
            font-family: 'Lato', sans-serif!important;
            font-size: 17px;
-       }
+
+           @media (max-width:1200px){
+                width: 20%;
+            }
+        }
     }
 
     .postLeft{
         width: 87px;
         min-height: 230px;
         height: auto;
-       display: flex;
-       flex-direction: column;
-       align-items: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @media (max-width:1200px){
+           width: 20%;
+       }
 
        img{
            border-radius:50%;
@@ -344,76 +359,29 @@ const TimelinePosts = styled.ul`
            height: 60px;
        }
     }
-    
-`
+`;
 
 const TimelineContent= styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content:  space-between;
     height: auto;
-
 
     @media (max-width: 1200px){
         justify-content: center;
-    }
-`
+    }  
+`;
 
 const LinkDetails = styled.div`
     width: 503px;
     height:155px;
+    border: 1px solid #4D4D4D;
     margin: 20px 0;
     border-radius: 16px;
     display: flex;
-    border: 1px solid #4D4D4D;
+    color: #CECECE;
 
     @media (max-width:1200px){
         width: 100%;
-    }
-
-    div{
-        width: 350px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding-left:20px;
-        
-        @media (max-width:1200px){
-            width: 70%;
-        }
-
-        h3{
-            width: 250px;
-            min-height: 38px;
-            height: auto;
-            color: #cecece;
-            font-family: 'Lato', sans-serif!important;
-            font-size: 16px;
-        }
-
-        .linkDescription{
-            width: 302px;
-            min-height: 40px;
-            height: auto;
-            font-size: 11px;
-            font-family: 'Lato', sans-serif!important;
-            color: #9B9595;
-        }
-
-        a{
-            font-size: 13px;
-            width: 263px;
-            height: auto;
-            color: white;
-            white-space: pre-wrap;   
-            word-wrap: break-word;
-        }
-        
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-            
     }
 
     img{
@@ -422,17 +390,48 @@ const LinkDetails = styled.div`
         border-radius: 0px 12px 13px 0px;
     
         @media (max-width:1200px){
-        width: 30%;
+            width: 30%;
         }
     }
 
     img:hover{
         cursor: pointer;
     }
-`
+
+   
+`;
+
+
+
+const Title = styled.h1`
+    font-family: Oswald;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 64px;
+    color: white;
+`;
+
+const UserName = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 19px;
+    line-height: 23px;
+    color: white;
+    margin-top: 19px;
+`;
+
+const PostContent = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    margin-top: 10px;
+    color: #B7B7B7;
+`;
+
 const NoPostsYet = styled.p`
     font-size: 30px;
     color: white;
     margin-top: 20px;
-    margin-left: 20px; 
-`
+`;

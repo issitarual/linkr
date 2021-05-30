@@ -75,8 +75,13 @@ const Links = styled.a`
         }           
 `
 
-
+ 
+const Hashtag = styled.span`
+    color: white;
+    font-weight: bold;
+`;
 
 export {PostInfo}
 export{LinkDescription}
 export{Links}
+export{Hashtag}

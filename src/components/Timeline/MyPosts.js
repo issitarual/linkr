@@ -12,7 +12,7 @@ import InputNewText from './InputNewText';
 import ActionsPost from './ActionsPost';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links} from '../timelineComponents'
+import {PostInfo,LinkDescription,Links} from '../timelineStyledComponents'
 
 
 export default function MyPosts(){
