@@ -21,12 +21,16 @@ import styled from 'styled-components'
                 height: auto;
                 font-size: 20px;
                 color: #cecece;
+                font-weight: bold;
                 font-family: 'Lato', sans-serif!important;
                 font-size: 16px;
 
                 @media (max-width:1200px){
                 width: 90%;
-                 }   
+                 }  
+                 @media (max-width:800px){
+                     font-size: 10px;
+                 } 
             
 
             }
