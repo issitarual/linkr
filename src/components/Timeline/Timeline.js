@@ -120,7 +120,7 @@ export default function Timeline(){
                                         likedPosts.map(n => n.id).includes(post.id)? 
                                         likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
                                         likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                        `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -2} pessoas`:                                        
+                                        `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:                                        
                                         post.likes.length === 0? "0 pessoas":
                                         post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
                                         post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
@@ -155,7 +155,8 @@ export default function Timeline(){
                                     likedPosts.filter(n => n.id === post.id)[0].likes:
                                     olderLikes.map(n => n.id).includes(post.id)?
                                     olderLikes.filter(n => n.id === post.id)[0].likes:
-                                     post.likes.length} likes
+                                    post.likes.length
+                                    } likes
                                 </h6>
                                 </div>
                                 <div className='postRight'>
