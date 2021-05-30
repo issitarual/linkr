@@ -10,7 +10,9 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import TrendingList from './TrendingList';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag, PostComment} from '../timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment} from '../timelineStyledComponents'
+    
 
 
 export default function OtherUsersPosts(){
@@ -39,7 +41,7 @@ export default function OtherUsersPosts(){
           const newArray = response.data.posts
            setPosts(newArray)
             setPageUser(response.data.posts[0].user.username)
-           setServerLoading(false) 
+          setServerLoading(false) 
            let sharpedHeart = []
            newArray.forEach( post => {
                post.likes.forEach(n =>{
@@ -91,7 +93,7 @@ export default function OtherUsersPosts(){
                        
 
                         {serverLoading 
-                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
+                            ? <Loader type="Circles" className='loader' color="#FFF"  />
                             : (posts.length===0 
                                 ? <NoPostsYet>Este usuário ainda não postou nada</NoPostsYet>
                                 :posts.map((post)=>{
@@ -221,7 +223,7 @@ export default function OtherUsersPosts(){
     }
 }
 
-const Container = styled.div`
+/*const Container = styled.div`
     font-family: Lato;
     width: 100%;
     height: auto;
@@ -434,4 +436,4 @@ const NoPostsYet = styled.p`
     font-size: 30px;
     color: white;
     margin-top: 20px;
-`;
+`;*/

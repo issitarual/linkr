@@ -10,7 +10,9 @@ import ReactTooltip from 'react-tooltip';
 import TrendingList from './TrendingList';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,PostComment} from '../timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment} from '../timelineStyledComponents'
+    
 
 export default function OtherUsersPosts(){
     const {hashtag} = useParams()
@@ -42,7 +44,7 @@ export default function OtherUsersPosts(){
         getPosts.then((response)=>{
             const newArray = response.data.posts
             setPosts(newArray)
-            setServerLoading(false) 
+           setServerLoading(false) 
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
@@ -99,7 +101,7 @@ export default function OtherUsersPosts(){
                        
 
                         {serverLoading 
-                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
+                            ? <Loader type="Circles" className='loader' color="#FFF"  />
                             : (posts.length===0 
                                 ? <>Você ainda não postou nada</>
                                 :posts.map((post)=>{
@@ -226,7 +228,7 @@ export default function OtherUsersPosts(){
     }
 }
 
-const Container = styled.div`
+/*const Container = styled.div`
     font-family: Lato;
     width: 100%;
     height: auto;
@@ -439,4 +441,4 @@ const NoPostsYet = styled.p`
     font-size: 30px;
     color: white;
     margin-top: 20px;
-`;
+`;*/
