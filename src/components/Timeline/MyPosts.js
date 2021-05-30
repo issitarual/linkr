@@ -12,7 +12,7 @@ import InputNewText from './InputNewText';
 import ActionsPost from './ActionsPost';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links} from '../timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag} from '../timelineStyledComponents'
 
 
 export default function MyPosts(){
@@ -152,7 +152,12 @@ export default function MyPosts(){
 
                                 <UserName id={post.user.id}>{post.user.username}</UserName>
                                 <PostContent open={!post.toEdit} >
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
+                                        <ReactHashtag 
+                                            onHashtagClick={(val) => sendToHashtag(val)}
+                                            renderHashtag={(hashtagValue) => (
+                                                <Hashtag>{hashtagValue}</Hashtag>
+                                           )}
+                                        >
                                             {post.text}
                                         </ReactHashtag>
                                     </PostContent>    

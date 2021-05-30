@@ -10,7 +10,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import TrendingList from '../Timeline/TrendingList';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links} from '../timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag} from '../timelineStyledComponents'
 
 export default function MyLikes(){
     const history = useHistory()

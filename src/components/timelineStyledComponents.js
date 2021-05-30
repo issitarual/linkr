@@ -77,11 +77,19 @@ const Links = styled.a`
 
  
 const Hashtag = styled.span`
-    color: white;
+    color: tomato;
     font-weight: bold;
 `;
+
+const PostComment = styled.p`
+    width: 90%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+
+`
 
 export {PostInfo}
 export{LinkDescription}
 export{Links}
 export{Hashtag}
+export{PostComment}
