@@ -6,13 +6,16 @@ import {DebounceInput} from 'react-debounce-input';
 
 import UserContext from './UserContext';
 
-import { ChevronDownOutline, ChevronUpOutline, SearchOutline } from 'react-ionicons';
+import { ChevronDownOutline, ChevronUpOutline, SearchOutline, TrainOutline } from 'react-ionicons';
+
+import Users from './Users';
 
 export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
     const { user } = useContext(UserContext);
     const [search, setSearch] = useState("");   
+    const [otherUsers, setOtherUsers] = useState([])
     
     return(
         <ContainerHeader state={state}>
@@ -51,6 +54,16 @@ export default function Header (){
                 }
                 <img src={user.user.avatar}/>
             </span>
+            <Usernames state = {otherUsers.length > 0}>
+                {otherUsers.length > 0? otherUsers.map(n => 
+                    <Users 
+                        avatar = {n.avatar} 
+                        username = {n.username} 
+                        following = {true} 
+                        id = {n.id}
+                        userId = {user.user.id}
+                    />): null}
+            </Usernames>
             <Menu state = {state}>
                     <p onClick={() => link("/my-posts")}>My posts</p>
                     <p onClick={() => link("/my-likes")}>My likes</p>
@@ -77,9 +90,10 @@ export default function Header (){
             }
         } 
         const promess = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`, config)
-        promess.then(success => console.log(success));
-        promess.catch(error => console.log(error));
+        promess.then(success => setOtherUsers(success.data.users));
+        promess.catch(error => alert("Ocorreu um erro, tente novamente!"));
     }
+
 }
 
 const ContainerHeader = styled.header`
@@ -129,11 +143,12 @@ const InputGroup = styled.div`
     display: flex;
     align-items: center;
     height: 45px;
+    position: relative;
     @media (max-width:1200px){
         position: absolute;
         width: 95%;
         top: 90px;
-        margin: auto;
+        right: calc(50% - 47%);
     }   
     input{
         width: 500px;
@@ -155,7 +170,7 @@ const InputGroup = styled.div`
         width: 100%;
         } 
     }
-`
+`;
 
 const Menu = styled.div`
         position: absolute;
@@ -166,4 +181,21 @@ const Menu = styled.div`
         box-sizing: border-box;
         background-color: #171717;
         border-bottom-left-radius: 20px;
+`;
+
+const Usernames = styled.div`
+    display: ${props => props.state? "block": "none"};
+    position: absolute;
+    width: 541px;
+    top: 52px;
+    right: calc(50% - 278px);
+    background-color: #E7E7E7;
+    padding: 18px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    @media (max-width:1200px){
+        width: 95%;
+        right: calc(50% - 47%);
+        top: 129px;
+    } 
 `
