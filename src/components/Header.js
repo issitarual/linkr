@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useState, useContext,useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
+import axios from 'axios';
+import {DebounceInput} from 'react-debounce-input';
 
 import UserContext from './UserContext';
 
@@ -22,14 +24,18 @@ export default function Header (){
                 <h1>linkr</h1>
             </Link>
             <InputGroup>
-                <input 
-                    type="text"
+                <DebounceInput
                     placeholder="Search for people and friends"
+                    minLength={3}
+                    debounceTimeout={300}
                     value={search}
-                    onChange={e => setSearch(e.target.value)}
+                    onChange={e => {
+                        setSearch(e.target.value)
+                        searchUser(e.target.value)
+                    }}
                 />
                 <SearchOutline
-                color={'#646464'} 
+                color={'#C6C6C6'} 
                 height="25px"
                 width="25px"
                 />
@@ -66,6 +72,15 @@ export default function Header (){
         setState(!state);
         history.push(url); 
     }
+
+    function searchUser(username){
+        if(username.length < 3) return;
+        console.log(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`);
+        const promess = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`)
+        console.log(promess);
+        promess.then(success => console.log(success));
+        promess.catch(error => console.log(error));
+    }
 }
 
 const ContainerHeader = styled.header`
@@ -87,23 +102,6 @@ const ContainerHeader = styled.header`
         font-size: 45px;
         letter-spacing: 5px;
         color: #fff;
-    }
-    input{
-        width: 500px;
-        height: 45px;
-        background: #fff;
-        border-radius: 8px;
-        border: none;
-        padding-left: 17px;
-        font-family: 'Lato', sans-serif;
-        font-size: 19px;
-        color: #646464;
-        outline:none;
-        ::-webkit-input-placeholder  { 
-            color: #C6C6C6; 
-            font-family: 'Lato', sans-serif;
-            font-size: 19px;
-        }
     }
     span{
         cursor: pointer;
@@ -131,6 +129,24 @@ const InputGroup = styled.div`
     padding-right: 17px;
     display: flex;
     align-items: center;
+    height: 45px;
+    input{
+        width: 500px;
+        height: 45px;
+        background: #fff;
+        border-radius: 8px;
+        border: none;
+        padding-left: 17px;
+        font-family: 'Lato', sans-serif;
+        font-size: 19px;
+        color: #646464;
+        outline:none;
+        ::-webkit-input-placeholder  { 
+            color: #C6C6C6; 
+            font-family: 'Lato', sans-serif;
+            font-size: 19px;
+        }
+    }
 `
 
 const Menu = styled.div`
