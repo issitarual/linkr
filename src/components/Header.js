@@ -11,12 +11,8 @@ import { ChevronDownOutline, ChevronUpOutline, SearchOutline } from 'react-ionic
 export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
-    const { user ,setUser} = useContext(UserContext);
-    const [search, setSearch] = useState("");
-    
-   
-
-
+    const { user } = useContext(UserContext);
+    const [search, setSearch] = useState("");   
     
     return(
         <ContainerHeader state={state}>
@@ -75,9 +71,12 @@ export default function Header (){
 
     function searchUser(username){
         if(username.length < 3) return;
-        console.log(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`);
-        const promess = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`)
-        console.log(promess);
+        const config = {
+            headers:{
+                'Authorization' : `Bearer ${user.token}`
+            }
+        } 
+        const promess = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`, config)
         promess.then(success => console.log(success));
         promess.catch(error => console.log(error));
     }
@@ -130,6 +129,12 @@ const InputGroup = styled.div`
     display: flex;
     align-items: center;
     height: 45px;
+    @media (max-width:1200px){
+        position: absolute;
+        width: 95%;
+        top: 90px;
+        margin: auto;
+    }   
     input{
         width: 500px;
         height: 45px;
@@ -146,6 +151,9 @@ const InputGroup = styled.div`
             font-family: 'Lato', sans-serif;
             font-size: 19px;
         }
+        @media (max-width:1200px){
+        width: 100%;
+        } 
     }
 `
 
