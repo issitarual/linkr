@@ -16,6 +16,8 @@ import InputNewText from './InputNewText';
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
 Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
 
+/* Import UseInterval custom hook*/
+import UseInterval from '../UseInterval'
 
 export default function Timeline(){
     const history = useHistory()
@@ -30,8 +32,21 @@ export default function Timeline(){
     const [timelineRef,setTimelineRef] = useState(false)
 
     useEffect(()=>{
-        update();    
+            update()        
     },[]);
+
+
+   UseInterval(() => {
+    console.log('novos posts')
+    const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+
+    getNewPosts.then((response)=>{
+       alert('atualizou')
+        setAllPosts(response.data.posts)
+
+    })
+
+       }, 15000); 
 
     const config = {
         headers:{
@@ -39,14 +54,14 @@ export default function Timeline(){
         }
     }
 
-    function update () {
-         
+    function update (i) {
+         console.log('chamou update de:' + i)
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            
+           // console.log(response)
             setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
@@ -58,6 +73,8 @@ export default function Timeline(){
             })
             SetLikedPosts(sharpedHeart)
             SetOlderLikes(sharpedHeart);
+
+           
         })
 
         getPosts.catch((responseError)=>{           
@@ -171,10 +188,12 @@ export default function Timeline(){
 
                                      <PostContent open={!post.toEdit} >
                                         <ReactHashtag 
-                                        onHashtagClick={(val) => sendToHashtag(val)}
+                                        //onHashtagClick={(val) => sendToHashtag(val)}
                                         renderHashtag={(hashtagValue) => (
-                                             <Hashtag>{hashtagValue}</Hashtag>
-                                        )}
+                                            <Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
+                                            
+                                            
+                                            )}
                                         >
                                             {post.text}  
                                         </ReactHashtag>

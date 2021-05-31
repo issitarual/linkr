@@ -88,8 +88,9 @@ export default function MyPosts(){
     }
 
     function sendToHashtag(val){
-        const newVal = val.replace('#',"")
-        history.push(`/hashtag/${newVal}`)
+        console.log(val)
+        //const newVal = val.replace('#',"")
+       // history.push(`/hashtag/${newVal}`)
     }
    
      return( 
@@ -166,10 +167,11 @@ export default function MyPosts(){
                                 <UserName id={post.user.id}>{post.user.username}</UserName>
                                 <PostContent open={!post.toEdit} >
                                         <ReactHashtag 
-                                            onHashtagClick={(val) => sendToHashtag(val)}
+                                            
                                             renderHashtag={(hashtagValue) => (
-                                                <Hashtag>{hashtagValue}</Hashtag>
-                                           )}
+                                                 <Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
+                                            )}
+                                            //onHashtagClick={(val) => sendToHashtag(val)}
                                         >
                                             {post.text}
                                         </ReactHashtag>
