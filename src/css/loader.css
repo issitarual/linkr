@@ -1,0 +1,15 @@
+
+
+
+.loader svg{
+    height: 200px;
+    width: 200px;
+}
+
+@media (max-width:610px){
+    .loader svg{
+        height: 60px;
+        width: 60px;
+        margin: 40px 60px !important;
+    }
+}
