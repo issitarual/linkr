@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
-import { HeartOutline, HeartSharp } from 'react-ionicons';
+import { ConstructOutline, HeartOutline, HeartSharp } from 'react-ionicons';
 import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
@@ -72,16 +72,7 @@ export default function MyPosts(){
         })   
         setMyPosts([...postsToEdit]);
 
-        console.log(inputRef.current)
-        console.log(id)
-        //inputRef.current=id
-     /* myPosts.forEach((post)=>{
-          if(post.id===id){
-           
-          }
-      })*/
-
-      
+       
       setTimeout(()=>{
 
         inputRef.current[id].focus()

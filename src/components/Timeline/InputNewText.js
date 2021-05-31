@@ -57,6 +57,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
             update();
         }).catch((error)=>{
             alert('não foi possível salvar as alterações')
+            tryingToEdit(id)
 
         })
     }
