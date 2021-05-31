@@ -99,7 +99,16 @@ export default function Timeline(){
         setTimeout(()=>{
 
             inputRef.current[id].focus()
-           },100) 
+           },100
+        ) 
+    }
+
+    function RepostButton(id){
+        window.confirm("Você quer respostar esse link?");
+        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
+        requestRepost.then(() => console.log("deu bom"));
+        requestRepost.catch(() => console.log("deu ruim"));
+
     }
 
     return( 
@@ -163,6 +172,9 @@ export default function Timeline(){
                                     likedPosts.filter(n => n.id === post.id)[0].likes:
                                      post.likes.length} likes
                                 </h6>
+
+                                <Repost onClick = {() => RepostButton(post.id)}>Repost</Repost>
+
                                 </div>
                                 <div className='postRight'>
 
@@ -252,6 +264,11 @@ export default function Timeline(){
         }
     }
 }
+
+const Repost = styled.button ` 
+    margin-top: 20px;
+
+`
 
 /*const Container = styled.div`
     font-family: Lato;

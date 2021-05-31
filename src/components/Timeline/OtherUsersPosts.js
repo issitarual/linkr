@@ -24,17 +24,15 @@ export default function OtherUsersPosts(){
    const [likedPosts, SetLikedPosts] = useState([]);
    const [olderLikes, SetOlderLikes] = useState([]);
 
-
+   const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    } 
 
    const history=useHistory()
 
     useEffect(()=>{
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
-        } 
-
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
 
         getPosts.then((response)=>{
@@ -65,16 +63,17 @@ export default function OtherUsersPosts(){
        window.open(link)
     }
 
-    function changeLoad(){
-        setServerLoading(!serverLoading)
-        
+    function sendToHashtag(val){
+        const newVal = val.replace('#',"")
+        history.push(`/hashtag/${newVal}`)
     }
 
-    function sendToHashtag(val){
-        
-        const newVal = val.replace('#',"")
-       
-        history.push(`/hashtag/${newVal}`)
+    function RepostButton(id){
+        window.confirm("Você quer respostar esse link?");
+        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
+        requestRepost.then(() => console.log("deu bom"));
+        requestRepost.catch(() => console.log("deu ruim"));
+
     }
    
    
@@ -145,6 +144,9 @@ export default function OtherUsersPosts(){
                                     post.likes.length                                    
                                     } likes
                                 </h6>
+                        
+                                <Repost onClick = {() => RepostButton(post.id)}>Repost</Repost>
+
                                 </div>
                                 <div className='postRight'>
                                 <UserName id={post.user.id}>{post.user.username}</UserName>
@@ -222,6 +224,11 @@ export default function OtherUsersPosts(){
         }
     }
 }
+
+const Repost = styled.button ` 
+    margin-top: 20px;
+
+`
 
 /*const Container = styled.div`
     font-family: Lato;

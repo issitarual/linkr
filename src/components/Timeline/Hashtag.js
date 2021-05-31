@@ -27,18 +27,18 @@ export default function OtherUsersPosts(){
     const [olderLikes, SetOlderLikes] = useState([]);
     const [likedPosts, SetLikedPosts] = useState([]);
 
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    }
+
     useEffect(()=>{
         updateHashtagPosts()
         
     },[hashtag])
 
-    function updateHashtagPosts(newVal){
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
-        } 
-
+    function updateHashtagPosts(newVal){ 
        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${newVal || hashtag}/posts`,config)
 
         getPosts.then((response)=>{
@@ -84,6 +84,13 @@ export default function OtherUsersPosts(){
         else{
             history.push(`/my-posts`)
         }
+    }
+
+    function RepostButton(id){
+        window.confirm("Você quer respostar esse link?");
+        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
+        requestRepost.then(() => console.log("deu bom"));
+        requestRepost.catch(() => console.log("deu ruim"));
     }
    
     return( 
@@ -151,6 +158,9 @@ export default function OtherUsersPosts(){
                                     likedPosts.filter(n => n.id === post.id)[0].likes:
                                      post.likes.length} likes
                                 </h6>
+
+                                <Repost onClick = {() => RepostButton(post.id)}>Repost</Repost>
+
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
@@ -228,6 +238,10 @@ export default function OtherUsersPosts(){
     }
 }
 
+const Repost = styled.button ` 
+    margin-top: 20px;
+
+`
 /*const Container = styled.div`
     font-family: Lato;
     width: 100%;
