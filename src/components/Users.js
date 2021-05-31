@@ -28,6 +28,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    cursor: pointer;
     img{
         width: 40px;
         height: 40px;

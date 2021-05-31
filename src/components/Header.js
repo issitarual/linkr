@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useContext,useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 import {DebounceInput} from 'react-debounce-input';
@@ -16,7 +16,6 @@ export default function Header (){
     const { user } = useContext(UserContext);
     const [search, setSearch] = useState("");   
     const [otherUsers, setOtherUsers] = useState([]);
-
     
     return(
         <ContainerHeader state={state}>
@@ -72,10 +71,12 @@ export default function Header (){
                     <p onClick={() => link("/my-likes")}>My likes</p>
                     <p onClick={() => link("/")}>Logout</p>
             </Menu>
+            <CloseMenu 
+                state = {state}
+                onClick={() => setState(!state)}
+            />
         </ContainerHeader>
-    )
-
-            
+    ) 
 
     function link (url){
         if(url === "/"){
@@ -93,9 +94,7 @@ export default function Header (){
             }
         } 
         const promess = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`, config)
-        promess.then(success => {
-            setOtherUsers(success.data.users)
-        });
+        promess.then(success => setOtherUsers(success.data.users));
         promess.catch(error => alert("Ocorreu um erro, tente novamente!"));
     }
 
@@ -186,6 +185,7 @@ const Menu = styled.div`
         box-sizing: border-box;
         background-color: #171717;
         border-bottom-left-radius: 20px;
+        z-index: 2;
 `;
 
 const Usernames = styled.div`
@@ -203,4 +203,14 @@ const Usernames = styled.div`
         right: calc(50% - 47%);
         top: 129px;
     } 
+`
+
+const CloseMenu = styled.div`
+    display: ${props => props.state? 'block': 'none'};
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
 `
