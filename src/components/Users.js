@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
-export default function Users({avatar, username, following, id, userId}){
+export default function Users({ avatar, username, following, id, userId, setOtherUsers, setSearch }){
     let history = useHistory();
 
     return(
@@ -14,11 +14,13 @@ export default function Users({avatar, username, following, id, userId}){
 
     function goToUserPosts(id){
         if(id !== userId){
-            history.push(`/user/${id}`)
+            history.push(`/user/${id}`);
         }
         else{
-            history.push(`/my-posts`)
+            history.push(`/my-posts`);
         }
+        setOtherUsers("");
+        setSearch("");
     }
 }
 

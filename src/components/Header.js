@@ -15,7 +15,8 @@ export default function Header (){
     const [state, setState] = useState(false)
     const { user } = useContext(UserContext);
     const [search, setSearch] = useState("");   
-    const [otherUsers, setOtherUsers] = useState([])
+    const [otherUsers, setOtherUsers] = useState([]);
+
     
     return(
         <ContainerHeader state={state}>
@@ -62,6 +63,8 @@ export default function Header (){
                         following = {true} 
                         id = {n.id}
                         userId = {user.user.id}
+                        setOtherUsers = {setOtherUsers}
+                        setSearch = {setSearch}
                     />): null}
             </Usernames>
             <Menu state = {state}>
@@ -90,7 +93,9 @@ export default function Header (){
             }
         } 
         const promess = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`, config)
-        promess.then(success => setOtherUsers(success.data.users));
+        promess.then(success => {
+            setOtherUsers(success.data.users)
+        });
         promess.catch(error => alert("Ocorreu um erro, tente novamente!"));
     }
 
