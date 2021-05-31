@@ -4,13 +4,13 @@ import { useHistory, Link } from 'react-router-dom';
 
 import UserContext from './UserContext';
 
-import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
+import { ChevronDownOutline, ChevronUpOutline, SearchOutline } from 'react-ionicons';
 
 export default function Header (){
     let history = useHistory();
     const [state, setState] = useState(false)
     const { user ,setUser} = useContext(UserContext);
-    
+    const [search, setSearch] = useState("");
     
    
 
@@ -21,6 +21,19 @@ export default function Header (){
             <Link to ="/timeline">
                 <h1>linkr</h1>
             </Link>
+            <InputGroup>
+                <input 
+                    type="text"
+                    placeholder="Search for people and friends"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                />
+                <SearchOutline
+                color={'#646464'} 
+                height="25px"
+                width="25px"
+                />
+            </InputGroup>
             <span onClick={() => setState(!state)}>
                 {state?
                 <ChevronUpOutline
@@ -36,11 +49,11 @@ export default function Header (){
                 }
                 <img src={user.user.avatar}/>
             </span>
-            <div>
+            <Menu state = {state}>
                     <p onClick={() => link("/my-posts")}>My posts</p>
                     <p onClick={() => link("/my-likes")}>My likes</p>
                     <p onClick={() => link("/")}>Logout</p>
-            </div>
+            </Menu>
         </ContainerHeader>
     )
 
@@ -75,6 +88,23 @@ const ContainerHeader = styled.header`
         letter-spacing: 5px;
         color: #fff;
     }
+    input{
+        width: 500px;
+        height: 45px;
+        background: #fff;
+        border-radius: 8px;
+        border: none;
+        padding-left: 17px;
+        font-family: 'Lato', sans-serif;
+        font-size: 19px;
+        color: #646464;
+        outline:none;
+        ::-webkit-input-placeholder  { 
+            color: #C6C6C6; 
+            font-family: 'Lato', sans-serif;
+            font-size: 19px;
+        }
+    }
     span{
         cursor: pointer;
     }
@@ -83,16 +113,6 @@ const ContainerHeader = styled.header`
         height: 44px;
         margin-left: 10px;
         border-radius: 50%;
-    }
-    div{
-        position: absolute;
-        display: ${props => props.state? 'block': 'none'};
-        top: 72px;
-        right: 0;
-        padding: 11px 35px;
-        box-sizing: border-box;
-        background-color: #171717;
-        border-bottom-left-radius: 20px;
     }
     p{
         margin: 0;
@@ -104,3 +124,22 @@ const ContainerHeader = styled.header`
         cursor: pointer;
     }
 `;
+
+const InputGroup = styled.div`
+    background: #fff;
+    border-radius: 8px;
+    padding-right: 17px;
+    display: flex;
+    align-items: center;
+`
+
+const Menu = styled.div`
+        position: absolute;
+        display: ${props => props.state? 'block': 'none'};
+        top: 72px;
+        right: 0;
+        padding: 11px 35px;
+        box-sizing: border-box;
+        background-color: #171717;
+        border-bottom-left-radius: 20px;
+`
