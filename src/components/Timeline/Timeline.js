@@ -27,7 +27,7 @@ export default function Timeline(){
 
     const inputRef = useRef([])
 
-    const [timelineRef,setTimelineRef] = useState(false)
+    const [timelineRef,setTimelineRef] = useState(false);
 
     useEffect(()=>{
         update();    
@@ -125,11 +125,11 @@ export default function Timeline(){
                                     data-tip={
                                         olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
                                         olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                                        `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`: 
+                                        `${olderLikes.filter(n => n.id === post.id)[0].names[0]} ${olderLikes.filter(n => n.id === post.id)[0].likes - 1 > 0? `e outra(s) ${olderLikes.filter(n => n.id === post.id)[0].likes - 1} pessoas`: ""} `: 
                                         likedPosts.map(n => n.id).includes(post.id)? 
                                         likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
-                                        likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                        `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:                                        
+                                        likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${likedPosts.filter(n => n.id === post.id)[0].names.filter(n => n !== user.user.username)}`:
+                                        `Você, ${likedPosts.filter(n => n.id === post.id)[0].names.filter(n => n !== user.user.username)[0]} e outras ${likedPosts.filter(n => n.id === post.id)[0].likes - 2} pessoas`:                                        
                                         post.likes.length === 0? "0 pessoas":
                                         post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
                                         post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:

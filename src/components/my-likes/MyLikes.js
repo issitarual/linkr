@@ -16,8 +16,8 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 
 export default function MyLikes(){
     const history = useHistory()
-    const [likedPosts, SetLikedPosts] = useState([]);
-    const [olderLikes, SetOlderLikes] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
+    const [olderLikes, setOlderLikes] = useState([]);
     const { user } = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true)
@@ -39,12 +39,12 @@ export default function MyLikes(){
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
-                if(n.username === user.user.username){
+                if(n.userId=== user.user.id){
                     sharpedHeart.push({id: post.id, likes: post.likes.length})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
+            setLikedPosts(sharpedHeart)
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
