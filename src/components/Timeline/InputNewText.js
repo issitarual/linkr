@@ -1,23 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id}) {
+export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id,inputRef,setTimeLineRef}) {
 
-    const [newValue, setNewValue] = useState('');
+    const [newValue, setNewValue] = useState(post.text);
+    
 
+    /*function escape(event,id){
+        console.log(event)
+        if(event.keyCode===27){
+           
+            tryingToEdit(id)
+           
+            
+            event.target.value=oldValue
+        }
+        
+    }
+*/
     useEffect(()=>{
         if (toEdit){
         const nomeQualquer = (event)=> {
             if (event.keyCode===13){
                 textToServer(newValue);
             }
+
+            if (event.keyCode===27){
+                tryingToEdit(id)
+                setNewValue(post.text)
+                //event.target.value=newValue
+            }
         }
         window.addEventListener("keydown", nomeQualquer);
         return() => {
             window.removeEventListener('keydown', nomeQualquer);
-        }
+        }   
+
+       
+        
+        
     }
+   // inputRef.current.focus()
+
     },[toEdit,newValue])
 
     function textToServer (text) {
@@ -26,12 +51,13 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
             "text": text
         }
         
-
+        tryingToEdit(id);
         const promise = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, body, config).then((success)=>{
-            tryingToEdit(id);
+           // tryingToEdit(id);
             update();
         }).catch((error)=>{
             alert('não foi possível salvar as alterações')
+            tryingToEdit(id)
 
         })
     }
@@ -39,7 +65,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     return ( 
         <InputField onChange={(e)=>{
             setNewValue(e.target.value);
-        }} readOnly={!post.toEdit} open={post.toEdit} >
+        }} readOnly={!post.toEdit} open={post.toEdit} ref={el => inputRef.current[id] = el} value={newValue===post.text ? post.text : newValue}>
             {post.text}
         </InputField>
         

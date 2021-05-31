@@ -77,7 +77,7 @@ const Links = styled.a`
 
  
 const Hashtag = styled.span`
-    color: tomato;
+    color: white;
     font-weight: bold;
 `;
 

@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import {useContext, useEffect,useState} from 'react'
+import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
-import { HeartOutline, HeartSharp } from 'react-ionicons';
+import { ConstructOutline, HeartOutline, HeartSharp } from 'react-ionicons';
 import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
@@ -24,6 +24,9 @@ export default function MyPosts(){
    const [serverLoading,setServerLoading] = useState(true)
    const [likedPosts, SetLikedPosts] = useState([]);
    const [olderLikes, SetOlderLikes] = useState([]);
+
+   const inputRef = useRef([])
+   
 
    const config = {
     headers:{
@@ -59,14 +62,22 @@ export default function MyPosts(){
         })
         }
 
-    function tryingToEdit(id) {
+    function tryingToEdit(id,canCallRef) {
         let postsToEdit = myPosts.map((p) => {
             if(p.id === id){
                 p.toEdit = !p.toEdit;
+               
             }
             return {...p};
         })   
         setMyPosts([...postsToEdit]);
+
+       
+      setTimeout(()=>{
+
+        inputRef.current[id].focus()
+       },100) 
+    
     }
 
 
@@ -155,7 +166,7 @@ export default function MyPosts(){
                                             {post.text}
                                         </ReactHashtag>
                                 </PostContent>    
-                                    <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
+                                    <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef}/>
 
                                     <LinkDetails>
                                         <PostInfo>

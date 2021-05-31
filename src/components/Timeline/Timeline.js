@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {useContext, useEffect,useState} from 'react';
+import {useContext, useEffect,useState,useRef} from 'react';
 import NewPost from './NewPost';
 import UserContext from '../UserContext';
 import axios from 'axios';
@@ -24,6 +24,10 @@ export default function Timeline(){
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]); 
+
+    const inputRef = useRef([])
+
+    const [timelineRef,setTimelineRef] = useState(false)
 
     useEffect(()=>{
         update();    
@@ -91,6 +95,11 @@ export default function Timeline(){
             return {...p};
         })   
         setAllPosts([...postsToEdit]);
+
+        setTimeout(()=>{
+
+            inputRef.current[id].focus()
+           },100) 
     }
 
     return( 
@@ -175,7 +184,7 @@ export default function Timeline(){
                                         </ReactHashtag>
                                     </PostContent>    
 
-                                    <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
+                                    <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
 
                                     <LinkDetails>
                                         <PostInfo>
