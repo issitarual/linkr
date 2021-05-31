@@ -52,33 +52,33 @@ export default function NewPost ({update}) {
     letButtonText('Publicando...')
     
   }
-  
-      return (
-          <Post>
-            <Icon>
-              <img src={user.user.avatar}/>
-            </Icon>
-            <Form onSubmit={createNewPost}>
-              <p>O que você tem para favoritar hoje?</p>
-              <InputLink
-                value={linkToPost} 
-                disabled={disabled} 
-                type="url" 
-                placeholder={"http://..."} 
-                onChange={e => setLinkToPost(e.target.value)} 
-              />
-              <InputDescription
-                value={linkDescription}
-                disabled={disabled}
-                type="text"
-                placeholder={"Muito irado esse link falando de #javascript"}
-                onChange={e => setLinkDescription(e.target.value)}
-              />
-              <Button disabled={disabled}>{buttonText}</Button>
-            </Form>
-          </Post>
-      );
-  
+
+  return (
+      <Post>
+        <Icon>
+          <img src={user.user.avatar}/>
+        </Icon>
+        <Form onSubmit={createNewPost}>
+          <p>O que você tem para favoritar hoje?</p>
+          <InputLink
+          autoFocus={true}
+            value={linkToPost} 
+            disabled={disabled} 
+            type="url" 
+            placeholder={"http://..."} 
+            onChange={e => setLinkToPost(e.target.value)} 
+          />
+          <InputDescription
+            value={linkDescription}
+            disabled={disabled}
+            type="text"
+            placeholder={"Muito irado esse link falando de #javascript"}
+            onChange={e => setLinkDescription(e.target.value)}
+          />
+          <Button disabled={disabled}>{buttonText}</Button>
+        </Form>
+      </Post>
+  );
 
 }
 
@@ -103,6 +103,11 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  @media (max-width:610px){
+            width: 100%;
+            
+        }
   p {
     color: #707070;
     font-size: 20px;

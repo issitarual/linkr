@@ -270,7 +270,8 @@ const TimelinePosts = styled.ul`
  flex-direction: column;
  
  @media (max-width:1200px){
-            //width: 90%;
+    align-items: center;
+           width: 100%;
         }
         
         svg{
@@ -288,7 +289,7 @@ const TimelinePosts = styled.ul`
         width: 610px;
 
         @media (max-width:610px){
-            width: 100%;
+            width: 90%;
         }
         
         
@@ -301,6 +302,10 @@ const TimelinePosts = styled.ul`
            font-size: 19px;
            color: #fff;
            margin: 20px 20px 7px 0px;
+       }
+
+       @media (max-width:1200px){
+           width: 80%;
        }
 
        .postText{
@@ -426,7 +431,7 @@ const LinkDetails = styled.div`
             @media (max-width:1200px){
             width: 30%;
         }
-        }
+        
     img:hover{
         cursor: pointer;
     }

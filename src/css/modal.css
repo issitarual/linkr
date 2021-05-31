@@ -1,0 +1,30 @@
+  .mobileModal{ 
+    position: absolute;
+    top: 30%;
+    left: calc(50% - 350px);
+    /* bottom: 30%;
+   right: 80%;*/
+    width: 597px;
+    height: 262px;
+    border: 1px solid #ccc;
+    background: #333;
+    overflow: auto;
+    WebkitOverflowScrolling: touch;
+    border-Radius: 50px;
+    outline: none;
+    padding: 38px 110px 66px 110px;
+    display: flex;
+    flex-Direction: column;
+    justify-Content: space-between;
+    align-Items: center;
+   }
+
+
+@media (max-width:1200px){
+
+    .mobileModal{
+        top: 30%;
+        left: calc(50% - 300px);
+        
+    }
+}
