@@ -13,3 +13,25 @@
         margin: 40px 60px !important;
     }
 }
+
+
+
+
+.x{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    
+ 
+    
+}
+
+@media (max-width:610px){
+     .x{  
+        align-items: center;
+        width: 90%;
+        min-width:360px;
+     }
+}

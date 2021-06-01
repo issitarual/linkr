@@ -180,31 +180,36 @@ export default function Timeline(){
        
                 <TimelineContent>
                     
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={() => partialUpdate( allPosts.length + 2 )}
-                    hasMore={hasMore}
-                    loader={<div className="loader" key={0}>Loading ...</div>}
-                >
-                    <Posts noPostsMessage={'Nenhum post encontrado'}
-                            update={update}
-                            serverLoading={serverLoading}
-                            allPosts={allPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            tryingToEdit={tryingToEdit}
-                            config={config}
-                            inputRef={inputRef}
-                           // setTimelineRef={setTimelineRef}
-                            goToLink={goToLink}
-                            
+                            <InfiniteScroll
+                                
+                                pageStart={0}
+                                loadMore={() => partialUpdate( allPosts.length + 2 )}
+                                hasMore={hasMore}
+                                loader={<div className="x" key={0}>Loading ...</div>}
+                                className='x'
+                            >
+                                <Posts noPostsMessage={'Nenhum post encontrado'}
+                                        update={update}
+                                        serverLoading={serverLoading}
+                                        allPosts={allPosts}
+                                        goToUserPosts={goToUserPosts}
+                                        olderLikes={olderLikes}
+                                        likedPosts={likedPosts}
+                                        user={user}
+                                        like={like}
+                                        tryingToEdit={tryingToEdit}
+                                        config={config}
+                                        inputRef={inputRef}
+                                    // setTimelineRef={setTimelineRef}
+                                        goToLink={goToLink}
                                         
-                    />
+                                                    
+                                />
 
-                </InfiniteScroll>
+                            </InfiniteScroll>
+
+                     
+
 
                     <TrendingList send={sendToHashtag}/>
                    
