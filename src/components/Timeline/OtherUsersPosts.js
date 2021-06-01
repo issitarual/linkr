@@ -7,10 +7,11 @@ import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import { HeartOutline, HeartSharp, RepeatOutline } from 'react-ionicons';
 import TrendingList from './TrendingList';
+import Repost from './Repost'
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment, Repost} from '../timelineStyledComponents'
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment} from '../timelineStyledComponents'
     
 
 
