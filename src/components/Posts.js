@@ -18,7 +18,7 @@ import InputNewText from './Timeline/InputNewText'
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
 Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
  
- export default function NPosts(props){
+ export default function Posts(props){
 
     const history=useHistory()
 

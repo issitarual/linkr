@@ -12,7 +12,10 @@ import TrendingList from './TrendingList';
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
 Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment} from '../timelineStyledComponents'
-import NPosts from '../Posts';
+
+
+/*import dos Posts*/
+import Posts from '../Posts'
     
 
 export default function OtherUsersPosts(){
@@ -22,7 +25,7 @@ export default function OtherUsersPosts(){
 
     const {user} = useContext(UserContext)
 
-    const [posts,setPosts] = useState([])
+    const [hashtagPosts,setHashtagPosts] = useState([])
 
     const [serverLoading,setServerLoading] = useState(true)
     const [olderLikes, SetOlderLikes] = useState([]);
@@ -46,7 +49,7 @@ export default function OtherUsersPosts(){
 
         getPosts.then((response)=>{
             const newArray = response.data.posts
-            setPosts(newArray)
+            setHashtagPosts(newArray)
            setServerLoading(false) 
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -100,10 +103,10 @@ export default function OtherUsersPosts(){
                 
                 <TimelineContent>
 
-                <NPosts noPostsMessage={'Não há posts dessa hashtag no momento'}
+                <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
                            // update={update}
                             serverLoading={serverLoading}
-                            allPosts={posts}
+                            allPosts={hashtagPosts}
                             goToUserPosts={goToUserPosts}
                             olderLikes={olderLikes}
                             likedPosts={likedPosts}

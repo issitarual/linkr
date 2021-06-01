@@ -13,7 +13,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
 
 /*import dos Posts*/
-import NPosts from '../Posts'
+import Posts from '../Posts'
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
@@ -130,7 +130,7 @@ export default function Timeline(){
         <Title>timeline</Title> 
 
                 <TimelineContent>
-                    <NPosts noPostsMessage={'Nenhum post encontrado'}
+                    <Posts noPostsMessage={'Nenhum post encontrado'}
                             update={update}
                             serverLoading={serverLoading}
                             allPosts={allPosts}

@@ -16,7 +16,7 @@ import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
 Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
 
 /*import dos Posts*/
-import NPosts from '../Posts'
+import Posts from '../Posts'
 
 export default function MyPosts(){
     const history=useHistory()
@@ -112,7 +112,7 @@ export default function MyPosts(){
                 
                 <TimelineContent>
 
-                <NPosts noPostsMessage={'Você ainda não postou nada'}
+                <Posts noPostsMessage={'Você ainda não postou nada'}
                             update={update}
                             serverLoading={serverLoading}
                             allPosts={myPosts}
