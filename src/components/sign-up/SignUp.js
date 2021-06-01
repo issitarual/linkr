@@ -88,7 +88,7 @@ const FrontPage = styled.div`
 
 const RightSide = styled.div`
     width: 70%;
-    height: 1000px;
+    height: 100vh;
     background: #151515;
     color: #fff;
     font-weight: 700;
@@ -99,6 +99,10 @@ const RightSide = styled.div`
     @media(max-width: 600px){
         width: 100%;
         height: 175px;
+    }
+    @media(max-width: 420px){
+        width: 100%;
+        height: auto;
     }
 
     h1{
@@ -139,7 +143,7 @@ const RightSide = styled.div`
 
 const LeftSide = styled.div` 
     width: 30%;
-    height: 1000px;
+    height: 100vh;
     background: #333333;
     display: flex;
     flex-direction: column;
@@ -148,7 +152,12 @@ const LeftSide = styled.div`
 
     @media(max-width: 600px){
         width: 100%;
-        height: 500px;
+       // height: 500px;
+    }
+
+    @media(max-width: 600px){
+        width: 100%;
+       // height: 500px;
     }
 
     input{
@@ -165,6 +174,7 @@ const LeftSide = styled.div`
             width: 95%;
         }
 
+       
     }
 
     button{
@@ -178,8 +188,7 @@ const LeftSide = styled.div`
         color: #fff;
         font-size: 27px;
         line-height: 40px;
-
-
+       
         @media (max-width:1500px){
             width: 95%;
         }

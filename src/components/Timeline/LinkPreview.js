@@ -28,7 +28,7 @@ export default function LinkPreview ({ link, linkIsOpen, setLinkIsOpen }) {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
                   width: '100%',
                   height: '100vh',
                   zIndex: '3'
@@ -98,10 +98,3 @@ const DisplayFlex = styled.div`
     align-items: flex-start;
 `;
 
-// function goToLink(e,link){
-//     e.preventDefault()
-//     setLinkIsOpen(!linkIsOpen);
-//     setLinkToOpen(link);
-// }  
-
-{/* <LinkPreview linkIsOpen={linkIsOpen} setLinkIsOpen={setLinkIsOpen} link={linkToOpen} /> */}
