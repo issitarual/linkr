@@ -54,16 +54,16 @@ export default function Timeline(){
 
     getNewPosts.then((response)=>{
      
-     const x = allPosts[0]
+     const holder = allPosts[0]
 
-       let z='x'
+       let numberHolder='x'
 
        response.data.posts.forEach((post,index)=>{
-            if(post.id===x.id){
-                z=index
+            if(post.id===holder.id){
+                numberHolder=index
             }
        })
-       const newPosts = response.data.posts.splice(0,z)
+       const newPosts = response.data.posts.splice(0,numberHolder)
         setAllPosts([...newPosts,...allPosts])
 
     })
@@ -181,13 +181,13 @@ export default function Timeline(){
                 <TimelineContent>
                     
                             <InfiniteScroll
-                                
                                 pageStart={0}
                                 loadMore={() => partialUpdate( allPosts.length + 2 )}
                                 hasMore={hasMore}
                                 loader={<div className="x" key={0}>Loading ...</div>}
                                 className='x'
                             >
+                                
                                 <Posts noPostsMessage={'Nenhum post encontrado'}
                                         update={update}
                                         serverLoading={serverLoading}

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {useContext, useEffect,useState,useRef} from 'react';
 import NewPost from './Timeline/NewPost';
-//import UserContext from '../UserContext';
+
 import axios from 'axios';
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';

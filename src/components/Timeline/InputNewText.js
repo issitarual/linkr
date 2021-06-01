@@ -6,19 +6,6 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
 
     const [newValue, setNewValue] = useState(post.text);
     
-
-    /*function escape(event,id){
-        console.log(event)
-        if(event.keyCode===27){
-           
-            tryingToEdit(id)
-           
-            
-            event.target.value=oldValue
-        }
-        
-    }
-*/
     useEffect(()=>{
         if (toEdit){
         const nomeQualquer = (event)=> {
@@ -29,20 +16,14 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
             if (event.keyCode===27){
                 tryingToEdit(id)
                 setNewValue(post.text)
-                //event.target.value=newValue
+                
             }
         }
         window.addEventListener("keydown", nomeQualquer);
         return() => {
             window.removeEventListener('keydown', nomeQualquer);
         }   
-
-       
-        
-        
-    }
-  
-
+        }
     },[toEdit,newValue])
 
     function textToServer (text) {
@@ -53,7 +34,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         
         tryingToEdit(id);
         const promise = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, body, config).then((success)=>{
-           // tryingToEdit(id);
+           
             update();
         }).catch((error)=>{
             alert('não foi possível salvar as alterações')
