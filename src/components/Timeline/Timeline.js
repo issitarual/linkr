@@ -18,11 +18,11 @@ import UseInterval from '../UseInterval'
 
 export default function Timeline(){
     const history = useHistory();
-    const [likedPosts, SetLikedPosts] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
-    const [olderLikes, SetOlderLikes] = useState([]); 
+    const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
     const [timelineRef,setTimelineRef] = useState(false);
 
@@ -110,28 +110,28 @@ export default function Timeline(){
 
     return( 
         <TimelineContainer>
-        <Title>timeline</Title> 
+            <Title>timeline</Title> 
 
-                <TimelineContent>
-                    <Posts noPostsMessage={'Nenhum post encontrado'}
-                        update={update}
-                        serverLoading={serverLoading}
-                        allPosts={allPosts}
-                        goToUserPosts={goToUserPosts}
-                        olderLikes={olderLikes}
-                        likedPosts={likedPosts}
-                        user={user}
-                        like={like}
-                        tryingToEdit={tryingToEdit}
-                        config={config}
-                        inputRef={inputRef}
-                        setTimelineRef={setTimelineRef}
-                        goToLink={goToLink}                    
-                    />
+            <TimelineContent>
+                <Posts noPostsMessage={'Nenhum post encontrado'}
+                    update={update}
+                    serverLoading={serverLoading}
+                    allPosts={allPosts}
+                    goToUserPosts={goToUserPosts}
+                    olderLikes={olderLikes}
+                    likedPosts={likedPosts}
+                    user={user}
+                    like={like}
+                    tryingToEdit={tryingToEdit}
+                    config={config}
+                    inputRef={inputRef}
+                    setTimelineRef={setTimelineRef}
+                    goToLink={goToLink}                    
+                />
 
-                    <TrendingList send={sendToHashtag}/>
-                   
-                </TimelineContent>
+                <TrendingList send={sendToHashtag}/>
+                
+            </TimelineContent>
         </TimelineContainer>
     )
 
@@ -141,16 +141,16 @@ export default function Timeline(){
         if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else if(olderLikes.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
