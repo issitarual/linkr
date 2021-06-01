@@ -257,6 +257,16 @@ const LinkDetails = styled.div`
     display: flex;
     color: #CECECE;
 
+    h3{
+        width: 80%;
+        white-space: pre-wrap ;  
+            word-wrap: break-word; 
+            overflow-y: hidden;
+            height: auto;
+            font-size: 14px;
+        
+    }
+
     @media (max-width:1200px){
         width: 95%;
     }
