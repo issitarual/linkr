@@ -49,10 +49,10 @@ export default function MyPosts(){
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            setLikedPosts(sharpedHeart)
+            setLikedPosts(sharpedHeart);
             setOlderLikes(sharpedHeart);
         })
 
@@ -112,19 +112,20 @@ export default function MyPosts(){
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
                                 <img src={post.user.avatar}/>
-                                <div className ="ion-icon" data-tip={
-                                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                                    `${olderLikes.filter(n => n.id === post.id)[0].names[0]} ${olderLikes.filter(n => n.id === post.id)[0].likes - 1 > 0? `e outra(s) ${olderLikes.filter(n => n.id === post.id)[0].likes - 1} pessoas`: ""} `: 
-                                    likedPosts.map(n => n.id).includes(post.id)? 
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${likedPosts.filter(n => n.id === post.id)[0].names.filter(n => n !== user.user.username)}`:
-                                    `Você, ${likedPosts.filter(n => n.id === post.id)[0].names.filter(n => n !== user.user.username)[0]} e outras ${likedPosts.filter(n => n.id === post.id)[0].likes - 2} pessoas`:                                        
-                                    post.likes.length === 0? "0 pessoas":
-                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
-                                } 
+                                <div className ="ion-icon" 
+                                    data-tip={
+                                        olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
+                                        olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
+                                        `${olderLikes.filter(n => n.id === post.id)[0].names[0]} ${olderLikes.filter(n => n.id === post.id)[0].likes - 1 > 0? `e outra(s) ${olderLikes.filter(n => n.id === post.id)[0].likes - 1} pessoas`: ""} `: 
+                                        likedPosts.map(n => n.id).includes(post.id)? 
+                                        likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
+                                        likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${likedPosts.filter(n => n.id === post.id)[0].names.filter(n => n !== user.user.username)}`:
+                                        `Você, ${likedPosts.filter(n => n.id === post.id)[0].names.filter(n => n !== user.user.username)[0]} e outras ${likedPosts.filter(n => n.id === post.id)[0].likes - 2} pessoas`:                                        
+                                        post.likes.length === 0? "0 pessoas":
+                                        post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                        post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
+                                        `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
+                                    } 
                                 >
                                     {likedPosts.map(n=>n.id).includes(post.id)?                                  
                                     <HeartSharp 
@@ -138,8 +139,15 @@ export default function MyPosts(){
                                         color={'#fff'} 
                                         height="25px"
                                         width="25px"
-                                    />
+                                    />                                    
                                     }
+                                    <ReactTooltip 
+                                        type="light"
+                                        textColor="#505050"
+                                        place="bottom"
+                                        effect="solid"
+                                        border="5"
+                                    />
                                 </div> 
                                 <h6>
                                     {

@@ -42,15 +42,15 @@ export default function OtherUsersPosts(){
            setPosts(newArray)
             setPageUser(response.data.posts[0].user.username)
           setServerLoading(false) 
-           let sharpedHeart = []
-           newArray.forEach( post => {
-               post.likes.forEach(n =>{
-               if(n.userId === user.user.id){
-                   sharpedHeart.push({id: post.id, likes: post.likes.length})
-               }})
-           })
-           setLikedPosts(sharpedHeart)
-           setOlderLikes(sharpedHeart);
+          let sharpedHeart = []
+          newArray.forEach( post => {
+              post.likes.forEach(n =>{
+              if(n.userId === user.user.id){
+                  sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
+              }})
+          })
+          setLikedPosts(sharpedHeart);
+          setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
@@ -129,6 +129,13 @@ export default function OtherUsersPosts(){
                                         width="25px"
                                     />
                                     }
+                                    <ReactTooltip 
+                                        type="light"
+                                        textColor="#505050"
+                                        place="bottom"
+                                        effect="solid"
+                                        border="5"
+                                    />
                                 </div> 
                                 <h6>
                                     {

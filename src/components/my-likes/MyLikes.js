@@ -39,11 +39,11 @@ export default function MyLikes(){
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
-                if(n.userId=== user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            setLikedPosts(sharpedHeart)
+            setLikedPosts(sharpedHeart);
             setOlderLikes(sharpedHeart);
         })
 
@@ -97,7 +97,7 @@ export default function MyLikes(){
                             : (allPosts.length===0 
                                 ? <NoPostsYet>Nenhum post curtido</NoPostsYet>
                                 :allPosts.map((post)=>{
-
+                                    console.log(post)
                             return(
                             <li key={post.id} id={post.id}>
                                 <div className='postLeft'>
@@ -130,6 +130,13 @@ export default function MyLikes(){
                                         width="25px"
                                     />
                                     }
+                                    <ReactTooltip 
+                                        type="light"
+                                        textColor="#505050"
+                                        place="bottom"
+                                        effect="solid"
+                                        border="5"
+                                    />
                                 </div> 
                                 <h6>
                                     {
