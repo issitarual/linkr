@@ -116,7 +116,11 @@ const SearchHashtag = styled.div`
         background-color: #252525;
         color: white;
         padding-left: 30px;
+        border-radius: 10px;
         
+        ::placeholder{
+            font-style: italic;
+        }
         
        
     }
