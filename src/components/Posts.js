@@ -27,7 +27,6 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 
 return(
 <TimelinePosts>
-<NewPost update={update} />
     {serverLoading 
         ? <Loader type="Circles" className='loader' color="#FFF"  />
         : (allPosts.length===0 
