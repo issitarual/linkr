@@ -1,32 +1,37 @@
 import styled from 'styled-components';
 import {useContext, useEffect,useState,useRef} from 'react';
-import NewPost from './NewPost';
-import UserContext from '../UserContext';
+import NewPost from './Timeline/NewPost';
+//import UserContext from '../UserContext';
 import axios from 'axios';
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
-import ActionsPost from './ActionsPost';
-import TrendingList from './TrendingList';
+import ActionsPost from './Timeline/ActionsPost';
+import TrendingList from './Timeline/TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
-import InputNewText from './InputNewText';
+import InputNewText from './Timeline/InputNewText'
 
-/*import dos Posts*/
-import Posts from '../Posts'
+
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
  
- export default function Posts(){
+ export default function NPosts(props){
 
+    const history=useHistory()
+
+    const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
+    config,inputRef,setTimelineRef,goToLink} = props;
+
+return(
 <TimelinePosts>
 <NewPost update={update} />
     {serverLoading 
         ? <Loader type="Circles" className='loader' color="#FFF"  />
         : (allPosts.length===0 
-            ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
+            ? <NoPostsYet>{noPostsMessage}</NoPostsYet>
             :allPosts.map((post)=>{
         return(
         <li key={post.id} id={post.id}>
@@ -116,5 +121,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 
   
 </TimelinePosts>
+
+)
 
  }
