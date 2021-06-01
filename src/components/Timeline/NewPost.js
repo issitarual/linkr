@@ -12,6 +12,8 @@ export default function NewPost ({update}) {
   const [buttonText, letButtonText] = useState('Publicar');
   const { user ,setUser} = useContext(UserContext);
   
+  const [enableLocation, setEnableLocation] = useState({text: 'Localização desativada', textColor: '#949494', enable: false});
+  
   function createNewPost (event) {
 
     event.preventDefault();
@@ -50,6 +52,17 @@ export default function NewPost ({update}) {
     
   }
 
+  function toggleEnabled () {
+    if (enableLocation.enable) {
+      const update = {text: 'Localização ativada', textColor: '#238700', enable: true}
+    
+    } else {
+      const update = {text: 'Localização desativada', textColor: '#949494', enable: false}
+    }
+    setEnableLocation(update);
+
+  }
+
   return (
       <Post>
         <Icon>
@@ -74,13 +87,13 @@ export default function NewPost ({update}) {
           />
           <Button disabled={disabled}>{buttonText}</Button>
         </Form>
-        <ShowLocation>
+        <ShowLocation onClick={toggleEnabled} enableLocation={enableLocation} >
           <LocationOutline
-            color={'#949494'} 
+            color={enableLocation.textColor} 
             height="15px"
             width="15px"
           />
-          <p> Localização ativada</p>
+          <p>{enableLocation.text}</p>
         </ShowLocation>
       </Post>
   );
@@ -88,16 +101,16 @@ export default function NewPost ({update}) {
 }
 
 const ShowLocation = styled.div`
-  color: #949494;
+  color: ${(props) => (props.enableLocation.textColor)} ;
   display: flex;
   align-items: center;
   position: absolute;
   left: 90px;
   bottom: 24px;
   p {
+    margin: 0 0 0 3px;
     font-size: 13px;
   }
-
 `;
 
 const Post = styled.div`
