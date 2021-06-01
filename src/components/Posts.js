@@ -20,6 +20,7 @@ export default function Posts(props){
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
     config,inputRef,setTimelineRef,goToLink} = props;
 
+
     return(
     <TimelinePosts>
         <NewPost update={update} />
@@ -31,14 +32,15 @@ export default function Posts(props){
                 :allPosts.map((post)=>{
             return(
             <li key={post.id} id={post.id}>
-                <span>
+                {post["repostedBy"] ? 
+                (<span>
                     <RepeatOutline
                         color={'#ffffff'}
                         height="20px"
                         width="20px"
                     />
-                    Re-posted by {post.user.username}
-                </span>
+                    Re-posted by {user.user.username === post.repostedBy.username ? "you" : post.repostedBy.username}
+                </span>) : ""}
                 <div className = "oficialPost">
                     <div className='postLeft'>
                         <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>

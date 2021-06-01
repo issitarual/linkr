@@ -120,21 +120,19 @@ export default function Timeline(){
 
                 <TimelineContent>
                     <Posts noPostsMessage={'Nenhum post encontrado'}
-                            update={update}
-                            serverLoading={serverLoading}
-                            allPosts={allPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            tryingToEdit={tryingToEdit}
-                            config={config}
-                            inputRef={inputRef}
-                            setTimelineRef={setTimelineRef}
-                            goToLink={goToLink}
-                            
-                                        
+                        update={update}
+                        serverLoading={serverLoading}
+                        allPosts={allPosts}
+                        goToUserPosts={goToUserPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        tryingToEdit={tryingToEdit}
+                        config={config}
+                        inputRef={inputRef}
+                        setTimelineRef={setTimelineRef}
+                        goToLink={goToLink}                    
                     />
 
                     <TrendingList send={sendToHashtag}/>

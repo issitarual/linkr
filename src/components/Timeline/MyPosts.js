@@ -75,7 +75,6 @@ export default function MyPosts(){
     }
 
 
-
   function goToLink(e,link){
         e.preventDefault()
        window.open(link)
@@ -83,8 +82,6 @@ export default function MyPosts(){
 
     function sendToHashtag(val){
         console.log(val)
-        //const newVal = val.replace('#',"")
-       // history.push(`/hashtag/${newVal}`)
     }
 
     function goToUserPosts(id){
