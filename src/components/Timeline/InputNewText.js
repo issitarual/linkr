@@ -41,7 +41,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         
         
     }
-   // inputRef.current.focus()
+  
 
     },[toEdit,newValue])
 
