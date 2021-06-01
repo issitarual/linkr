@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {useContext, useEffect,useState} from 'react';
+import {useContext, useEffect,useState,useRef} from 'react';
 import NewPost from './NewPost';
 import UserContext from '../UserContext';
 import axios from 'axios';
@@ -11,18 +11,64 @@ import ActionsPost from './ActionsPost';
 import TrendingList from './TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
+import LinkPreview from './LinkPreview'
 
-export default function Timeline(){
+/*import dos Posts*/
+import Posts from '../Posts'
+
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
+
+/*import de style components*/
+import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
+
+/* Import UseInterval custom hook*/
+import UseInterval from '../UseInterval'
+
+export default function Timeline({goToLink}){
     const history = useHistory()
-    const [likedPosts, SetLikedPosts] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
-    const [olderLikes, SetOlderLikes] = useState([]); 
+    const [olderLikes, setOlderLikes] = useState([]); 
 
+    const inputRef = useRef([])
+
+    const [timelineRef,setTimelineRef] = useState(false);
+    /*Logics of infinite Scroller*/ 
+    const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+    const[hasMore,setHasMore] = useState(true)
+
+
+    
     useEffect(()=>{
-        update();    
+            update()        
     },[]);
+
+    UseInterval(() => {
+    
+    const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+
+    getNewPosts.then((response)=>{
+     
+     const holder = allPosts[0]
+
+       let numberHolder='x'
+
+       response.data.posts.forEach((post,index)=>{
+            if(post.id===holder.id){
+                numberHolder=index
+            }
+       })
+       const newPosts = response.data.posts.splice(0,numberHolder)
+        setAllPosts([...newPosts,...allPosts])
+
+    })
+    
+
+       }, 15000); 
 
     const config = {
         headers:{
@@ -30,25 +76,53 @@ export default function Timeline(){
         }
     }
 
+    function partialUpdate(limit){
+        
+        setTimeout(()=>{
+            const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        
+        getPosts.then((response)=>{
+            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+            const partial = newArray.slice(0,limit)
+            setAllPosts(partial)
+            let sharpedHeart = []
+            newArray.forEach( post => {
+                post.likes.forEach(n =>{
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
+                }})
+            })
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
+        })
+
+        },1000)
+
+       maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
+    }
+
     function update () {
-         
+        
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+            setMaxNumberOfPosts(response.data.posts.length)
             
-            setAllPosts(newArray)
+            const partial = newArray.slice(0,2)
+            
+            setAllPosts(partial)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{           
@@ -57,10 +131,7 @@ export default function Timeline(){
         })
     }
         
-    function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }  
+   
 
     function sendToHashtag(val){
        
@@ -86,109 +157,55 @@ export default function Timeline(){
             return {...p};
         })   
         setAllPosts([...postsToEdit]);
+
+        setTimeout(()=>{
+
+            inputRef.current[id].focus()
+           },100) 
     }
 
+   
     return( 
-      
-    <Container>
         
-        <TimelineContainer>
-        <Title>timeline</Title> 
+        <Container>
+            
+            <TimelineContainer>
+            <Title>timeline</Title> 
+        
+                    <TimelineContent>
+                        
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={() => partialUpdate( allPosts.length + 2 )}
+                            hasMore={hasMore}
+                            loader={<div className="x" key={0}>Loading ...</div>}
+                            className='x'
+                        >
+                            
+                            <Posts noPostsMessage={'Nenhum post encontrado'}
+                                update={update}
+                                serverLoading={serverLoading}
+                                allPosts={allPosts}
+                                goToUserPosts={goToUserPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                tryingToEdit={tryingToEdit}
+                                config={config}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                                
+                            />
 
-                <TimelineContent>
-                    <TimelinePosts>
-                    <NewPost update={update} />
-                        {serverLoading 
-                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
-                            : (allPosts.length===0 
-                                ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
-                                :allPosts.map((post)=>{
-                            return(
-                            <li key={post.id} id={post.id}>
-                                <div className='postLeft'>
-                                <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
-                                <div className ="ion-icon" data-tip={
-                                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
-                                    likedPosts.map(n => n.id).includes(post.id)? 
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
-                                    post.likes.length === 0? "0 pessoas":
-                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
-                                } 
-                                    onClick={() => like(post.id)}>
-                                    {likedPosts.map(n=>n.id).includes(post.id)?                                  
-                                    <HeartSharp
-                                        color={'#AC2B25'} 
-                                        height="25px"
-                                        width="25px"
-                                    />:
-                                    <HeartOutline
-                                        color={'#fff'} 
-                                        height="25px"
-                                        width="25px"
-                                    />
-                                    }
-                                    <ReactTooltip 
-                                        type="light"
-                                        textColor="#505050"
-                                        place="bottom"
-                                        effect="solid"
-                                        border="5"
-                                    />
-                                </div> 
-                                <h6>
-                                    {
-                                    olderLikes.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes:
-                                    likedPosts.map(n => n.id).includes(post.id)?
-                                    likedPosts.filter(n => n.id === post.id)[0].likes:
-                                     post.likes.length} likes
-                                </h6>
-                                </div>
-                                <div className='postRight'>
+                        </InfiniteScroll>
 
-                                <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
-                                <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
+                        <TrendingList send={sendToHashtag}/>
+                    
+                    </TimelineContent>
+            </TimelineContainer>
 
-                                     <PostContent open={!post.toEdit} >
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
-                                            {post.text}
-                                        </ReactHashtag>
-                                    </PostContent>    
-
-                                    <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
-
-                                    <LinkDetails>
-                                        <div>
-                                            <h3>{post.linkTitle}</h3>
-                                            
-                                            <p className='linkDescription'>{post.linkDescription}</p>
-                                           
-                                            <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
-                                        </div>
-                                        <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
-                                    </LinkDetails>
-                                </div>
-                            </li>   
-                            )
-                        })
-                            )
-                        }
-
-                      
-                    </TimelinePosts>
-
-                    <TrendingList send={sendToHashtag}/>
-                   
-                </TimelineContent>
-        </TimelineContainer>
-
-    </Container>
+        </Container>
     )
 
 
@@ -199,293 +216,25 @@ export default function Timeline(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+        if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(olderLikes.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
     }
 }
 
-const Container = styled.div`
-    font-family: Lato;
-    width: 100%;
-    height: auto;
-    min-height: 100vh;
-    background-color: #333333;
-    display: flex;
-    justify-content: center;
-`;
-
-const TimelineContainer = styled.div`
-    margin-top: 125px;
-    width: 1000px;
-    height: auto;
-    padding-bottom: 30px;
-    
-    @media (max-width:1200px){
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    h1{
-        color: white;
-        margin-bottom: 40px;
-        font-size: 43px;
-        font-family: 'Oswald', sans-serif !important;
-        font-weight: bold;
-        @media (max-width:1200px){
-            margin: 10px auto;
-        }
-        
-    }
-    .trending{
-        background-color: #171717;
-        width: 301px;
-        height: 406px;
-        position: fixed;
-        z-index:0;
-        right: 174px;
-        top: 226px;
-        color: white;
-        border-radius: 16px;
-        @media (max-width: 1200px){
-            display: none;
-    
-        }
-    }
-`;
-const TimelinePosts = styled.ul`
-    width: auto;
-    height: auto;
-    display: flex;
-    flex-direction: column;
- 
-    @media (max-width:610px){
-        align-items: center;
-        width: 100%;
-    }
-
-    svg{
-        margin: 40px 180px;
-    }
-
-    li{
-        display: flex;       
-        margin-top:10px;
-        min-height:276px;
-        height: auto;
-        border-radius:16px;
-        background-color: #171717;
-        color: white;
-        width: 610px;
-
-        @media (max-width:610px){
-            width: 90%;
-        }
-    }
-
-    .postRight{
-        width: 503px;
-        height: auto;
-
-       @media (max-width:1200px){
-           width: 80%;
-       }
-
-       h2{
-            font-family: 'Lato', sans-serif!important;
-           font-size: 19px;
-           color: #fff;
-           margin: 20px 20px 7px 20px;
-       }
-
-       .postText{
-           width: 502px;
-           height: auto;
-           margin-left: 20px;
-           color: #a3a3a3;
-           font-family: 'Lato', sans-serif!important;
-           font-size: 17px;
-
-           @media (max-width:1200px){
-                width: 20%;
-            }
-        }
-    }
-
-    .postLeft{
-        width: 87px;
-        min-height: 230px;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-       img{
-           border-radius:50%;
-           width: 50px;
-           height: 50px;
-           margin-top: 20px;
-       }
-       h6{
-        font-family: 'Lato', sans-serif!important;
-        font-size: 11px;
-        margin-top: 10px;
-       }
-       .ion-icon{
-           margin-top: -30px;
-           height: 60px;
-       }
-    }
-`;
-
-const TimelineContent= styled.div`
-    display: flex;
-    justify-content:  space-between;
-    height: auto;
-
-    @media (max-width: 1200px){
-        justify-content: center;
-    }  
-`;
-
-const LinkDetails = styled.div`
-    width: 503px;
-    height:155px;
-    border: 1px solid #4D4D4D;
-    margin: 20px 0;
-    border-radius: 16px;
-    display: flex;
-    color: #CECECE;
-
-    @media (max-width:1200px){
-        width: 100%;
-    }
-
-    div{
-        width: 350px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding-left:20px;
-        
-        @media (max-width:1200px){
-            width: 70%;
-        }
-
-            h3{
-                width: 250px;
-                min-height: 38px;
-                height: auto;
-                font-size: 20px;
-                color: #cecece;
-                font-family: 'Lato', sans-serif!important;
-                font-size: 16px;
-            }
-
-            .linkDescription{
-                width: 302px;
-                min-height: 40px;
-                height: auto;
-                font-size: 11px;
-                font-family: 'Lato', sans-serif!important;
-                color: #9B9595;
-            }
-
-        a{
-            font-size: 13px;
-            width: 263px;
-            height: auto;
-            color: white;
-            white-space: pre-wrap;  
-            word-wrap: break-word; 
-        }
-        
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-            
-        a:hover{
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }            
-    }
-    img{
-        width: 153px;
-        height: 155px;
-        border-radius: 0px 12px 13px 0px;
-    
-        @media (max-width:1200px){
-            width: 30%;
-        }
-    }
-
-    img:hover{
-        cursor: pointer;
-    }
-`;
-
-const Title = styled.h1`
-    font-family: Oswald;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 43px;
-    line-height: 64px;
-    color: white;
-`;
-
-const UserName = styled.p`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 19px;
-    line-height: 23px;
-    color: white;
-    margin-top: 19px;
-`;
-
-const PostContent = styled.p`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 17px;
-    line-height: 20px;
-    margin-top: 10px;
-    color: #B7B7B7;
-    display: ${(props) => (props.open) ? 'initial' : 'none'};
-
-`;
-
-const NoPostsYet = styled.p`
-    font-size: 30px;
-    color: white;
-    margin-top: 20px;
-`;
