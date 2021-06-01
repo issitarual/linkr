@@ -93,22 +93,15 @@ export default function OtherUsersPosts(){
 
                 
                     <Posts noPostsMessage={'Este usuário não postou nada'}
-                            //update={update}
                             serverLoading={serverLoading}
                             allPosts={usersPosts}
-                            //goToUserPosts={goToUserPosts}
                             olderLikes={olderLikes}
                             likedPosts={likedPosts}
                             user={user}
                             like={like}
-                           // tryingToEdit={tryingToEdit}
-                          //  config={config}
                             inputRef={inputRef}
-                           // setTimelineRef={setTimelineRef}
                             goToLink={goToLink}
-                            
-                                        
-                    />
+                     />
                     
                     <TrendingList send={sendToHashtag}/>
 

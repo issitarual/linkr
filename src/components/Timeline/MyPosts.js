@@ -124,11 +124,11 @@ export default function MyPosts(){
                             tryingToEdit={tryingToEdit}
                             config={config}
                             inputRef={inputRef}
-                            
                             goToLink={goToLink}
+                />
+                            
                             
                                         
-                    />
                     
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>

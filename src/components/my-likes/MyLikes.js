@@ -97,7 +97,6 @@ export default function MyLikes(){
 
                 
                     <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
-                            //update={update}
                             serverLoading={serverLoading}
                             allPosts={allPosts}
                             goToUserPosts={goToUserPosts}
@@ -105,14 +104,12 @@ export default function MyLikes(){
                             likedPosts={likedPosts}
                             user={user}
                             like={like}
-                            //tryingToEdit={tryingToEdit}
-                           // config={config}
                             inputRef={inputRef}
-                            //setTimelineRef={setTimelineRef}
                             goToLink={goToLink}
+                    />
+                        
                             
                                         
-                    />
                     
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>

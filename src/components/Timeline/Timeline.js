@@ -200,11 +200,11 @@ export default function Timeline(){
                                         tryingToEdit={tryingToEdit}
                                         config={config}
                                         inputRef={inputRef}
-                                  
                                         goToLink={goToLink}
+                                />
+                                  
                                         
                                                     
-                                />
 
                             </InfiniteScroll>
 
