@@ -187,10 +187,6 @@ export default function Timeline(){
                                 className='x'
                             >
                                 <NewPost update={update} />
-<<<<<<< HEAD
-
-=======
->>>>>>> main
                                 <Posts noPostsMessage={'Nenhum post encontrado'}
                                         update={update}
                                         serverLoading={serverLoading}

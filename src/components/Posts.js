@@ -27,10 +27,6 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 
 return(
 <TimelinePosts>
-<<<<<<< HEAD
-=======
-
->>>>>>> main
     {serverLoading 
         ? <Loader type="Circles" className='loader' color="#FFF"  />
         : (allPosts.length===0 
