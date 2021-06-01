@@ -187,7 +187,7 @@ export default function Timeline(){
                                 loader={<div className="x" key={0}>Loading ...</div>}
                                 className='x'
                             >
-                                
+                                <NewPost update={update} />
                                 <Posts noPostsMessage={'Nenhum post encontrado'}
                                         update={update}
                                         serverLoading={serverLoading}
