@@ -1,17 +1,16 @@
-import {useContext, useEffect,useState} from 'react';
+import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
 import axios from 'axios';
-import ReactHashtag from "react-hashtag";
 import {useParams,useHistory} from 'react-router-dom';
-import Loader from "react-loader-spinner";
-import { HeartOutline, HeartSharp} from 'react-ionicons';
-import ReactTooltip from 'react-tooltip';
 import TrendingList from './TrendingList';
-import Repost from './Repost.js';
+
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,PostComment} from '../timelineStyledComponents'
+import {TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
+
+
+/*import dos Posts*/
+import Posts from '../Posts'
     
 
 export default function OtherUsersPosts(){
@@ -21,11 +20,13 @@ export default function OtherUsersPosts(){
 
     const {user} = useContext(UserContext)
 
-    const [posts,setPosts] = useState([])
+    const [hashtagPosts,setHashtagPosts] = useState([])
 
     const [serverLoading,setServerLoading] = useState(true)
     const [olderLikes, SetOlderLikes] = useState([]);
     const [likedPosts, SetLikedPosts] = useState([]);
+
+    const inputRef = useRef([])
 
     const config = {
         headers:{
@@ -43,7 +44,7 @@ export default function OtherUsersPosts(){
 
         getPosts.then((response)=>{
             const newArray = response.data.posts
-            setPosts(newArray)
+            setHashtagPosts(newArray)
            setServerLoading(false) 
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -104,91 +105,23 @@ export default function OtherUsersPosts(){
                 
                 <TimelineContent>
 
-                    <TimelinePosts>
-                       
-
-                        {serverLoading 
-                            ? <Loader type="Circles" className='loader' color="#FFF"  />
-                            : (posts.length===0 
-                                ? <>Você ainda não postou nada</>
-                                :posts.map((post)=>{
-                            return(
-                            <li key={post.id} id={post.id}>
-                                <div className='postLeft'>
-                                <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
-                                <div className ="ion-icon" data-tip={
-                                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
-                                    likedPosts.map(n => n.id).includes(post.id)? 
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
-                                    post.likes.length === 0? "0 pessoas":
-                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
-                                } 
-                                    onClick={() => like(post.id)}>
-                                    {likedPosts.map(n=>n.id).includes(post.id)?                                  
-                                    <HeartSharp
-                                        color={'#AC2B25'} 
-                                        height="25px"
-                                        width="25px"
-                                    />:
-                                    <HeartOutline
-                                        color={'#fff'} 
-                                        height="25px"
-                                        width="25px"
-                                    />
-                                    }
-                                    <ReactTooltip 
-                                        type="light"
-                                        textColor="#505050"
-                                        place="bottom"
-                                        effect="solid"
-                                        border="5"
-                                    />
-                                </div> 
-                                <h6>
-                                    {
-                                    olderLikes.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes:
-                                    likedPosts.map(n => n.id).includes(post.id)?
-                                    likedPosts.filter(n => n.id === post.id)[0].likes:
-                                     post.likes.length} likes
-                                </h6>
-                                <Repost id={post.id}/>
-                                </div>
-                                <div className='postRight'>
-                                <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>
-                                    <PostComment>
-                                        <ReactHashtag 
-                                            onHashtagClick={(val) => sendToHashtag(val)}
-                                            renderHashtag={(hashtagValue) => (
-                                                <Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
-                                           )}
-                                        >
-                                            {post.text}
-                                        </ReactHashtag>
-                                    </PostComment>
-                                    <LinkDetails>
-                                        <PostInfo>
-                                            <h3>{post.linkTitle}</h3>
-                                            
-                                            <LinkDescription className='linkDescription'>{post.linkDescription}</LinkDescription>
-                                           
-                                            <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
-                                        </PostInfo>
-                                        <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
-                                    </LinkDetails>
-                                </div>
-                            </li>   
-                            )
-                        })
-                            )
-                        }
-                    </TimelinePosts>
+                <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
+                           // update={update}
+                            serverLoading={serverLoading}
+                            allPosts={hashtagPosts}
+                            goToUserPosts={goToUserPosts}
+                            olderLikes={olderLikes}
+                            likedPosts={likedPosts}
+                            user={user}
+                            like={like}
+                            //tryingToEdit={tryingToEdit}
+                          //  config={config}
+                            inputRef={inputRef}
+                            //setTimelineRef={setTimelineRef}
+                            goToLink={goToLink}
+                            
+                                        
+                    />
 
                     <TrendingList send={sendToHashtag}/>
 

@@ -26,6 +26,8 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
             window.removeEventListener('keydown', nomeQualquer);
         }
     }
+  
+
     },[toEdit,newValue])
 
     function textToServer (text) {
