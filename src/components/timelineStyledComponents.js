@@ -146,7 +146,7 @@ const TimelinePosts = styled.ul`
     
     @media (max-width:610px){
         align-items: center;
-        width: 100%;
+        width: 90%;
         min-width:360px;
     }
 

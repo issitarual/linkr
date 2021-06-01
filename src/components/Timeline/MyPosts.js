@@ -11,16 +11,14 @@ import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyl
 /*import dos Posts*/
 import Posts from '../Posts'
 
-export default function MyPosts(){
-    const history=useHistory()
-    const {user} = useContext(UserContext)
-    const [myPosts,setMyPosts] = useState([])
-    const [serverLoading,setServerLoading] = useState(true)
-    const [likedPosts, SetLikedPosts] = useState([]);
-    const [olderLikes, SetOlderLikes] = useState([]);
-
-   const inputRef = useRef([])
-   
+export default function MyPosts({goToLink}){
+    const history=useHistory();
+    const {user} = useContext(UserContext);
+    const [myPosts,setMyPosts] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
+    const [likedPosts, setLikedPosts] = useState([]);
+    const [olderLikes, setOlderLikes] = useState([]);
+    const inputRef = useRef([]);
 
    const config = {
     headers:{
@@ -32,29 +30,29 @@ export default function MyPosts(){
         update();
     },[])
 
-        function update () {
-            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
+    function update () {
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-             const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
-           setMyPosts(newArray)
+                const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
+            setMyPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-        }
+    }
 
     function tryingToEdit(id,canCallRef) {
         let postsToEdit = myPosts.map((p) => {
@@ -67,13 +65,12 @@ export default function MyPosts(){
         setMyPosts([...postsToEdit]);
 
        
-      setTimeout(()=>{
+        setTimeout(()=>{
 
-        inputRef.current[id].focus()
-       },100) 
+            inputRef.current[id].focus()
+        },100) 
     
     }
-
 
   function goToLink(e,link){
         e.preventDefault()
@@ -92,13 +89,6 @@ export default function MyPosts(){
             history.push(`/my-posts`)
         }
     }
-
-    function RepostButton(id){
-        window.confirm("Você quer respostar esse link?");
-        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
-        requestRepost.then(() => console.log("deu bom"));
-        requestRepost.catch(() => console.log("deu ruim"));
-    }
    
     return( 
       
@@ -109,24 +99,23 @@ export default function MyPosts(){
                 
                 <TimelineContent>
 
-                <Posts noPostsMessage={'Você ainda não postou nada'}
-                            update={update}
-                            serverLoading={serverLoading}
-                            allPosts={myPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            tryingToEdit={tryingToEdit}
-                            config={config}
-                            inputRef={inputRef}
-                            //setTimelineRef={setTimelineRef}
-                            goToLink={goToLink}
-                            
-                                        
+                    <Posts noPostsMessage={'Você ainda não postou nada'}
+                        update={update}
+                        serverLoading={serverLoading}
+                        allPosts={myPosts}
+                        goToUserPosts={goToUserPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        tryingToEdit={tryingToEdit}
+                        config={config}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
                     />
-                    
+                                
+                                
+                                        
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>
@@ -139,33 +128,22 @@ export default function MyPosts(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+        if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(olderLikes.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }

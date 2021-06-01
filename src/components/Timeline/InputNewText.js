@@ -6,28 +6,29 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     const inputRef = useRef();
     const [newValue, setNewValue] = useState('');
 
-   
     if(toEdit){
         console.log("passando por aqui");
         inputRef.current.focus();
     }
-        
     
-
     useEffect(()=>{
         if (toEdit){
         const nomeQualquer = (event)=> {
             if (event.keyCode===13){
                 textToServer(newValue);
             }
+
+            if (event.keyCode===27){
+                tryingToEdit(id)
+                setNewValue(post.text)
+                
+            }
         }
         window.addEventListener("keydown", nomeQualquer);
         return() => {
             window.removeEventListener('keydown', nomeQualquer);
+        }   
         }
-    }
-  
-
     },[toEdit,newValue])
 
     function textToServer (text) {
@@ -40,7 +41,6 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         
 
         const promise = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, body, config).then((success)=>{
-            tryingToEdit(id);
             update();
         }).catch((error)=>{
             alert('não foi possível salvar as alterações')
@@ -54,9 +54,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         }} readOnly={!post.toEdit} open={post.toEdit}>
             {post.text}
         </InputField>
-        
     )
-
 }
 
 const InputField = styled.textarea`
@@ -71,4 +69,4 @@ const InputField = styled.textarea`
     font-weight: 400;
     color: #4c4c4c;
     font-size: 14px;   
-`
+`;

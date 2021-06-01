@@ -7,6 +7,9 @@ import TrendingList from '../hashtag/TrendingList';
 /*import dos Posts*/
 import Posts from '../Posts'
 
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
+
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
 
@@ -23,21 +26,19 @@ export default function Timeline(){
     const inputRef = useRef([]);
     const [timelineRef,setTimelineRef] = useState(false);
 
-
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
     }
-
+    
     useEffect(()=>{
-            update()        
+        update()        
     },[]);
 
 
-   UseInterval(() => {
+    UseInterval(() => {
         const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-
         getNewPosts.then((response)=>{
         
             setAllPosts(response.data.posts)
@@ -46,8 +47,8 @@ export default function Timeline(){
 
     }, 15000); 
 
-
     function update () {
+        
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
         
@@ -59,13 +60,11 @@ export default function Timeline(){
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
-
-           
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{           
@@ -109,12 +108,7 @@ export default function Timeline(){
         ) 
     }
 
-   
-
     return( 
-      
-    <Container>
-        
         <TimelineContainer>
         <Title>timeline</Title> 
 
@@ -139,8 +133,6 @@ export default function Timeline(){
                    
                 </TimelineContent>
         </TimelineContainer>
-
-    </Container>
     )
 
 
@@ -165,14 +157,19 @@ export default function Timeline(){
         else if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }

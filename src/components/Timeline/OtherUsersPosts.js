@@ -38,15 +38,15 @@ export default function OtherUsersPosts(){
            setUsersPosts(newArray)
             setPageUser(response.data.posts[0].user.username)
           setServerLoading(false) 
-           let sharpedHeart = []
-           newArray.forEach( post => {
-               post.likes.forEach(n =>{
-               if(n.userId === user.user.id){
-                   sharpedHeart.push({id: post.id, likes: post.likes.length})
-               }})
-           })
-           SetLikedPosts(sharpedHeart)
-           SetOlderLikes(sharpedHeart);
+          let sharpedHeart = []
+          newArray.forEach( post => {
+              post.likes.forEach(n =>{
+              if(n.userId === user.user.id){
+                  sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
+              }})
+          })
+          setLikedPosts(sharpedHeart);
+          setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
@@ -54,12 +54,6 @@ export default function OtherUsersPosts(){
             return
         })
     },[])
-
-
-  function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
@@ -79,21 +73,14 @@ export default function OtherUsersPosts(){
 
                 
                     <Posts noPostsMessage={'Este usuário não postou nada'}
-                            //update={update}
-                            serverLoading={serverLoading}
-                            allPosts={usersPosts}
-                            //goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                           // tryingToEdit={tryingToEdit}
-                           // config={config}
-                            inputRef={inputRef}
-                           // setTimelineRef={setTimelineRef}
-                            goToLink={goToLink}
-                            
-                                        
+                        serverLoading={serverLoading}
+                        allPosts={usersPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
                     />
                     
                     <TrendingList send={sendToHashtag}/>
@@ -109,33 +96,22 @@ export default function OtherUsersPosts(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+        if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(olderLikes.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
