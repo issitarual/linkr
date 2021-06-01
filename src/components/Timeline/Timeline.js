@@ -15,6 +15,9 @@ import InputNewText from './InputNewText';
 /*import dos Posts*/
 import Posts from '../Posts'
 
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
+
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
 Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
@@ -32,22 +35,67 @@ export default function Timeline(){
 
     const inputRef = useRef([])
 
-    const [timelineRef,setTimelineRef] = useState(false)
+    /*Logics of infinite Scroller*/ 
+    const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+    const[hasMore,setHasMore] = useState(true)
+
+    //const [timelineRef,setTimelineRef] = useState(false)
 
     useEffect(()=>{
-            update()        
+            update({/*{ _limit: 2 }*/})        
     },[]);
 
 
-   UseInterval(() => {
-    console.log('novos posts')
+  UseInterval(() => {
+    // //console.log('novos posts')
+    // const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+
+    // getNewPosts.then((response)=>{
+     
+    //   const newPosts =  response.data.posts.filter((post)=>{
+    //         if(allPosts.includes(post.id)){
+    //             return false
+    //         }
+    //     })
+        
+    //     setAllPosts([newPosts,...allPosts])
+
+    // })
+
+
     const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
 
     getNewPosts.then((response)=>{
      
-        setAllPosts(response.data.posts)
+    // console.log(response.data.posts)
+
+     //console.log('Atualizou posts')
+    // alert('Atualizou posts')
+       
+     const x = allPosts[0]
+
+       let z='x'
+
+       response.data.posts.forEach((post,index)=>{
+            if(post.id===x.id){
+                z=index
+            }
+       })
+
+       //console.log(z)
+
+       const newPosts = response.data.posts.splice(0,z)
+
+       //console.log([...newPosts,...allPosts])
+
+       
+
+    
+    
+        setAllPosts([...newPosts,...allPosts])
 
     })
+    
 
        }, 15000); 
 
@@ -57,15 +105,50 @@ export default function Timeline(){
         }
     }
 
-    function update (i) {
-         console.log('chamou update de:' + i)
+    function partialUpdate(limit){
+        console.log(maxNumberOfPosts)
+        setTimeout(()=>{
+            const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        
+        getPosts.then((response)=>{
+            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+            
+           
+            console.log(newArray)
+            const partial = newArray.slice(0,limit)
+            console.log(partial)
+            setAllPosts(partial)
+            //setServerLoading(false)
+            let sharpedHeart = []
+            newArray.forEach( post => {
+                post.likes.forEach(n =>{
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                }})
+            })
+            SetLikedPosts(sharpedHeart)
+            SetOlderLikes(sharpedHeart);
+
+           
+        })
+
+        },1000)
+
+       maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
+    }
+
+    function update () {
+        
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-           // console.log(response)
-            setAllPosts(newArray)
+            setMaxNumberOfPosts(response.data.posts.length)
+            console.log(newArray)
+            const partial = newArray.slice(0,2)
+            console.log(partial)
+            setAllPosts(partial)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -122,14 +205,57 @@ export default function Timeline(){
            },100) 
     }
 
+    function checkNewPost(){
+         //console.log('novos posts')
+    const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+
+    getNewPosts.then((response)=>{
+     
+    // console.log(response.data.posts)
+       
+     const x = allPosts[0]
+
+       let z='x'
+
+       response.data.posts.forEach((post,index)=>{
+            if(post.id===x.id){
+                z=index
+            }
+       })
+
+       console.log(z)
+
+       const newPosts = response.data.posts.splice(0,z)
+
+       console.log([...newPosts,...allPosts])
+
+       
+
+    
+    
+        setAllPosts([...newPosts,...allPosts])
+
+    })
+    }
+
     return( 
       
     <Container>
         
         <TimelineContainer>
         <Title>timeline</Title> 
-
+        <button onClick={()=>console.log(hasMore)}>Check hasMore</button>
+        <button onClick={()=>console.log(maxNumberOfPosts)}>Check maxNumber</button>
+        <button onClick={()=>console.log(allPosts.length)}>Check currentNumberMore</button>
+        <button onClick={checkNewPost}>Check NewPost</button>
                 <TimelineContent>
+                    
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={() => partialUpdate( allPosts.length + 2 )}
+                    hasMore={hasMore}
+                    loader={<div className="loader" key={0}>Loading ...</div>}
+                >
                     <Posts noPostsMessage={'Nenhum post encontrado'}
                             update={update}
                             serverLoading={serverLoading}
@@ -142,11 +268,13 @@ export default function Timeline(){
                             tryingToEdit={tryingToEdit}
                             config={config}
                             inputRef={inputRef}
-                            setTimelineRef={setTimelineRef}
+                           // setTimelineRef={setTimelineRef}
                             goToLink={goToLink}
                             
                                         
                     />
+
+                </InfiniteScroll>
 
                     <TrendingList send={sendToHashtag}/>
                    
