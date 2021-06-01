@@ -89,9 +89,9 @@ export default function MyPosts(){
     }
 
     function sendToHashtag(val){
-        console.log(val)
-        //const newVal = val.replace('#',"")
-       // history.push(`/hashtag/${newVal}`)
+        
+        const newVal = val.replace('#',"")
+        history.push(`/hashtag/${newVal}`)
     }
 
     function goToUserPosts(id){
@@ -124,7 +124,7 @@ export default function MyPosts(){
                             tryingToEdit={tryingToEdit}
                             config={config}
                             inputRef={inputRef}
-                            //setTimelineRef={setTimelineRef}
+                            
                             goToLink={goToLink}
                             
                                         

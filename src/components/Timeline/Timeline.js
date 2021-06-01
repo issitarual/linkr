@@ -39,10 +39,10 @@ export default function Timeline(){
     const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
     const[hasMore,setHasMore] = useState(true)
 
-    //const [timelineRef,setTimelineRef] = useState(false)
+    
 
     useEffect(()=>{
-            update({/*{ _limit: 2 }*/})        
+            update()        
     },[]);
 
 
@@ -78,7 +78,7 @@ export default function Timeline(){
     }
 
     function partialUpdate(limit){
-        console.log(maxNumberOfPosts)
+        
         setTimeout(()=>{
             const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         
@@ -110,9 +110,9 @@ export default function Timeline(){
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
             setMaxNumberOfPosts(response.data.posts.length)
-            console.log(newArray)
+            
             const partial = newArray.slice(0,2)
-            console.log(partial)
+            
             setAllPosts(partial)
             setServerLoading(false)
             let sharpedHeart = []
@@ -200,7 +200,7 @@ export default function Timeline(){
                                         tryingToEdit={tryingToEdit}
                                         config={config}
                                         inputRef={inputRef}
-                                    // setTimelineRef={setTimelineRef}
+                                  
                                         goToLink={goToLink}
                                         
                                                     

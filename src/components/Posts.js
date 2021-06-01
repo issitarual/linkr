@@ -87,7 +87,7 @@ return(
 
                  <PostContent open={!post.toEdit} >
                     <ReactHashtag 
-                    //onHashtagClick={(val) => sendToHashtag(val)}
+                    
                     renderHashtag={(hashtagValue) => (
                         <Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
                         
