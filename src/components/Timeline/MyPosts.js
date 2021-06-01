@@ -1,7 +1,7 @@
 import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
-import { RepeatOutline, HeartOutline, HeartSharp } from 'react-ionicons';
+import {HeartOutline, HeartSharp } from 'react-ionicons';
 import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
@@ -9,10 +9,11 @@ import ReactHashtag from "react-hashtag";
 import TrendingList from './TrendingList';
 import InputNewText from './InputNewText';
 import ActionsPost from './ActionsPost';
+import Repost from './Repost.js';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent, Repost} from '../timelineStyledComponents'
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
 
 
 
@@ -164,13 +165,7 @@ export default function MyPosts(){
                                     post.likes.length
                                     } likes
                                 </h6>
-                                <div className = "ion-icon" onClick = {() => RepostButton(post.id)}>
-                                    <RepeatOutline
-                                        color={'#ffffff'}
-                                        height="25px"
-                                        width="25px"
-                                    />
-                                </div>
+                                <Repost id={post.id}/>
                                 </div>
 
                                 <div className='postRight'>

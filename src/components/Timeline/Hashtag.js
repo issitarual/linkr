@@ -4,13 +4,14 @@ import axios from 'axios';
 import ReactHashtag from "react-hashtag";
 import {useParams,useHistory} from 'react-router-dom';
 import Loader from "react-loader-spinner";
-import { HeartOutline, HeartSharp, RepeatOutline } from 'react-ionicons';
+import { HeartOutline, HeartSharp} from 'react-ionicons';
 import ReactTooltip from 'react-tooltip';
 import TrendingList from './TrendingList';
+import Repost from './Repost.js';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment, Repost} from '../timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag,TimelineContainer,
+Container,TimelinePosts,TimelineContent,LinkDetails,PostComment} from '../timelineStyledComponents'
     
 
 export default function OtherUsersPosts(){
@@ -157,13 +158,7 @@ export default function OtherUsersPosts(){
                                     likedPosts.filter(n => n.id === post.id)[0].likes:
                                      post.likes.length} likes
                                 </h6>
-                                <div className = "ion-icon" onClick = {() => RepostButton(post.id)}>
-                                    <RepeatOutline
-                                        color={'#ffffff'}
-                                        height="25px"
-                                        width="25px"
-                                    />
-                                </div>
+                                <Repost id={post.id}/>
                                 </div>
                                 <div className='postRight'>
                                 <h2 id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</h2>

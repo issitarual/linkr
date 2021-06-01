@@ -143,13 +143,7 @@ export default function OtherUsersPosts(){
                                     post.likes.length                                    
                                     } likes
                                 </h6>
-                                <div className = "ion-icon" onClick = {() => RepostButton(post.id)}>
-                                    <RepeatOutline
-                                        color={'#ffffff'}
-                                        height="25px"
-                                        width="25px"
-                                    />
-                                </div>
+                                <Repost id={post.id}/>
                                 </div>
                                 <div className='postRight'>
                                 <UserName id={post.user.id}>{post.user.username}</UserName>

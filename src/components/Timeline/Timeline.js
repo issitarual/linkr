@@ -8,8 +8,9 @@ import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import ActionsPost from './ActionsPost';
 import TrendingList from './TrendingList';
-import { HeartOutline, HeartSharp, RepeatOutline } from 'react-ionicons';
+import { HeartOutline, HeartSharp} from 'react-ionicons';
 import InputNewText from './InputNewText';
+import Repost from './Repost';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
@@ -102,13 +103,7 @@ export default function Timeline(){
         ) 
     }
 
-    function RepostButton(id){
-        window.confirm("Você quer respostar esse link?");
-        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
-        requestRepost.then(() => console.log("deu bom"));
-        requestRepost.catch(() => console.log("deu ruim"));
-
-    }
+   
 
     return( 
       
@@ -171,14 +166,8 @@ export default function Timeline(){
                                     likedPosts.filter(n => n.id === post.id)[0].likes:
                                      post.likes.length} likes
                                 </h6>
-
-                                <div className = "ion-icon" onClick = {() => RepostButton(post.id)}>
-                                    <RepeatOutline
-                                        color={'#ffffff'}
-                                        height="25px"
-                                        width="25px"
-                                    />
-                                </div>
+                                
+                                <Repost id={post.id}/>
 
                                 </div>
                                 <div className='postRight'>
