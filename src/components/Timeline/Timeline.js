@@ -2,8 +2,7 @@ import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
-import TrendingList from './TrendingList';
-
+import TrendingList from '../hashtag/TrendingList';
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -15,16 +14,21 @@ import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineSty
 import UseInterval from '../UseInterval'
 
 export default function Timeline(){
-    const history = useHistory()
+    const history = useHistory();
     const [likedPosts, SetLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, SetOlderLikes] = useState([]); 
+    const inputRef = useRef([]);
+    const [timelineRef,setTimelineRef] = useState(false);
 
-    const inputRef = useRef([])
 
-    const [timelineRef,setTimelineRef] = useState(false)
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    }
 
     useEffect(()=>{
             update()        
@@ -32,22 +36,16 @@ export default function Timeline(){
 
 
    UseInterval(() => {
-    console.log('novos posts')
-    const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
 
-    getNewPosts.then((response)=>{
-     
-        setAllPosts(response.data.posts)
+        getNewPosts.then((response)=>{
+        
+            setAllPosts(response.data.posts)
 
-    })
+        })
 
-       }, 15000); 
+    }, 15000); 
 
-    const config = {
-        headers:{
-            'Authorization' : `Bearer ${user.token}`
-        }
-    }
 
     function update (i) {
          console.log('chamou update de:' + i)
@@ -80,13 +78,11 @@ export default function Timeline(){
         
     function goToLink(e,link){
         e.preventDefault()
-       window.open(link)
+        window.open(link)
     }  
 
     function sendToHashtag(val){
-       
         const newVal = val.replace('#',"")
-        
         history.push(`/hashtag/${newVal}`)
     }
 
@@ -154,11 +150,6 @@ export default function Timeline(){
 
 
     function like (id){
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${user.token}`
-            }
-        }
         if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {

@@ -2,7 +2,7 @@ import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
-import TrendingList from './TrendingList';
+import TrendingList from '../hashtag/TrendingList';
 
 
 /*import de style components*/

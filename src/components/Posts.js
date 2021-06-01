@@ -5,7 +5,8 @@ import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import ActionsPost from './Timeline/ActionsPost';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
-import InputNewText from './Timeline/InputNewText'
+import InputNewText from './Timeline/InputNewText';
+import Repost from './repost/Repost';
 
 
 
@@ -73,6 +74,7 @@ return(
                 likedPosts.filter(n => n.id === post.id)[0].likes:
                  post.likes.length} likes
             </h6>
+            <Repost id={post.id} />
             </div>
             <div className='postRight'>
 

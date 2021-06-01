@@ -10,7 +10,7 @@ import MyPosts from './Timeline/MyPosts';
 import OtherUsersPosts from './Timeline/OtherUsersPosts';
 import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
-import Hashtag from './Timeline/Hashtag';
+import Hashtag from './hashtag/Hashtag';
 
 
 
