@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useContext ,useEffect} from 'react';
 import UserContext from '../UserContext';
+import { LocationOutline } from 'react-ionicons'
 
 export default function NewPost ({update}) {
 
@@ -10,7 +11,7 @@ export default function NewPost ({update}) {
   const [disabled, letDisabled] = useState(false);
   const [buttonText, letButtonText] = useState('Publicar');
   const { user ,setUser} = useContext(UserContext);
-
+  
   function createNewPost (event) {
 
     event.preventDefault();
@@ -73,10 +74,31 @@ export default function NewPost ({update}) {
           />
           <Button disabled={disabled}>{buttonText}</Button>
         </Form>
+        <ShowLocation>
+          <LocationOutline
+            color={'#949494'} 
+            height="15px"
+            width="15px"
+          />
+          <p> Localização ativada</p>
+        </ShowLocation>
       </Post>
   );
 
 }
+
+const ShowLocation = styled.div`
+  color: #949494;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 90px;
+  bottom: 24px;
+  p {
+    font-size: 13px;
+  }
+
+`;
 
 const Post = styled.div`
   background-color: white;
@@ -87,6 +109,7 @@ const Post = styled.div`
   padding-right: 22px;
   padding-bottom: 16px;
   font-family: Lato;
+  position: relative;
 
   @media (max-width:610px){
             width: 90%;
@@ -167,3 +190,4 @@ const Button = styled.button`
   }
 `;
     
+

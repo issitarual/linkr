@@ -82,11 +82,7 @@ export default function Timeline({goToLink}){
             const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         
         getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false, geolocation: {
-                "latitude": '',
-                "longitude": ''
-            }
-        })));
+            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
 
             const partial = newArray.slice(0,limit)
             setAllPosts(partial)
@@ -101,7 +97,7 @@ export default function Timeline({goToLink}){
             setOlderLikes(sharpedHeart);
         })
 
-        },1000)
+        },15000)
 
        maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
     }
@@ -128,6 +124,8 @@ export default function Timeline({goToLink}){
             })
             setLikedPosts(sharpedHeart);
             setOlderLikes(sharpedHeart);
+            console.log(newArray)
+
         })
 
         getPosts.catch((responseError)=>{           
@@ -135,8 +133,6 @@ export default function Timeline({goToLink}){
             return
         })
     }
-        
-   
 
     function sendToHashtag(val){
        
@@ -168,7 +164,6 @@ export default function Timeline({goToLink}){
             inputRef.current[id].focus()
            },100) 
     }
-
    
     return( 
         
