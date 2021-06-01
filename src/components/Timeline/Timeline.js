@@ -47,14 +47,12 @@ export default function Timeline(){
     }, 15000); 
 
 
-    function update (i) {
-         console.log('chamou update de:' + i)
+    function update () {
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-           // console.log(response)
             setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
