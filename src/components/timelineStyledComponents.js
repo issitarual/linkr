@@ -308,8 +308,7 @@ const NoPostsYet = styled.p`
     margin-top: 20px;
 `;
 
-
-export {PostInfo}
+export{PostInfo}
 export{LinkDescription}
 export{Links}
 export{Hashtag}

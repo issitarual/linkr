@@ -1,8 +1,7 @@
-import styled from 'styled-components'
 import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
-import { ConstructOutline, HeartOutline, HeartSharp } from 'react-ionicons';
+import { RepeatOutline, HeartOutline, HeartSharp } from 'react-ionicons';
 import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
@@ -13,7 +12,7 @@ import ActionsPost from './ActionsPost';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent, Repost} from '../timelineStyledComponents'
 
 
 
@@ -21,9 +20,9 @@ export default function MyPosts(){
     const history=useHistory()
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
-   const [likedPosts, SetLikedPosts] = useState([]);
-   const [olderLikes, SetOlderLikes] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true)
+    const [likedPosts, SetLikedPosts] = useState([]);
+    const [olderLikes, SetOlderLikes] = useState([]);
 
    const inputRef = useRef([])
    
@@ -91,8 +90,15 @@ export default function MyPosts(){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
     }
+
+    function RepostButton(id){
+        window.confirm("Você quer respostar esse link?");
+        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
+        requestRepost.then(() => console.log("deu bom"));
+        requestRepost.catch(() => console.log("deu ruim"));
+    }
    
-     return( 
+    return( 
       
     <Container>
         
@@ -158,6 +164,13 @@ export default function MyPosts(){
                                     post.likes.length
                                     } likes
                                 </h6>
+                                <div className = "ion-icon" onClick = {() => RepostButton(post.id)}>
+                                    <RepeatOutline
+                                        color={'#ffffff'}
+                                        height="25px"
+                                        width="25px"
+                                    />
+                                </div>
                                 </div>
 
                                 <div className='postRight'>
@@ -168,7 +181,7 @@ export default function MyPosts(){
                                         <ReactHashtag 
                                             onHashtagClick={(val) => sendToHashtag(val)}
                                             renderHashtag={(hashtagValue) => (
-                                                <Hashtag>{hashtagValue}</Hashtag>
+                                                <Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
                                            )}
                                         >
                                             {post.text}
