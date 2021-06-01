@@ -101,7 +101,6 @@ export default function Header (){
         promess.then(success => {
             setOtherUsers(success.data.users);
             setStateSearch(true);
-            console.log(success);
         });
         promess.catch(error => alert("Ocorreu um erro, tente novamente!"));
     }
