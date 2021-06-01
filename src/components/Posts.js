@@ -89,7 +89,8 @@ return(
                 } likes
             </h6>
             <div className = "ion-icon">
-                <ChatbubblesOutline
+                <ChatbubblesOutline 
+                    onClick={() => alert(post.id)}
                     color={'#fff'} 
                     height="25px"
                     width="25px"
