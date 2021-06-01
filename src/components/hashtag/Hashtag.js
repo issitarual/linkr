@@ -4,10 +4,8 @@ import axios from 'axios';
 import {useParams,useHistory} from 'react-router-dom';
 import TrendingList from './TrendingList';
 
-
 /*import de style components*/
 import {TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
-
 
 /*import dos Posts*/
 import Posts from '../Posts'
