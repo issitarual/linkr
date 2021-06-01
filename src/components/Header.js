@@ -16,6 +16,7 @@ export default function Header (){
     const { user } = useContext(UserContext);
     const [search, setSearch] = useState("");   
     const [otherUsers, setOtherUsers] = useState([]);
+    const [stateSearch, setStateSearch] = useState(false);
     
     return(
         <ContainerHeader state={state}>
@@ -25,7 +26,7 @@ export default function Header (){
             <InputGroup>
                 <DebounceInput
                     placeholder="Search for people and friends"
-                    minLength={3}
+                    minLength={0}
                     debounceTimeout={300}
                     value={search}
                     onChange={e => {
@@ -54,12 +55,12 @@ export default function Header (){
                 }
                 <img src={user.user.avatar}/>
             </span>
-            <Usernames state = {otherUsers.length > 0}>
+            <Usernames state = {otherUsers.length > 0 && stateSearch}>
                 {otherUsers.length > 0? otherUsers.map(n => 
                     <Users 
                         avatar = {n.avatar} 
                         username = {n.username} 
-                        following = {true} 
+                        following = {n.isFollowingLoggedUser} 
                         id = {n.id}
                         userId = {user.user.id}
                         setOtherUsers = {setOtherUsers}
@@ -87,14 +88,21 @@ export default function Header (){
     }
 
     function searchUser(username){
-        if(username.length < 3) return;
+        if(username.length < 3) {
+            setStateSearch(false);
+            return;
+        }
         const config = {
             headers:{
                 'Authorization' : `Bearer ${user.token}`
             }
         } 
         const promess = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/search?username=${username}`, config)
-        promess.then(success => setOtherUsers(success.data.users));
+        promess.then(success => {
+            setOtherUsers(success.data.users);
+            setStateSearch(true);
+            console.log(success);
+        });
         promess.catch(error => alert("Ocorreu um erro, tente novamente!"));
     }
 
