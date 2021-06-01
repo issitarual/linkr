@@ -17,7 +17,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 /*import dos Posts*/
 import Posts from '../Posts'
 
-export default function MyLikes(){
+export default function MyLikes({goToLink}){
     const history = useHistory()
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
@@ -57,13 +57,6 @@ export default function MyLikes(){
             return
         })
     },[])
-
-    function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }
-
-   
 
     
     function sendToHashtag(val){

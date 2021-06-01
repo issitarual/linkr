@@ -115,6 +115,7 @@ return(
                     <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
                                                        
                 </LinkDetails>
+
             </div>
         </li>   
         )

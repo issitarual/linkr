@@ -18,7 +18,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 /*import dos Posts*/
 import Posts from '../Posts'
 
-export default function MyPosts(){
+export default function MyPosts({goToLink}){
     const history=useHistory()
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
@@ -27,7 +27,7 @@ export default function MyPosts(){
    const [olderLikes, setOlderLikes] = useState([]);
 
    const inputRef = useRef([])
-   
+
 
    const config = {
     headers:{
@@ -81,13 +81,7 @@ export default function MyPosts(){
     
     }
 
-
-
-  function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }
-
+ 
     function sendToHashtag(val){
         
         const newVal = val.replace('#',"")
@@ -112,24 +106,23 @@ export default function MyPosts(){
                 
                 <TimelineContent>
 
-                <Posts noPostsMessage={'Você ainda não postou nada'}
-                            update={update}
-                            serverLoading={serverLoading}
-                            allPosts={myPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            tryingToEdit={tryingToEdit}
-                            config={config}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                />
-                            
-                            
+                    <Posts noPostsMessage={'Você ainda não postou nada'}
+                        update={update}
+                        serverLoading={serverLoading}
+                        allPosts={myPosts}
+                        goToUserPosts={goToUserPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        tryingToEdit={tryingToEdit}
+                        config={config}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
+                    />
+                                
+                                
                                         
-                    
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>

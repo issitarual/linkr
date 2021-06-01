@@ -11,8 +11,7 @@ export default function ActionsPost ({tryingToEdit, toggleModal, update, post, i
     const { user } = useContext(UserContext);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-
-    if (post.user.id !== user.user.id) { //garante que so vai aparecer a caixinha se o post for usuario logado
+    if (post.user.id !== user.user.id) { 
         return null;
     } 
 
@@ -22,38 +21,35 @@ export default function ActionsPost ({tryingToEdit, toggleModal, update, post, i
         }
     }
 
-
-
     function toggleModal () {
         setModalIsOpen(!modalIsOpen);
     }
 
     return (
-           <Container>
-              <button onClick={() => {
-                  tryingToEdit(id);
-              }}><img src={pencil}/></button>
-               
-              <button onClick={toggleModal} ><img src={trash}/></button>
-              <DeleteModal 
-              config={config} 
-              modalIsOpen={modalIsOpen} 
-              update={update} 
-              toggleModal={toggleModal} 
-              id={id} />
-           </Container>
-           
-        );
-    }
+        <Container>
+            <button onClick={() => {
+                tryingToEdit(id);
+            }}><img src={pencil}/></button>
+            
+            <button onClick={toggleModal} ><img src={trash}/></button>
+            <DeleteModal 
+            config={config} 
+            modalIsOpen={modalIsOpen} 
+            update={update} 
+            toggleModal={toggleModal} 
+            id={id} />
+        </Container>        
+    );
+}
 
-    const Container = styled.div`
-        width: 100%;
-        height: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        button{
-            background-color:#171717;
-            margin-top: 20px;
-        }
-    `;
+const Container = styled.div`
+    width: 100%;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    button{
+        background-color:#171717;
+        margin-top: 20px;
+    }
+`;

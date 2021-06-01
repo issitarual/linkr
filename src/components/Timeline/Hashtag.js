@@ -18,7 +18,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 import Posts from '../Posts'
     
 
-export default function OtherUsersPosts(){
+export default function OtherUsersPosts({goToLink}){
     const {hashtag} = useParams()
 
     const history=useHistory()
@@ -69,10 +69,6 @@ export default function OtherUsersPosts(){
         })
     }
 
-  function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")

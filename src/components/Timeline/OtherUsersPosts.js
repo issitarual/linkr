@@ -17,7 +17,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 import Posts from '../Posts'
 
 
-export default function OtherUsersPosts(){
+export default function OtherUsersPosts({goToLink}){
      const {id} = useParams()
     const {user} = useContext(UserContext)
     const [usersPosts,setUsersPosts] = useState([])
@@ -62,10 +62,7 @@ export default function OtherUsersPosts(){
     },[])
 
 
-  function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }
+
 
     function changeLoad(){
         setServerLoading(!serverLoading)

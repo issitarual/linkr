@@ -11,6 +11,7 @@ import ActionsPost from './ActionsPost';
 import TrendingList from './TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
+import LinkPreview from './LinkPreview'
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -25,7 +26,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
 
-export default function Timeline(){
+export default function Timeline({goToLink}){
     const history = useHistory()
     const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
@@ -40,17 +41,14 @@ export default function Timeline(){
     const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
     const[hasMore,setHasMore] = useState(true)
 
-    
 
+    
     useEffect(()=>{
             update()        
     },[]);
 
-
-  UseInterval(() => {
+    UseInterval(() => {
     
-
-
     const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
 
     getNewPosts.then((response)=>{
@@ -133,10 +131,7 @@ export default function Timeline(){
         })
     }
         
-    function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }  
+   
 
     function sendToHashtag(val){
        
@@ -171,51 +166,46 @@ export default function Timeline(){
 
    
     return( 
-      
-    <Container>
         
-        <TimelineContainer>
-        <Title>timeline</Title> 
-       
-                <TimelineContent>
+        <Container>
+            
+            <TimelineContainer>
+            <Title>timeline</Title> 
+        
+                    <TimelineContent>
+                        
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={() => partialUpdate( allPosts.length + 2 )}
+                            hasMore={hasMore}
+                            loader={<div className="x" key={0}>Loading ...</div>}
+                            className='x'
+                        >
+                            
+                            <Posts noPostsMessage={'Nenhum post encontrado'}
+                                update={update}
+                                serverLoading={serverLoading}
+                                allPosts={allPosts}
+                                goToUserPosts={goToUserPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                tryingToEdit={tryingToEdit}
+                                config={config}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                                
+                            />
+
+                        </InfiniteScroll>
+
+                        <TrendingList send={sendToHashtag}/>
                     
-                            <InfiniteScroll
-                                pageStart={0}
-                                loadMore={() => partialUpdate( allPosts.length + 2 )}
-                                hasMore={hasMore}
-                                loader={<div className="x" key={0}>Loading ...</div>}
-                                className='x'
-                            >
-                                <NewPost update={update} />
-                                <Posts noPostsMessage={'Nenhum post encontrado'}
-                                        update={update}
-                                        serverLoading={serverLoading}
-                                        allPosts={allPosts}
-                                        goToUserPosts={goToUserPosts}
-                                        olderLikes={olderLikes}
-                                        likedPosts={likedPosts}
-                                        user={user}
-                                        like={like}
-                                        tryingToEdit={tryingToEdit}
-                                        config={config}
-                                        inputRef={inputRef}
-                                        goToLink={goToLink}
-                                />
-                                  
-                                        
-                                                    
+                    </TimelineContent>
+            </TimelineContainer>
 
-                            </InfiniteScroll>
-
-                     
-
-
-                    <TrendingList send={sendToHashtag}/>
-                   
-                </TimelineContent>
-        </TimelineContainer>
-
-    </Container>
+        </Container>
     )
 
 
