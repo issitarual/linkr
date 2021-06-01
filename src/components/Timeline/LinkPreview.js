@@ -28,7 +28,7 @@ export default function LinkPreview ({ link, linkIsOpen, setLinkIsOpen }) {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.75)',
                   width: '100%',
                   height: '100vh',
                   zIndex: '3'
