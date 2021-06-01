@@ -15,7 +15,7 @@ export default function RepostModal ({id, modalIsOpen, toggleModal}) {
 
     function RepostButton(id){
         const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
-        requestRepost.then(() => {console.log("deu bom"); toggleModal()});
+        requestRepost.then((response) => {console.log(response.data); toggleModal()});
         requestRepost.catch(() => console.log("deu ruim"));
 
     }
