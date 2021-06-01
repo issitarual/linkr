@@ -11,6 +11,8 @@ import ActionsPost from './ActionsPost';
 import TrendingList from './TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
+import LinkPreview from './LinkPreview';
+import Header from '../Header'
 
 export default function Timeline(){
     const history = useHistory()
@@ -19,6 +21,9 @@ export default function Timeline(){
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, SetOlderLikes] = useState([]); 
+
+    const [linkIsOpen, setLinkIsOpen] = useState(false);
+    const [linkToOpen, setLinkToOpen] = useState('');
 
     useEffect(()=>{
         update();    
@@ -59,8 +64,11 @@ export default function Timeline(){
         
     function goToLink(e,link){
         e.preventDefault()
-       window.open(link)
+        // window.open(link)
+        setLinkIsOpen(!linkIsOpen);
+        setLinkToOpen(link);
     }  
+    //mexer nessa ^ função, que abre o link, quero que abra o modal
 
     function sendToHashtag(val){
        
@@ -87,111 +95,106 @@ export default function Timeline(){
         })   
         setAllPosts([...postsToEdit]);
     }
+    //----------------abrindo modal do novo link
+    
+    function openLink () {}
+
+
+    //------------------------------------------
 
     return( 
-      
-    <Container>
         
-        <TimelineContainer>
-        <Title>timeline</Title> 
-
+        <Container>
+            <Header/>
+            
+            <TimelineContainer>
+                <Title>timeline</Title> 
                 <TimelineContent>
                     <TimelinePosts>
-                    <NewPost update={update} />
+                        <NewPost update={update} />
                         {serverLoading 
-                            ? <Loader type="Circles" color="#FFF" height={200} width={200} />
-                            : (allPosts.length===0 
-                                ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
-                                :allPosts.map((post)=>{
+                        ? <Loader type="Circles" color="#FFF" height={200} width={200} />
+                        : (allPosts.length===0 
+                        ? <NoPostsYet>Nenhum post encontrado</NoPostsYet>
+                        :allPosts.map((post)=>{
                             return(
-                            <li key={post.id} id={post.id}>
-                                <div className='postLeft'>
-                                <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
-                                <div className ="ion-icon" data-tip={
-                                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
-                                    likedPosts.map(n => n.id).includes(post.id)? 
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
-                                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
-                                    post.likes.length === 0? "0 pessoas":
-                                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
-                                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
-                                } 
-                                    onClick={() => like(post.id)}>
-                                    {likedPosts.map(n=>n.id).includes(post.id)?                                  
-                                    <HeartSharp
+                                <li key={post.id} id={post.id}>
+                                    <div className='postLeft'>
+                                        <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
+                                        <div className ="ion-icon" data-tip={
+                                        olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
+                                        olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
+                                        `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outra(s) ${post.likes.length -2 > 0? post.likes.length -2: "0"} pessoas`:                      
+                                        likedPosts.map(n => n.id).includes(post.id)? 
+                                        likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
+                                        likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                        `Você, ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e outras ${post.likes.length -1} pessoas`:
+                                        post.likes.length === 0? "0 pessoas":
+                                        post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
+                                        post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
+                                        `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
+                                        } 
+                                        onClick={() => like(post.id)}>
+                                        {likedPosts.map(n=>n.id).includes(post.id)?                                  
+                                        <HeartSharp
                                         color={'#AC2B25'} 
                                         height="25px"
                                         width="25px"
-                                    />:
-                                    <HeartOutline
+                                        />:
+                                        <HeartOutline
                                         color={'#fff'} 
                                         height="25px"
                                         width="25px"
-                                    />
-                                    }
-                                    <ReactTooltip 
+                                        />
+                                        }
+                                        <ReactTooltip 
                                         type="light"
                                         textColor="#505050"
                                         place="bottom"
                                         effect="solid"
                                         border="5"
-                                    />
-                                </div> 
-                                <h6>
-                                    {
-                                    olderLikes.map(n => n.id).includes(post.id)?
-                                    olderLikes.filter(n => n.id === post.id)[0].likes:
-                                    likedPosts.map(n => n.id).includes(post.id)?
-                                    likedPosts.filter(n => n.id === post.id)[0].likes:
-                                     post.likes.length} likes
-                                </h6>
-                                </div>
-                                <div className='postRight'>
+                                        />
+                                        </div> 
+                                        <h6>
+                                            {olderLikes.map(n => n.id).includes(post.id)?
+                                            olderLikes.filter(n => n.id === post.id)[0].likes:
+                                            likedPosts.map(n => n.id).includes(post.id)?
+                                            likedPosts.filter(n => n.id === post.id)[0].likes:
+                                            post.likes.length} likes
+                                        </h6>
+                                    </div>
+                                    <div className='postRight'>
+                                        <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+                                        <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
 
-                                <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
-                                <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
+                                        <PostContent open={!post.toEdit} >
+                                            <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
+                                                {post.text}
+                                            </ReactHashtag>
+                                        </PostContent>    
 
-                                     <PostContent open={!post.toEdit} >
-                                        <ReactHashtag onHashtagClick={(val) => sendToHashtag(val)}>
-                                            {post.text}
-                                        </ReactHashtag>
-                                    </PostContent>    
+                                        <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
 
-                                    <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} />
-
-                                    <LinkDetails>
-                                        <div>
+                                        <LinkDetails>
+                                            <div>
                                             <h3>{post.linkTitle}</h3>
-                                            
                                             <p className='linkDescription'>{post.linkDescription}</p>
-                                           
-                                            <a href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</a>
-                                        </div>
-                                        <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
-                                    </LinkDetails>
-                                </div>
-                            </li>   
-                            )
-                        })
-                            )
-                        }
+                                            <a href={post.link} onClick={(e)=>{goToLink(e,post.link)}}>{post.link}</a>
+                                            </div>
+                                            <img src={post.linkImage} onClick={(e)=>{goToLink(e,post.link)}}/>
+                                        </LinkDetails>
+                                        <LinkPreview linkIsOpen={linkIsOpen} setLinkIsOpen={setLinkIsOpen} link={linkToOpen} />
 
-                      
+                                    </div>
+                                </li>   
+                            );
+                        }))}
                     </TimelinePosts>
-
                     <TrendingList send={sendToHashtag}/>
-                   
                 </TimelineContent>
-        </TimelineContainer>
-
-    </Container>
+            </TimelineContainer>
+        </Container>
     )
-
-
 
     function like (id){
         const config = {
