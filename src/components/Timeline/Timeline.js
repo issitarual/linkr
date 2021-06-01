@@ -44,7 +44,7 @@ export default function Timeline(){
     const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
 
     getNewPosts.then((response)=>{
-       alert('atualizou')
+     
         setAllPosts(response.data.posts)
 
     })
