@@ -64,11 +64,9 @@ export default function Timeline(){
         
     function goToLink(e,link){
         e.preventDefault()
-        // window.open(link)
         setLinkIsOpen(!linkIsOpen);
         setLinkToOpen(link);
     }  
-    //mexer nessa ^ função, que abre o link, quero que abra o modal
 
     function sendToHashtag(val){
        
@@ -95,12 +93,6 @@ export default function Timeline(){
         })   
         setAllPosts([...postsToEdit]);
     }
-    //----------------abrindo modal do novo link
-    
-    function openLink () {}
-
-
-    //------------------------------------------
 
     return( 
         
@@ -183,6 +175,7 @@ export default function Timeline(){
                                             </div>
                                             <img src={post.linkImage} onClick={(e)=>{goToLink(e,post.link)}}/>
                                         </LinkDetails>
+                                        
                                         <LinkPreview linkIsOpen={linkIsOpen} setLinkIsOpen={setLinkIsOpen} link={linkToOpen} />
 
                                     </div>

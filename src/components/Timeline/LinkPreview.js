@@ -1,10 +1,7 @@
 import styled from 'styled-components'
 import React from 'react';
 import Modal from 'react-modal';
-
 import { CloseOutline } from 'react-ionicons'
-
-
 
 export default function LinkPreview ({ link, linkIsOpen, setLinkIsOpen }) {
 
@@ -13,6 +10,7 @@ export default function LinkPreview ({ link, linkIsOpen, setLinkIsOpen }) {
     function closePreview () {
         setLinkIsOpen(false);
     }
+
     function openInNewTab () {
         window.open(link);
         setLinkIsOpen(false);
@@ -67,8 +65,7 @@ export default function LinkPreview ({ link, linkIsOpen, setLinkIsOpen }) {
 
             <Iframe src={link} />
 
-        </Modal>
-      
+        </Modal>      
     )
 }
 
@@ -100,3 +97,11 @@ const DisplayFlex = styled.div`
     justify-content: space-between;
     align-items: flex-start;
 `;
+
+// function goToLink(e,link){
+//     e.preventDefault()
+//     setLinkIsOpen(!linkIsOpen);
+//     setLinkToOpen(link);
+// }  
+
+{/* <LinkPreview linkIsOpen={linkIsOpen} setLinkIsOpen={setLinkIsOpen} link={linkToOpen} /> */}

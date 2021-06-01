@@ -11,8 +11,8 @@ export default function ActionsPost ({tryingToEdit, toggleModal, update, post, i
     const { user } = useContext(UserContext);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-
-    if (post.user.id !== user.user.id) { //garante que so vai aparecer a caixinha se o post for usuario logado
+    //garante que so vai aparecer a caixinha se o post for do usuario logado 
+    if (post.user.id !== user.user.id) { 
         return null;
     } 
 
@@ -39,8 +39,7 @@ export default function ActionsPost ({tryingToEdit, toggleModal, update, post, i
             update={update} 
             toggleModal={toggleModal} 
             id={id} />
-        </Container>
-        
+        </Container>        
     );
 }
 
