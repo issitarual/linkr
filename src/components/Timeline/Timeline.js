@@ -170,49 +170,14 @@ export default function Timeline(){
            },100) 
     }
 
-    function checkNewPost(){
-         //console.log('novos posts')
-    const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-
-    getNewPosts.then((response)=>{
-     
-    // console.log(response.data.posts)
-       
-     const x = allPosts[0]
-
-       let z='x'
-
-       response.data.posts.forEach((post,index)=>{
-            if(post.id===x.id){
-                z=index
-            }
-       })
-
-       console.log(z)
-
-       const newPosts = response.data.posts.splice(0,z)
-
-       console.log([...newPosts,...allPosts])
-
-       
-
-    
-    
-        setAllPosts([...newPosts,...allPosts])
-
-    })
-    }
-
+   
     return( 
       
     <Container>
         
         <TimelineContainer>
         <Title>timeline</Title> 
-        <button onClick={()=>console.log(hasMore)}>Check hasMore</button>
-        <button onClick={()=>console.log(maxNumberOfPosts)}>Check maxNumber</button>
-        <button onClick={()=>console.log(allPosts.length)}>Check currentNumberMore</button>
-        <button onClick={checkNewPost}>Check NewPost</button>
+       
                 <TimelineContent>
                     
                 <InfiniteScroll
