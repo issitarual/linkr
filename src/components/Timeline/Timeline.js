@@ -11,6 +11,7 @@ import ActionsPost from './ActionsPost';
 import TrendingList from './TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
+import LinkPreview from './LinkPreview'
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -25,31 +26,29 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
 
-export default function Timeline(){
+export default function Timeline({goToLink}){
     const history = useHistory()
-    const [likedPosts, SetLikedPosts] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
-    const [olderLikes, SetOlderLikes] = useState([]); 
+    const [olderLikes, setOlderLikes] = useState([]); 
 
     const inputRef = useRef([])
 
+    const [timelineRef,setTimelineRef] = useState(false);
     /*Logics of infinite Scroller*/ 
     const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
     const[hasMore,setHasMore] = useState(true)
 
-    
 
+    
     useEffect(()=>{
             update()        
     },[]);
 
-
-  UseInterval(() => {
+    UseInterval(() => {
     
-
-
     const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
 
     getNewPosts.then((response)=>{
@@ -90,11 +89,11 @@ export default function Timeline(){
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         },1000)
@@ -119,13 +118,11 @@ export default function Timeline(){
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
-
-           
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{           
@@ -134,10 +131,7 @@ export default function Timeline(){
         })
     }
         
-    function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }  
+   
 
     function sendToHashtag(val){
        
@@ -172,51 +166,46 @@ export default function Timeline(){
 
    
     return( 
-      
-    <Container>
         
-        <TimelineContainer>
-        <Title>timeline</Title> 
-       
-                <TimelineContent>
+        <Container>
+            
+            <TimelineContainer>
+            <Title>timeline</Title> 
+        
+                    <TimelineContent>
+                        
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={() => partialUpdate( allPosts.length + 2 )}
+                            hasMore={hasMore}
+                            loader={<div className="x" key={0}>Loading ...</div>}
+                            className='x'
+                        >
+                            
+                            <Posts noPostsMessage={'Nenhum post encontrado'}
+                                update={update}
+                                serverLoading={serverLoading}
+                                allPosts={allPosts}
+                                goToUserPosts={goToUserPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                tryingToEdit={tryingToEdit}
+                                config={config}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                                
+                            />
+
+                        </InfiniteScroll>
+
+                        <TrendingList send={sendToHashtag}/>
                     
-                            <InfiniteScroll
-                                pageStart={0}
-                                loadMore={() => partialUpdate( allPosts.length + 2 )}
-                                hasMore={hasMore}
-                                loader={<div className="x" key={0}>Loading ...</div>}
-                                className='x'
-                            >
-                                <NewPost update={update} />
-                                <Posts noPostsMessage={'Nenhum post encontrado'}
-                                        update={update}
-                                        serverLoading={serverLoading}
-                                        allPosts={allPosts}
-                                        goToUserPosts={goToUserPosts}
-                                        olderLikes={olderLikes}
-                                        likedPosts={likedPosts}
-                                        user={user}
-                                        like={like}
-                                        tryingToEdit={tryingToEdit}
-                                        config={config}
-                                        inputRef={inputRef}
-                                        goToLink={goToLink}
-                                />
-                                  
-                                        
-                                                    
+                    </TimelineContent>
+            </TimelineContainer>
 
-                            </InfiniteScroll>
-
-                     
-
-
-                    <TrendingList send={sendToHashtag}/>
-                   
-                </TimelineContent>
-        </TimelineContainer>
-
-    </Container>
+        </Container>
     )
 
 
@@ -227,33 +216,22 @@ export default function Timeline(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+        if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(olderLikes.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }

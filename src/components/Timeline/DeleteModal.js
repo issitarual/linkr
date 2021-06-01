@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
-import {useContext, useState, useEffect} from 'react';
+import {useContext} from 'react';
 import UserContext from '../UserContext';
 
 export default function DeleteModal ({modalIsOpen, toggleModal, update, id}) {

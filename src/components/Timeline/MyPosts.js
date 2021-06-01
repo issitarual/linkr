@@ -18,16 +18,16 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 /*import dos Posts*/
 import Posts from '../Posts'
 
-export default function MyPosts(){
+export default function MyPosts({goToLink}){
     const history=useHistory()
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
    const [serverLoading,setServerLoading] = useState(true)
-   const [likedPosts, SetLikedPosts] = useState([]);
-   const [olderLikes, SetOlderLikes] = useState([]);
+   const [likedPosts, setLikedPosts] = useState([]);
+   const [olderLikes, setOlderLikes] = useState([]);
 
    const inputRef = useRef([])
-   
+
 
    const config = {
     headers:{
@@ -50,11 +50,11 @@ export default function MyPosts(){
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
@@ -81,13 +81,7 @@ export default function MyPosts(){
     
     }
 
-
-
-  function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }
-
+ 
     function sendToHashtag(val){
         
         const newVal = val.replace('#',"")
@@ -112,24 +106,23 @@ export default function MyPosts(){
                 
                 <TimelineContent>
 
-                <Posts noPostsMessage={'Você ainda não postou nada'}
-                            update={update}
-                            serverLoading={serverLoading}
-                            allPosts={myPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            tryingToEdit={tryingToEdit}
-                            config={config}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                />
-                            
-                            
+                    <Posts noPostsMessage={'Você ainda não postou nada'}
+                        update={update}
+                        serverLoading={serverLoading}
+                        allPosts={myPosts}
+                        goToUserPosts={goToUserPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        tryingToEdit={tryingToEdit}
+                        config={config}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
+                    />
+                                
+                                
                                         
-                    
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>
@@ -142,33 +135,22 @@ export default function MyPosts(){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+        if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(olderLikes.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
