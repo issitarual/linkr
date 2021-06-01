@@ -19,8 +19,8 @@ import Posts from '../Posts'
 
 export default function MyLikes({goToLink}){
     const history = useHistory()
-    const [likedPosts, SetLikedPosts] = useState([]);
-    const [olderLikes, SetOlderLikes] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
+    const [olderLikes, setOlderLikes] = useState([]);
     const { user } = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true)
@@ -44,12 +44,12 @@ export default function MyLikes({goToLink}){
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
-                if(n.username === user.user.username){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
             })
-            SetLikedPosts(sharpedHeart)
-            SetOlderLikes(sharpedHeart);
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
@@ -111,41 +111,28 @@ export default function MyLikes({goToLink}){
     </Container>
     )
 
-
-
     function like (id){
         const config = {
             headers: {
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+        if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(olderLikes.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }

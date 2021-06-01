@@ -28,8 +28,8 @@ export default function OtherUsersPosts({goToLink}){
     const [hashtagPosts,setHashtagPosts] = useState([])
 
     const [serverLoading,setServerLoading] = useState(true)
-    const [olderLikes, SetOlderLikes] = useState([]);
-    const [likedPosts, SetLikedPosts] = useState([]);
+    const [olderLikes, setOlderLikes] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
 
     const inputRef = useRef([])
 
@@ -51,15 +51,15 @@ export default function OtherUsersPosts({goToLink}){
             const newArray = response.data.posts
             setHashtagPosts(newArray)
            setServerLoading(false) 
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length})
-                }})
-            })
-            SetLikedPosts(sharpedHeart);
-            SetOlderLikes(sharpedHeart);
+           let sharpedHeart = []
+           newArray.forEach( post => {
+               post.likes.forEach(n =>{
+               if(n.userId === user.user.id){
+                   sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
+               }})
+           })
+           setLikedPosts(sharpedHeart);
+           setOlderLikes(sharpedHeart);
 
         })
 
@@ -129,33 +129,22 @@ export default function OtherUsersPosts({goToLink}){
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        if(olderLikes.map(n => n.id).includes(id) && likedPosts.map(n => n.id).includes(id)){
+        if(likedPosts.map(n => n.id).includes(id)){
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
             request.then(success => {
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes -1}: n))
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(olderLikes.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
-            request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
-                SetOlderLikes(olderLikes.map( (n,i) => n.id === id? {id: id, likes: n.likes +1}: n))
-            });
-            request.catch(error => alert ("Ocorreu um erro, tente novamente."))
-        }
-        else if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
-            request.then(success => {
-                SetLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
+                if(olderLikes.map(n => n.id).includes(id))
+                setOlderLikes([... olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
             const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
             request.then(success => {
-                SetLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length}])
+                setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                if(olderLikes.map(n => n.id).includes(id)){
+                    setOlderLikes([...olderLikes.filter( (n,i) => n.id !== id), {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username)}])
+                }
             });
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
