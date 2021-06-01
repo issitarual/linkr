@@ -179,8 +179,8 @@ export default function Timeline({goToLink}){
                             pageStart={0}
                             loadMore={() => partialUpdate( allPosts.length + 2 )}
                             hasMore={hasMore}
-                            loader={<div className="x" key={0}>Loading ...</div>}
-                            className='x'
+                            loader={<div className="x" key={0}>Loading More Posts..</div>}
+                            className='Scroller'
                         >
                             
                             <Posts noPostsMessage={'Nenhum post encontrado'}

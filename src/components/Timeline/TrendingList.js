@@ -3,11 +3,15 @@ import {useContext, useEffect, useState} from 'react'
 import UserContext from '../UserContext';
 import styled from 'styled-components';
 import ReactHashtag from "react-hashtag";
+import { useHistory } from 'react-router-dom';
+
 
 
 export default function TrendingList({send}){
     const [trendings,setTrendings] = useState([])
     const {user} = useContext(UserContext)
+    const [hashtagValue,setHashtagValue] = useState('')
+    const history = useHistory()
 
     useEffect(()=>{
         const config = {
@@ -29,6 +33,13 @@ export default function TrendingList({send}){
 
     },[])
 
+    function goToHashtagPage(e){
+        if(e.code==='Enter'){
+            history.push(`/hashtag/${hashtagValue}`)
+            setHashtagValue('')
+        }
+    }
+
 
     return (
         <div className='trending'>
@@ -48,6 +59,11 @@ export default function TrendingList({send}){
                             </li>
                         )
                     })}
+
+                    <SearchHashtag>
+                        <input placeholder='Type a hashtag' onChange={(e)=>(setHashtagValue(e.target.value))} onKeyPress={(e)=>goToHashtagPage(e)} value={hashtagValue} />
+                    </SearchHashtag>
+                    
                 </TrendingsContainer>
             }
 
@@ -90,4 +106,18 @@ const TrendingsContainer = styled.ul`
         letter-spacing: 3px;
     }
 
+`
+const SearchHashtag = styled.div`
+    position: relative;
+
+    input{
+        width: 269px;
+        height: 35px;
+        background-color: #252525;
+        color: white;
+        padding-left: 30px;
+        
+        
+       
+    }
 `

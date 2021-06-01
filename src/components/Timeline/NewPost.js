@@ -91,6 +91,13 @@ const Post = styled.div`
   padding-right: 22px;
   padding-bottom: 16px;
   font-family: Lato;
+  
+
+  @media (max-width:1200px){
+    margin: 0 auto;
+            
+        }
+  
 
   @media (max-width:610px){
             width: 90%;

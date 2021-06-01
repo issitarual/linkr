@@ -17,7 +17,7 @@
 
 
 
-.x{
+.Scroller{
     width: auto;
     height: auto;
     display: flex;
@@ -25,7 +25,7 @@
 }
 
 @media (max-width:610px){
-     .x{  
+     .Scroller{  
         align-items: center;
         width: 90%;
         min-width:360px;
