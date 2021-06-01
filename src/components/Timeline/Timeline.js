@@ -171,8 +171,9 @@ export default function Timeline({goToLink}){
             
             <TimelineContainer>
             <Title>timeline</Title> 
-        
+            <NewPost/>
                     <TimelineContent>
+                      
                         
                         <InfiniteScroll
                             pageStart={0}
