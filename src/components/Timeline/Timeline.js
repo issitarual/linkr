@@ -82,7 +82,12 @@ export default function Timeline({goToLink}){
             const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         
         getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false, geolocation: {
+                "latitude": '',
+                "longitude": ''
+            }
+        })));
+
             const partial = newArray.slice(0,limit)
             setAllPosts(partial)
             let sharpedHeart = []
@@ -171,6 +176,8 @@ export default function Timeline({goToLink}){
             
             <TimelineContainer>
             <Title>timeline</Title> 
+
+                    <NewPost update={update} />
         
                     <TimelineContent>
                         

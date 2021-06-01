@@ -11,11 +11,6 @@ export default function NewPost ({update}) {
   const [buttonText, letButtonText] = useState('Publicar');
   const { user ,setUser} = useContext(UserContext);
 
-  
-
-    
-   
-
   function createNewPost (event) {
 
     event.preventDefault();
@@ -44,6 +39,7 @@ export default function NewPost ({update}) {
       update()    
     }).catch((error)=>{
       alert('houve um erro ao publicar seu link');
+      console.log(error)
       letDisabled(false);
       letButtonText('Publicar')
     })
