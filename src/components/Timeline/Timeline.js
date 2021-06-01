@@ -47,31 +47,13 @@ export default function Timeline(){
 
 
   UseInterval(() => {
-    // //console.log('novos posts')
-    // const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-
-    // getNewPosts.then((response)=>{
-     
-    //   const newPosts =  response.data.posts.filter((post)=>{
-    //         if(allPosts.includes(post.id)){
-    //             return false
-    //         }
-    //     })
-        
-    //     setAllPosts([newPosts,...allPosts])
-
-    // })
+    
 
 
     const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
 
     getNewPosts.then((response)=>{
      
-    // console.log(response.data.posts)
-
-     //console.log('Atualizou posts')
-    // alert('Atualizou posts')
-       
      const x = allPosts[0]
 
        let z='x'
@@ -81,17 +63,7 @@ export default function Timeline(){
                 z=index
             }
        })
-
-       //console.log(z)
-
        const newPosts = response.data.posts.splice(0,z)
-
-       //console.log([...newPosts,...allPosts])
-
-       
-
-    
-    
         setAllPosts([...newPosts,...allPosts])
 
     })
@@ -112,13 +84,8 @@ export default function Timeline(){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            
-           
-            console.log(newArray)
             const partial = newArray.slice(0,limit)
-            console.log(partial)
             setAllPosts(partial)
-            //setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
@@ -128,8 +95,6 @@ export default function Timeline(){
             })
             SetLikedPosts(sharpedHeart)
             SetOlderLikes(sharpedHeart);
-
-           
         })
 
         },1000)
