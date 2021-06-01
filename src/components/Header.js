@@ -210,7 +210,7 @@ const Usernames = styled.div`
         right: calc(50% - 47%);
         top: 129px;
     } 
-`
+`;
 
 const CloseMenu = styled.div`
     display: ${props => props.state? 'block': 'none'};
@@ -220,4 +220,4 @@ const CloseMenu = styled.div`
     height: 100vh;
     width: 100vw;
     z-index: 1;
-`
+`;
