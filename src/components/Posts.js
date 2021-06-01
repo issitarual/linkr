@@ -27,16 +27,18 @@ return(
             : (allPosts.length===0 
                 ? <NoPostsYet>{noPostsMessage}</NoPostsYet>
                 :allPosts.map((post)=>{
+                    console.log(post);
             return(
             <li key={post.id} id={post.id}>
-                <span>
+                {post["repostedBy"] ? 
+                (<span>
                     <RepeatOutline
                         color={'#ffffff'}
                         height="20px"
                         width="20px"
                     />
-                    Re-posted by {post.user.username}
-                </span>
+                    Re-posted by {user.user.username === post.repostedBy.username ? "you" : post.repostedBy.username}
+                </span>) : ""}
                 <div className = "oficialPost">
                     <div className='postLeft'>
                         <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
@@ -93,7 +95,7 @@ return(
                     width="25px"
                 />
             </div>
-            <h6>coments</h6>
+            <h6>{post.commentCount} comments</h6>
             <Repost id={post.id} />
             </div>
 

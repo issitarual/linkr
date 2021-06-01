@@ -162,7 +162,7 @@ const TimelinePosts = styled.ul`
         background: #1E1E1E;
         border-radius:16px;
         margin-top:10px;
-        color: white;
+        color: white
     }
 
     span{
@@ -173,7 +173,7 @@ const TimelinePosts = styled.ul`
 
     .oficialPost{
         display: flex;       
-        margin-top:10px;
+        padding-top:10px;
         min-height:276px;
         height: auto;
         border-radius:16px;
@@ -242,7 +242,7 @@ const TimelinePosts = styled.ul`
        .ion-icon{
            margin-top: -30px;
            height: 60px;
-           margin-right: 35px;
+           padding-right: 38px;
        }
     }
 `;
