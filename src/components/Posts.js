@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import ActionsPost from './Timeline/ActionsPost';
 import TrendingList from './Timeline/TrendingList';
-import { HeartOutline, HeartSharp } from 'react-ionicons';
+import { HeartOutline, HeartSharp, ChatbubblesOutline, RepeatOutline } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText'
 
 
@@ -79,6 +79,22 @@ return(
                 likedPosts.filter(n => n.id === post.id)[0].likes:
                  post.likes.length} likes
             </h6>
+            <div className = "ion-icon">
+                <ChatbubblesOutline
+                    color={'#fff'} 
+                    height="25px"
+                    width="25px"
+                />
+            </div>
+            <h6>coments</h6>
+            <div className = "ion-icon">
+                <RepeatOutline
+                    color={'#fff'} 
+                    height="25px"
+                    width="25px"
+                />
+            </div>
+            <h6>repost</h6>
             </div>
             <div className='postRight'>
 
