@@ -1,17 +1,11 @@
-import styled from 'styled-components';
 import {useContext, useEffect,useState,useRef} from 'react';
-import NewPost from './NewPost';
 import UserContext from '../UserContext';
 import axios from 'axios';
-import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
-import Loader from "react-loader-spinner";
-import ActionsPost from './ActionsPost';
-import TrendingList from './TrendingList';
-import { HeartOutline, HeartSharp } from 'react-ionicons';
-import InputNewText from './InputNewText';
-import LinkPreview from './LinkPreview'
+import TrendingList from '../hashtag/TrendingList';
+import LinkPreview from './LinkPreview';
+import NewPost from './NewPost';
+
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -20,27 +14,30 @@ import Posts from '../Posts'
 import InfiniteScroll from 'react-infinite-scroller';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
+import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
 
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
 
-export default function Timeline({goToLink}){
-    const history = useHistory()
+export default function Timeline(){
+    const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]); 
-
-    const inputRef = useRef([])
-
+    const inputRef = useRef([]);
     const [timelineRef,setTimelineRef] = useState(false);
-    /*Logics of infinite Scroller*/ 
-    const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-    const[hasMore,setHasMore] = useState(true)
 
+
+        /*Logics of infinite Scroller*/ 
+        const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+        const[hasMore,setHasMore] = useState(true)
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    }
 
     
     useEffect(()=>{
@@ -68,13 +65,8 @@ export default function Timeline({goToLink}){
     })
     
 
-       }, 15000); 
+    }, 15000); 
 
-    const config = {
-        headers:{
-            'Authorization' : `Bearer ${user.token}`
-        }
-    }
 
     function partialUpdate(limit){
         
@@ -131,12 +123,13 @@ export default function Timeline({goToLink}){
         })
     }
         
-   
+    function goToLink(e,link){
+        e.preventDefault()
+        window.open(link)
+    }  
 
     function sendToHashtag(val){
-       
         const newVal = val.replace('#',"")
-        
         history.push(`/hashtag/${newVal}`)
     }
 
@@ -161,7 +154,8 @@ export default function Timeline({goToLink}){
         setTimeout(()=>{
 
             inputRef.current[id].focus()
-           },100) 
+           },100
+        ) 
     }
 
    
@@ -181,7 +175,7 @@ export default function Timeline({goToLink}){
                             loader={<div className="x" key={0}>Loading ...</div>}
                             className='x'
                         >
-                            
+                            <NewPost update={update} />
                             <Posts noPostsMessage={'Nenhum post encontrado'}
                                 update={update}
                                 serverLoading={serverLoading}
@@ -237,4 +231,3 @@ export default function Timeline({goToLink}){
         }
     }
 }
-

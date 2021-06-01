@@ -1,19 +1,12 @@
-import styled from 'styled-components'
 import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
-import { ConstructOutline, HeartOutline, HeartSharp } from 'react-ionicons';
-import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
-import ReactHashtag from "react-hashtag";
-import TrendingList from './TrendingList';
-import InputNewText from './InputNewText';
-import ActionsPost from './ActionsPost';
+import TrendingList from '../hashtag/TrendingList';
+
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
+import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -22,9 +15,9 @@ export default function MyPosts({goToLink}){
     const history=useHistory()
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
-   const [likedPosts, setLikedPosts] = useState([]);
-   const [olderLikes, setOlderLikes] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
+    const [likedPosts, setLikedPosts] = useState([]);
+    const [olderLikes, setOlderLikes] = useState([]);
 
    const inputRef = useRef([])
 
@@ -96,8 +89,15 @@ export default function MyPosts({goToLink}){
             history.push(`/my-posts`)
         }
     }
+
+    function RepostButton(id){
+        window.confirm("Você quer respostar esse link?");
+        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
+        requestRepost.then(() => console.log("deu bom"));
+        requestRepost.catch(() => console.log("deu ruim"));
+    }
    
-     return( 
+    return( 
       
     <Container>
         
@@ -156,4 +156,3 @@ export default function MyPosts({goToLink}){
         }
     }
 }
-
