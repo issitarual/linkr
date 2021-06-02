@@ -252,10 +252,18 @@ const TimelineContent= styled.div`
 const LinkDetails = styled.div`
     width: 503px;
     height:auto;
-    border: 1px solid #4D4D4D;
+    //border: 1px solid #4D4D4D;
+    border:${(props)=>(props.id1) ? 'none' : '1px solid #4D4D4D'};
+   //opacity: 
     margin: 20px 0;
     border-radius: 16px;
     display: flex;
+    
+    a{
+        color: #B7B7B7;
+        cursor: pointer;
+    }
+   
     color: #CECECE;
 
     h3{
@@ -319,9 +327,21 @@ const NoPostsYet = styled.p`
     margin-top: 20px;
 `;
 
+const IframeContent = styled.div`
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    
+    a{
+        margin-top: 5px;
+    }
+
+`
+
 
 export {PostInfo}
 export{LinkDescription}
 export{Links}
 export{Hashtag}
-export{PostComment,Title,TimelineContainer,Container,TimelinePosts,TimelineContent,LinkDetails,UserName,PostContent,NoPostsYet}
+export{PostComment,Title,TimelineContainer,Container,TimelinePosts,TimelineContent,LinkDetails,UserName,PostContent,NoPostsYet,IframeContent}

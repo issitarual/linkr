@@ -16,7 +16,7 @@ import getYouTubeID from 'get-youtube-id';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
  
  export default function Posts(props){
 
@@ -25,20 +25,35 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
         const id = getYouTubeID(post.link);
     
         if(id){
+
+            <LinkDetails id={id}/>
             return(
-            <>
-            <iframe height='280' width='480'
+            <IframeContent>
+            <iframe height='280' width='100%'
                 src={`https://www.youtube.com/embed/${id}?autoplay=1&mute=1`}>
             </iframe>
             <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
-            </>
+            </IframeContent>
             )
         }else{
            return(
              <>
-             <h3>{post.linkTitle}</h3>
-                        
-            <LinkDescription>{post.linkDescription}</LinkDescription>
+             <PostInfo>
+                               
+
+
+                               <h3>{post.linkTitle}</h3>
+                           
+                       <LinkDescription>{post.linkDescription}</LinkDescription>
+                           
+                       
+                          
+                           <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+                       
+                       </PostInfo>*
+                       
+                          
+                           <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
             </>
            )
         }
@@ -139,23 +154,26 @@ return(
 
                 <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
 
-                <LinkDetails>
-                    <PostInfo>
-                                {YoutubeId(post)}
+                <LinkDetails id1={getYouTubeID(post.link)}>
+                   
+                {YoutubeId(post)}
+                   
+                    {/* <PostInfo>
+                               
 
 
-                           {/* <h3>{post.linkTitle}</h3>
+                            <h3>{post.linkTitle}</h3>
                         
-                    <LinkDescription>{post.linkDescription}</LinkDescription>*/}
+                    <LinkDescription>{post.linkDescription}</LinkDescription>
                         
                     
                        
-                       {/* <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>*/}
+                        <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
                     
-                    </PostInfo> 
+                    </PostInfo>*
                     
-                        {YoutubeId2(post)}
-                       {/* <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>*/}
+                       
+                        <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/> */}
                                                        
                 </LinkDetails>
 

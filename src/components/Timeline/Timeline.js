@@ -51,15 +51,7 @@ export default function Timeline({goToLink}){
     
     useEffect(()=>{
             update()
-            const getYouTubeID = require('get-youtube-id');
-            const id = getYouTubeID("https://www.youtube.com/watch?v=lwGA_O9vpk0");
-           //const getYouTubeID2 = require('get-youtube-id');
-           //const id2 = getYouTubeID2("https://www.youtube.com/");
-           console.log(id)
-           // console.log(id2)
-
-           console.log(getYouTubeID("https://www.youtube.com/watch?v=lwGA_O9vpk0"))
-                  
+             
     },[]);
 
     UseInterval(() => {
