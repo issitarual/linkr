@@ -146,16 +146,6 @@ export default function Timeline(){
                 
                     <TimelineContent>
                       
-                        
-                       
-                    
-                        <InfiniteScroll
-                            pageStart={0}
-                            //loadMore={() => partialUpdate( allPosts.length + 2 )}
-                            hasMore={hasMore}
-                            loader={<div className="x" key={0}>Loading ...</div>}
-                            className='x'
-                        >
                             <NewPost update={update} />
                             <Posts noPostsMessage={'Nenhum post encontrado'}
                                 update={update}
@@ -172,12 +162,6 @@ export default function Timeline(){
                                 goToLink={goToLink}
                             />
 
-                            </InfiniteScroll>
-                                
-                                
-
-                       
-
                         <TrendingList send={sendToHashtag}/>
                     
                     </TimelineContent>
@@ -185,6 +169,12 @@ export default function Timeline(){
 
         </Container>
     )
+                            
+                                
+                                
+
+                       
+
 
 
 
