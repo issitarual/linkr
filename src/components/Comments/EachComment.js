@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {useContext, useState, useEffect} from 'react';
-import UserContext from './UserContext';
+import UserContext from '../UserContext';
 import axios from 'axios';
 
 export default function EachComment ({avatar, username, text, id}){

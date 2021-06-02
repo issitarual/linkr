@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PaperPlaneOutline } from 'react-ionicons';
 import EachComment from './EachComment';
 import axios from 'axios';
-import UserContext from './UserContext';
+import UserContext from '../UserContext';
 import {useContext} from 'react';
 
 export default function CommentContainer({ postComments, setPostComments, postId, avatar, setWriteComment, writeComment, idComment}){

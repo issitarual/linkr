@@ -6,10 +6,10 @@ import { RepeatOutline, PaperPlaneOutline } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText';
 import Repost from './repost/Repost';
 import Likes from './likes';
-import Comments from './Comments';
+import Comments from './Comments/Comments';
 import styled from 'styled-components';
 import {useState} from 'react'
-import CommentContainer from './CommentContainer';
+import CommentContainer from './Comments/CommentContainer';
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
  
