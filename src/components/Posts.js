@@ -6,7 +6,8 @@ import { RepeatOutline } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText';
 import Repost from './repost/Repost';
 import Likes from './likes';
-import Comments from './Comments'
+import Comments from './Comments';
+import styled from 'styled-components';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
@@ -29,16 +30,22 @@ return(
             return(
             <li key={post.id} id={post.id}>
                 {post["repostedBy"] ? 
-                (<span>
-                    <RepeatOutline
-                        color={'#ffffff'}
-                        height="20px"
-                        width="20px"
-                        style={{margin: "0"}}
-                    />
-                    Re-posted by {user.user.username === post.repostedBy.username ? "you" : post.repostedBy.username}
-                </span>) : ""}
+                        (<RepostIcon>
+                            <RepeatOutline
+                                color={'#ffffff'}
+                                height="20px"
+                                width="20px"
+                                style={{
+                                    margin: "0",
+                                    marginRight: "10",
+                                    marginBottom: "10"
+                                    
+                                }}
+                            />
+                            Re-posted by {user.user.username === post.repostedBy.username ? "you" : post.repostedBy.username}
+                        </RepostIcon>) : ""}
                 <div className = "oficialPost">
+                    
                     <div className='postLeft'>
                         <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
                 <Likes 
@@ -91,3 +98,12 @@ return(
     )
 
  }
+
+ const RepostIcon = styled.span`
+    font-family: 'Lato', sans-serif!important;
+    font-size: 11px;
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+`
