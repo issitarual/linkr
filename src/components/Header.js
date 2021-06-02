@@ -84,6 +84,8 @@ export default function Header (){
             localStorage.clear();
         }
         setState(!state);
+        setStateSearch(false);
+        setSearch("");
         history.push(url); 
     }
 
@@ -198,7 +200,7 @@ const Menu = styled.div`
 const Usernames = styled.div`
     display: ${props => props.state? "block": "none"};
     position: absolute;
-    width: 541px;
+    width: 542px;
     top: 52px;
     right: calc(50% - 278px);
     background-color: #E7E7E7;
