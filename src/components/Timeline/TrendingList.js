@@ -35,8 +35,10 @@ export default function TrendingList({send}){
 
     function goToHashtagPage(e){
         if(e.code==='Enter'){
+            send(hashtagValue)
             history.push(`/hashtag/${hashtagValue}`)
             setHashtagValue('')
+            
         }
     }
 

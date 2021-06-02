@@ -164,7 +164,7 @@ export default function OtherUsersPosts({goToLink}){
                         hasMore={hasMore}
                         loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
                         className='Scroller'
-                        threshold={1}
+                        threshold={250}
                     >  
                         <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
                                     serverLoading={serverLoading}
