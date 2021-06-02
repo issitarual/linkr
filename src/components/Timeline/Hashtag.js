@@ -63,16 +63,9 @@ export default function OtherUsersPosts({goToLink}){
         getPosts.then((response)=>{
             const newArray = response.data.posts
             
-            setMaxNumberOfPosts(response.data.posts.length)
-             const partial = []
-             
-             newArray.forEach((post,index)=>{
-                if(index<8){
-                    partial.push(post)
-                }
-            })
+           
           
-            setHashtagPosts(partial)
+            setHashtagPosts(newArray)
            setServerLoading(false) 
            let sharpedHeart = []
            newArray.forEach( post => {
@@ -91,43 +84,6 @@ export default function OtherUsersPosts({goToLink}){
             return
         })
     }
-
-    function partialUpdate(limit){
-        
-        setTimeout(()=>{
-            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${hashtag}/posts`,config)
-        
-        getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-          //  const partial = newArray.slice(0,limit)
-           
-          const partial =[...hashtagPosts]
-        
-          for(let i = limit; i<limit+10;i++){
-                if(i===newArray.length){
-                    break;
-                }
-                  partial.push(newArray[i])
-              
-          }
-
-          setHashtagPosts(partial)
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-                }})
-            })
-            setLikedPosts(sharpedHeart);
-            setOlderLikes(sharpedHeart);
-        })
-
-        },2000)
-
-       maxNumberOfPosts===hashtagPosts.length ? setHasMore(false) : setHasMore(true)
-    }
-
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
@@ -158,14 +114,7 @@ export default function OtherUsersPosts({goToLink}){
                 
                 <TimelineContent>
 
-                    {/*<InfiniteScroll
-                        pageStart={0}
-                        loadMore={() => partialUpdate( hashtagPosts.length)}
-                        hasMore={hasMore}
-                        loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
-                        className='Scroller'
-                        threshold={250}
-                    >  */}
+                    
                         <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
                                     serverLoading={serverLoading}
                                     allPosts={hashtagPosts}
@@ -179,17 +128,17 @@ export default function OtherUsersPosts({goToLink}){
                                     sendToHashtag={sendToHashtag}
                         />
 
-                   {/*} </InfiniteScroll>*/}
+                    <TrendingList send={sendToHashtag}/>
+
+                </TimelineContent>
+        </TimelineContainer>
+
+                  
                             
                            
                           
                             
                                         
-
-                    <TrendingList send={sendToHashtag}/>
-
-                </TimelineContent>
-        </TimelineContainer>
 
     </Container>
     )

@@ -49,22 +49,8 @@ export default function OtherUsersPosts({goToLink}){
 
         getPosts.then((response)=>{
           const newArray = response.data.posts
-           
           
-          setMaxNumberOfPosts(response.data.posts.length)
-                
-          // const partial = newArray.slice(0,2)
-          
-           const partial = []
-           
-           newArray.forEach((post,index)=>{
-              if(index<8){
-                  partial.push(post)
-              }
-          })
-         
-          
-          setUsersPosts(partial)
+          setUsersPosts(newArray)
             setPageUser(response.data.posts[0].user.username)
           setServerLoading(false) 
           let sharpedHeart = []
@@ -85,40 +71,7 @@ export default function OtherUsersPosts({goToLink}){
     },[])
 
 
-    function partialUpdate(limit){
-        
-        setTimeout(()=>{
-            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
-        
-        getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-          //  const partial = newArray.slice(0,limit)
-           
-          const partial =[...usersPosts]
     
-          for(let i = limit; i<limit+10;i++){
-                if(i===newArray.length){
-                    break;
-                }
-                  partial.push(newArray[i])
-              
-          }
-          setUsersPosts(partial)
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-                }})
-            })
-            setLikedPosts(sharpedHeart);
-            setOlderLikes(sharpedHeart);
-        })
-
-        },2000)
-
-       maxNumberOfPosts===usersPosts.length ? setHasMore(false) : setHasMore(true)
-    }
 
 
 
@@ -147,14 +100,7 @@ export default function OtherUsersPosts({goToLink}){
                 
                 <TimelineContent>
 
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={() => partialUpdate( usersPosts.length)}
-                        hasMore={hasMore}
-                        loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
-                        className='Scroller'
-                        threshold={500}
-                    >
+                  
                 
                         <Posts noPostsMessage={'Este usuário não postou nada'}
                                 serverLoading={serverLoading}
@@ -168,7 +114,7 @@ export default function OtherUsersPosts({goToLink}){
                                 
                         />
 
-                    </InfiniteScroll>
+                   
                     
                     <TrendingList send={sendToHashtag}/>
 

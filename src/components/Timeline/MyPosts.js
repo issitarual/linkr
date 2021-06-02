@@ -53,75 +53,13 @@ export default function MyPosts({goToLink}){
     },[])
 
 
-    function partialUpdate(limit){
-        
-        setTimeout(()=>{
-            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
-        
-        getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-          //  const partial = newArray.slice(0,limit)
-           
-          const partial =[...myPosts]
-         console.log('partial ante do for')
-          console.log(partial)
-
-          console.log('newArray na pos limit')
-          console.log(newArray[limit])
-          
-          for(let i = limit; i<limit+10;i++){
-                if(i===newArray.length){
-                    break;
-                }
-                  partial.push(newArray[i])
-              
-          }
-
-
-          
-        console.log('partial depois do for')
-          console.log(partial)
-
-          setMyPosts(partial)
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-                }})
-            })
-            setLikedPosts(sharpedHeart);
-            setOlderLikes(sharpedHeart);
-        })
-
-        },100)
-
-       maxNumberOfPosts===myPosts.length ? setHasMore(false) : setHasMore(true)
-    }
-
+  
         function update () {
             const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
              const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
-           
-                
-                console.log(response.data)
-                setMaxNumberOfPosts(response.data.posts.length)
-                
-               
-               
-                const partial = []
-                
-                newArray.forEach((post,index)=>{
-                   if(index<8){
-                       partial.push(post)
-                   }
-               })
-               console.log(partial)
-                //
-           
-             setMyPosts(partial)
+             setMyPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -183,14 +121,6 @@ export default function MyPosts({goToLink}){
                 
                 <TimelineContent>
 
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={() => partialUpdate( myPosts.length)}
-                        hasMore={hasMore}
-                        loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
-                        className='Scroller'
-                        threshold={1}
-                    >
                    
                         <Posts noPostsMessage={'Você ainda não postou nada'}
                             update={update}
@@ -207,7 +137,7 @@ export default function MyPosts({goToLink}){
                             goToLink={goToLink}
                         />
                                 
-                    </InfiniteScroll>  
+                     
                                         
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>

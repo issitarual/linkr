@@ -50,19 +50,8 @@ export default function MyLikes({goToLink}){
         getPosts.then((response)=>{
             const newArray = response.data.posts
             
-            setMaxNumberOfPosts(response.data.posts.length)
-                
-               // const partial = newArray.slice(0,2)
-               
-                const partial = []
-                
-                newArray.forEach((post,index)=>{
-                   if(index<8){
-                       partial.push(post)
-                   }
-               })
-             
-            setAllPosts(partial)
+           
+            setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -81,43 +70,6 @@ export default function MyLikes({goToLink}){
         })
     },[])
 
-    function partialUpdate(limit){
-        
-        setTimeout(()=>{
-            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/liked`,config)
-        
-        getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-          //  const partial = newArray.slice(0,limit)
-           
-          const partial =[...allPosts]
-        
-          for(let i = limit; i<limit+10;i++){
-                if(i===newArray.length){
-                    break;
-                }
-                  partial.push(newArray[i])
-              
-          }
-
-          setAllPosts(partial)
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-                }})
-            })
-            setLikedPosts(sharpedHeart);
-            setOlderLikes(sharpedHeart);
-        })
-
-        },2000)
-
-       maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
-    }
-
-    
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
@@ -147,14 +99,6 @@ export default function MyLikes({goToLink}){
                 
                 <TimelineContent>
 
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={() => partialUpdate( allPosts.length)}
-                        hasMore={hasMore}
-                        loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
-                        className='Scroller'
-                        threshold={500}
-                    >
                 
                         <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
                                 serverLoading={serverLoading}
@@ -167,14 +111,12 @@ export default function MyLikes({goToLink}){
                                 inputRef={inputRef}
                                 goToLink={goToLink}
                         />
-                    </InfiniteScroll>
-                            
-                            
-                                        
-                    
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>
+                   
+                            
+                            
 
     </Container>
     )

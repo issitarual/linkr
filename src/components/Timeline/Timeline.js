@@ -83,40 +83,7 @@ export default function Timeline({goToLink}){
         }
     }
 
-    function partialUpdate(limit){
-        
-       setTimeout(()=>{
-            const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-        
-        getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-
-          const partial2 =[...allPosts]
-        
-          for(let i = limit; i<limit+10;i++){
-                if(i===newArray.length){
-                    break;
-                }
-                  partial2.push(newArray[i])
-              
-          }
-
-          setAllPosts(partial2)
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-                }})
-            })
-            setLikedPosts(sharpedHeart);
-            setOlderLikes(sharpedHeart);
-        })
-
-       },2000)
-
-       maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
-    }
+    
 
     function update () {
         
@@ -125,18 +92,9 @@ export default function Timeline({goToLink}){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            console.log(newArray)
-          
-            setMaxNumberOfPosts(response.data.posts.length)
-            const partial2 = []
             
-            newArray.forEach((post,index)=>{
-               if(index<8){
-                   partial2.push(post)
-               }
-           })
 
-            setAllPosts(partial2)
+            setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -199,17 +157,8 @@ export default function Timeline({goToLink}){
                     <TimelineContent>
                       
                         
-                        <InfiniteScroll
-                            pageStart={0}
-                            loadMore={() => partialUpdate( allPosts.length)}
-                            hasMore={hasMore}
-                            loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
-                            className='Scroller'
-                           // useWindow={false}
-                            //threshold={0}
-                            isReverse={false}
-                        >
-                            
+                       
+                    
                             <Posts noPostsMessage={'Nenhum post encontrado'}
                                 update={update}
                                 serverLoading={serverLoading}
@@ -226,7 +175,7 @@ export default function Timeline({goToLink}){
                                 
                             />
 
-                        </InfiniteScroll>
+                       
 
                         <TrendingList send={sendToHashtag}/>
                     
