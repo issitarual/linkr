@@ -123,7 +123,7 @@ export default function OtherUsersPosts({goToLink}){
             setOlderLikes(sharpedHeart);
         })
 
-        },100)
+        },2000)
 
        maxNumberOfPosts===hashtagPosts.length ? setHasMore(false) : setHasMore(true)
     }

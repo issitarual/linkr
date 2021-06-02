@@ -7,6 +7,7 @@ import styled from 'styled-components'
         flex-direction: column;
         justify-content: space-evenly;
         padding-left:20px;
+        height: auto;
         
         @media (max-width:1200px){
             width: 70%;
@@ -250,7 +251,7 @@ const TimelineContent= styled.div`
 
 const LinkDetails = styled.div`
     width: 503px;
-    height:155px;
+    height:auto;
     border: 1px solid #4D4D4D;
     margin: 20px 0;
     border-radius: 16px;

@@ -12,13 +12,49 @@ import TrendingList from './Timeline/TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText'
 
-
+import getYouTubeID from 'get-youtube-id';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
 Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
  
  export default function Posts(props){
+
+    function YoutubeId(post){
+        const getYouTubeID = require('get-youtube-id');
+        const id = getYouTubeID(post.link);
+    
+        if(id){
+            return(
+            <>
+            <iframe height='280' width='480'
+                src={`https://www.youtube.com/embed/${id}?autoplay=1&mute=1`}>
+            </iframe>
+            <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+            </>
+            )
+        }else{
+           return(
+             <>
+             <h3>{post.linkTitle}</h3>
+                        
+            <LinkDescription>{post.linkDescription}</LinkDescription>
+            </>
+           )
+        }
+    
+     }
+
+     function YoutubeId2(post){
+        const getYouTubeID = require('get-youtube-id');
+        const id = getYouTubeID(post.link);
+
+        if(!id){
+            return(
+                <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
+            )
+        }
+     }
 
     const history=useHistory()
 
@@ -105,14 +141,21 @@ return(
 
                 <LinkDetails>
                     <PostInfo>
-                        <h3>{post.linkTitle}</h3>
+                                {YoutubeId(post)}
+
+
+                           {/* <h3>{post.linkTitle}</h3>
                         
-                        <LinkDescription>{post.linkDescription}</LinkDescription>
+                    <LinkDescription>{post.linkDescription}</LinkDescription>*/}
+                        
+                    
                        
-                        <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+                       {/* <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>*/}
                     
                     </PostInfo> 
-                    <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
+                    
+                        {YoutubeId2(post)}
+                       {/* <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>*/}
                                                        
                 </LinkDetails>
 
@@ -128,4 +171,9 @@ return(
 
 )
 
+
+
  }
+
+
+ 
