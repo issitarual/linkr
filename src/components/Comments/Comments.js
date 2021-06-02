@@ -30,7 +30,8 @@ export default function Comments({post, setPostComments, setWriteComment, postCo
                     style={{ 
                         position: 'absolute',
                         bottom: '-40px',
-                        left: '-180px'
+                        left: '-180px',
+                        cursor: 'pointer'
                     }}
                 />
             </Icone>

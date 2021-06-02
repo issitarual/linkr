@@ -165,7 +165,6 @@ export default function Timeline(){
             
             <TimelineContainer>
             <Title>timeline</Title> 
-                <NewPost update={update} />
                     <TimelineContent>
                         
                         <InfiniteScroll
