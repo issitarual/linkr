@@ -79,7 +79,13 @@ const PostComment = styled.p`
 
 const Title = styled.div`
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    margin-left: 10px;
+
+    @media (max-width:800px){
+        width: 500px;
+        margin-left: 50px;
+    }
 
     h1{
         font-family: Oswald;
@@ -88,6 +94,18 @@ const Title = styled.div`
         font-size: 43px;
         line-height: 64px;
         color: white;
+        margin-left: 15px;
+        margin-top: 30px;
+    }
+
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+
+        @media (max-width:800px){
+            margin-left:10px ;
+        }
     }
 `;
 
@@ -121,9 +139,10 @@ const TimelineContainer = styled.div`
         position: fixed;
         z-index:0;
         right: 174px;
-        top: 226px;
+        top: 260px;
         color: white;
         border-radius: 16px;
+
         @media (max-width: 1200px){
             display: none;
     

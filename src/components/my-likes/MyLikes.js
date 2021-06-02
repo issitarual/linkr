@@ -12,14 +12,13 @@ import {TimelineContainer,Container,TimelineContent} from '../timelineStyledComp
 import Posts from '../Posts'
 
 export default function MyLikes({goToLink}){
-    const history = useHistory()
+    const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
     const { user } = useContext(UserContext);
-    const [allPosts,setAllPosts] = useState([])
-    const [serverLoading,setServerLoading] = useState(true)
-
-    const inputRef = useRef([])
+    const [allPosts,setAllPosts] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
+    const inputRef = useRef([]);
 
   
     useEffect(()=>{
@@ -68,9 +67,7 @@ export default function MyLikes({goToLink}){
     }
 
     function sendToHashtag(val){
-      
         const newVal = val.replace('#',"")
-        
         history.push(`/hashtag/${newVal}`)
     }
     return( 

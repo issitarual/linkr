@@ -5,7 +5,6 @@ import {useParams, useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
 import styled from 'styled-components';
 
-
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
     
@@ -19,6 +18,7 @@ export default function OtherUsersPosts(){
     const [usersPosts,setUsersPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [pageUser,setPageUser] = useState(null);
+    const [userImage, setUserImage] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
     const inputRef = useRef([]);
@@ -42,6 +42,7 @@ export default function OtherUsersPosts(){
             const newArray = response.data.posts
             setUsersPosts(newArray)
             setPageUser(response.data.posts[0].user.username)
+            setUserImage(response.data.posts[0].user.avatar)
             setServerLoading(false) 
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -114,11 +115,12 @@ export default function OtherUsersPosts(){
         <Container>
             <TimelineContainer>
                 <Title>
+                    <img src={userImage}/> 
                     <h1>{ !serverLoading 
                         ? `${pageUser}'s posts`  
                         :'Other Posts'}
                     </h1>
-                    <Follow onClick={ifFollowing} disabled={disabFollow}>
+                    <Follow onClick={ifFollowing} disabled={disabFollow} following={isFollowing}>
                         <p>{!isFollowing ? "Follow" : "Unfollow"}</p>
                     </Follow>
                 </Title> 
@@ -173,11 +175,17 @@ export default function OtherUsersPosts(){
 const Follow = styled.button`
     width: 112px;
     height: 30px;
-    background: #1877F2;
-    color: white;
+    background: ${props => (!props.following ? "#1877F2" : "white" )};
+    color: ${props => (props.following ? "#1877F2" : "white" )};
     border-radius: 5px;
     font-family: 'Lato', sans-serif;
     font-size: 14px;
     font-weight: 700; 
+    margin-left: 950px;
+    position: absolute;
+
+    @media (max-width:800px){
+        margin-left: 500px;
+    }
 
 `;

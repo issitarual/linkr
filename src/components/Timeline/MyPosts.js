@@ -12,14 +12,13 @@ import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyl
 import Posts from '../Posts'
 
 export default function MyPosts({goToLink}){
-    const history=useHistory()
-    const {user} = useContext(UserContext)
-    const [myPosts,setMyPosts] = useState([])
+    const history=useHistory();
+    const {user} = useContext(UserContext);
+    const [myPosts,setMyPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
-
-   const inputRef = useRef([])
+    const inputRef = useRef([]);
 
 
     const config = {
@@ -36,7 +35,7 @@ export default function MyPosts({goToLink}){
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-                const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
+            const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
             setMyPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
@@ -76,11 +75,10 @@ export default function MyPosts({goToLink}){
 
   function goToLink(e,link){
         e.preventDefault()
-       window.open(link)
+        window.open(link)
     }
 
     function sendToHashtag(val){
-        
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
     }

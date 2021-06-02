@@ -27,10 +27,10 @@ export default function Timeline(){
     const inputRef = useRef([]);
     const [timelineRef,setTimelineRef] = useState(false);
 
+    /*Logics of infinite Scroller*/ 
+    const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+    const[hasMore,setHasMore] = useState(true)
 
-        /*Logics of infinite Scroller*/ 
-        const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-        const[hasMore,setHasMore] = useState(true)
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
@@ -43,23 +43,23 @@ export default function Timeline(){
 
     UseInterval(() => {
     
-    const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
 
-    getNewPosts.then((response)=>{
-     
-     const holder = allPosts[0]
+        getNewPosts.then((response)=>{
+        
+        const holder = allPosts[0]
 
-       let numberHolder='x'
+        let numberHolder='x'
 
-       response.data.posts.forEach((post,index)=>{
-            if(post.id===holder.id){
-                numberHolder=index
-            }
-       })
-       const newPosts = response.data.posts.splice(0,numberHolder)
-        setAllPosts([...newPosts,...allPosts])
+        response.data.posts.forEach((post,index)=>{
+                if(post.id===holder.id){
+                    numberHolder=index
+                }
+        })
+        const newPosts = response.data.posts.splice(0,numberHolder)
+            setAllPosts([...newPosts,...allPosts])
 
-    })
+        })
     
 
     }, 15000); 

@@ -12,19 +12,14 @@ import Posts from '../Posts'
     
 
 export default function OtherUsersPosts({goToLink}){
-    const {hashtag} = useParams()
-
-    const history=useHistory()
-
-    const {user} = useContext(UserContext)
-
-    const [hashtagPosts,setHashtagPosts] = useState([])
-
-    const [serverLoading,setServerLoading] = useState(true)
+    const {hashtag} = useParams();
+    const history=useHistory();
+    const {user} = useContext(UserContext);
+    const [hashtagPosts,setHashtagPosts] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
-
-    const inputRef = useRef([])
+    const inputRef = useRef([]);
 
     const config = {
         headers:{
@@ -65,10 +60,8 @@ export default function OtherUsersPosts({goToLink}){
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
-       
         setServerLoading(true) 
         updateHashtagPosts(newVal)
-
         history.push(`/hashtag/${newVal}`)
     }
 
