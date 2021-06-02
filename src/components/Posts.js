@@ -90,7 +90,7 @@ return(
                         </LinkDetails>
                     </div>
                 </div>
-                <CommentContainer postComments = {postComments} postId = {post.repostId? post.repostId: post.id} avatar = {user.user.avatar} setWriteComment={setWriteComment} writeComment={writeComment}/>
+                <CommentContainer setPostComments={setPostComments} idComment = {post.id} postComments = {postComments} postId = {post.repostId? post.repostId: post.id} avatar = {user.user.avatar} setWriteComment={setWriteComment} writeComment={writeComment}/>
             </li>   
             )
         })

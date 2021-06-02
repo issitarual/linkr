@@ -1,8 +1,13 @@
 import styled from 'styled-components';
 import { PaperPlaneOutline } from 'react-ionicons';
 import EachComment from './EachComment';
+import axios from 'axios';
+import UserContext from './UserContext';
+import {useContext} from 'react';
 
-export default function CommentContainer({ postComments, postId, avatar, setWriteComment, writeComment, repostIdPost}){
+export default function CommentContainer({ postComments, setPostComments, postId, avatar, setWriteComment, writeComment, idComment}){
+    const { user } = useContext(UserContext);
+
     return(
         <Container state={postComments.id === postId}>
                 {postComments.comment.length > 0? postComments.comment.map(n => <EachComment avatar={n.user.avatar} username = {n.user.username} text={n.text} id={n.user.id}/>): null}    
@@ -11,7 +16,7 @@ export default function CommentContainer({ postComments, postId, avatar, setWrit
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     setWriteComment("");
-                    alert("comentei");
+                    addComment();
                 }}>
                     <input
                         type = "text"
@@ -38,6 +43,29 @@ export default function CommentContainer({ postComments, postId, avatar, setWrit
             </CommentOnThis>
         </Container>
     )
+    function addComment(){
+        const config = {
+            headers:{
+                'Authorization' : `Bearer ${user.token}`
+            }
+        };
+        const data = {"text": `${writeComment}`};
+        const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${idComment}/comment`, data, config);
+        request.then(success => {
+            setPostComments({id: postId, comment: [...postComments.comment,
+                {
+                "id": success.data.comment.id,
+                "text": success.data.comment.text,
+                "user": {
+                    "id": success.data.comment.userId,
+                    "username": user.user.username,
+                    "avatar": user.user.avatar
+                }
+            }]})
+        
+        });
+        request.catch(error => alert (error));
+    }
 }
 
 const Container = styled.div`
