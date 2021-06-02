@@ -51,17 +51,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
     
      }
 
-     function YoutubeId2(post){
-        const getYouTubeID = require('get-youtube-id');
-        const id = getYouTubeID(post.link);
-
-        if(!id){
-            return(
-                <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
-            )
-        }
-     }
-
+     
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
