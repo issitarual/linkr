@@ -47,16 +47,16 @@ export default function Posts(props){
                         
                         <div className='postLeft'>
                             <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
-                    <Likes 
-                        post={post} 
-                        olderLikes={olderLikes} 
-                        likedPosts = {likedPosts}
-                        user={user}
-                        like={like}
-                    />
-                <Comments post={post}/>
-                <Repost id={post.id} count={post.repostCount} />
-                </div>
+                            <Likes 
+                                post={post} 
+                                olderLikes={olderLikes} 
+                                likedPosts = {likedPosts}
+                                user={user}
+                                like={like}
+                            />
+                            <Comments post={post}/>
+                            <Repost id={post.id} count={post.repostCount} />
+                        </div>
 
                         <div className='postRight'>
                             <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>

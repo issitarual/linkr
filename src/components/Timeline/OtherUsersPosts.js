@@ -49,9 +49,9 @@ export default function OtherUsersPosts(){
                 if(n.userId === user.user.id){
                     sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
-          })
-          setLikedPosts(sharpedHeart);
-          setOlderLikes(sharpedHeart);
+            })
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{

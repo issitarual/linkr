@@ -43,9 +43,9 @@ export default function Timeline(){
 
     UseInterval(() => {
     
-        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
 
-        getNewPosts.then((response)=>{
+        getNewPosts.then((response)=> {
         
         const holder = allPosts[0]
 
@@ -62,13 +62,13 @@ export default function Timeline(){
         })
     
 
-    }, 15000); 
+    },15000); 
 
 
     function partialUpdate(limit){
         
         setTimeout(()=>{
-            const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+            const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
@@ -92,7 +92,7 @@ export default function Timeline(){
 
     function update () {
         
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
         setServerLoading(true)
         
         getPosts.then((response)=>{
