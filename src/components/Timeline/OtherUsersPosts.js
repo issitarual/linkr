@@ -23,7 +23,6 @@ export default function OtherUsersPosts(){
     const [olderLikes, setOlderLikes] = useState([]);
     const inputRef = useRef([]);
     const history=useHistory();
-
     const [disabFollow, setDisabFollow] = useState(false);
     const [followingUsers, setFollowingUsers] = useState([])
     const [isFollowing, setIsFollowing] = useState(false)
@@ -64,18 +63,17 @@ export default function OtherUsersPosts(){
 
     useEffect(() => {
         getFollowingList()
-
     },[])
 
-    useEffect(() => {
+    useEffect(() =>{
         const peopleIFollow = followingUsers && followingUsers.filter((user) => user.username === pageUser);
-        peopleIFollow.length > 0 ? setIsFollowing(true) : setIsFollowing(false);
-    }, [followingUsers])
+        peopleIFollow && peopleIFollow.length > 0 ? setIsFollowing(true) : setIsFollowing(false);
+    }, [followingUsers, pageUser])
 
     function getFollowingList(){
         const getFollowing = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/follows", config)
-        getFollowing.then((response) => {console.log(response.data.users); setFollowingUsers(response.data.users)})
-        getFollowing.catch(() => console.log("deu ruim no get"))
+        getFollowing.then((response) => setFollowingUsers(response.data.users))
+        getFollowing.catch()
     }
 
     function goToLink(e,link){
@@ -88,16 +86,15 @@ export default function OtherUsersPosts(){
         history.push(`/hashtag/${newVal}`)
     }
 
-
     function follow(){
         const requestToFollow = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/follow`, {}, config)
-        requestToFollow.then((response) => {console.log(response.data); setDisabFollow(false); getFollowingList()});
+        requestToFollow.then(() => {setDisabFollow(false); getFollowingList()});
         requestToFollow.catch(()=> alert("Não foi possivel executar essa operação"));
     }
 
     function unfollow(){
         const requestToUnfollow = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/unfollow`, {}, config)
-        requestToUnfollow.then((response) => {console.log(response.data); setDisabFollow(false); getFollowingList()});
+        requestToUnfollow.then(() => {setDisabFollow(false); getFollowingList()});
         requestToUnfollow.catch(()=> alert("Não foi possivel executar essa operação"));
     }
 
