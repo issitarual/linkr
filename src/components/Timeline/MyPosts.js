@@ -105,11 +105,11 @@ export default function MyPosts({goToLink}){
         getPosts.then((response)=>{
              const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
            
-                //
+                
                 console.log(response.data)
                 setMaxNumberOfPosts(response.data.posts.length)
                 
-               // const partial = newArray.slice(0,2)
+               
                
                 const partial = []
                 

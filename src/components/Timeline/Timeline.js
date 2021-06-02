@@ -13,6 +13,8 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './InputNewText';
 import LinkPreview from './LinkPreview'
 
+import getYouTubeID from 'get-youtube-id';
+
 /*import dos Posts*/
 import Posts from '../Posts'
 
@@ -43,8 +45,16 @@ export default function Timeline({goToLink}){
 
 
     
+    
+
+   
+    
     useEffect(()=>{
-            update()        
+            update()
+            const getYouTubeID = require('get-youtube-id');
+            const id = getYouTubeID("https://www.youtube.com/watch?v=lwGA_O9vpk0");
+            console.log(id)
+                  
     },[]);
 
     UseInterval(() => {

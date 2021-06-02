@@ -92,7 +92,7 @@ return(
                     <ReactHashtag 
                     
                     renderHashtag={(hashtagValue) => (
-                        //<Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
+                        
                         <Hashtag onClick={()=>sendToHashtag(hashtagValue)} >{hashtagValue}</Hashtag>
                         
                         )}
