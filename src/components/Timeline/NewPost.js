@@ -13,7 +13,8 @@ export default function NewPost ({update}) {
   const { user ,setUser} = useContext(UserContext);
   
   const [enableLocation, setEnableLocation] = useState({text: 'Localização desativada', textColor: '#949494', enable: false});
-  
+  const [geolocation, setGeolocation] = useState([])
+
   function createNewPost (event) {
 
     event.preventDefault();
@@ -25,8 +26,15 @@ export default function NewPost ({update}) {
 
     const body = {
       "text": linkDescription,
-      "link": linkToPost
+      "link": linkToPost,
+      "geolocation": {
+        "latitude": geolocation[0],
+        "longitude": geolocation[1]
+      }
     }
+
+    console.clear();
+    console.log(body);
 
     const config = {
       headers:{
@@ -50,6 +58,7 @@ export default function NewPost ({update}) {
     letButtonText('Publicando...')
     
   }
+
   function toggleEnabled () {
     let atualiza;
     if (!enableLocation.enable) {
@@ -62,18 +71,20 @@ export default function NewPost ({update}) {
       }
     } else {
       atualiza = {text: 'Localização desativada', textColor: '#949494', enable: false}
+      clearLocation();
     }
     setEnableLocation(atualiza);
   }
-  let geolocation = [];
+
   function getLocation () {
 
     navigator.geolocation.getCurrentPosition((position) => {
-      geolocation.push(position.coords.latitude);
-      geolocation.push(position.coords.longitude);
-      console.log(geolocation);
+      setGeolocation([position.coords.latitude, position.coords.longitude])
     });
 
+  }
+  function clearLocation () {
+    setGeolocation([])
   }
 
   return (
