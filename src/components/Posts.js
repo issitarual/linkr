@@ -2,17 +2,21 @@ import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import ActionsPost from './Timeline/ActionsPost';
-import { RepeatOutline } from 'react-ionicons';
+import { RepeatOutline, PaperPlaneOutline } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText';
 import Repost from './repost/Repost';
 import Likes from './likes';
 import Comments from './Comments';
 import styled from 'styled-components';
+import {useState} from 'react'
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
  
 export default function Posts(props){
+    const [writeComment, setWriteComment] = useState("");
+    const [postComments, setPostComments] = useState([]);
+    console.log(postComments)
 
     const history=useHistory()
 
@@ -55,7 +59,7 @@ return(
                     user={user}
                     like={like}
                 />
-            <Comments post={post}/>
+            <Comments post={post} setPostComments={setPostComments}/>
             <Repost id={post.id} />
             </div>
 
@@ -87,6 +91,37 @@ return(
                         </LinkDetails>
                     </div>
                 </div>
+                <CommentContainer state={postComments.id === post.id}>
+                    <CommentOnThis>
+                        <img src={user.user.avatar}/>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            alert("comentei");
+                            }}>
+                            <input
+                                type = "text"
+                                placeholder = "write a comment..."
+                                value = {writeComment}
+                                onChange={e => setWriteComment(e.target.value)}
+                            />
+                            <button
+                                type="submit"
+                            >
+                                <PaperPlaneOutline
+                                color={'#fff'} 
+                                height="25px"
+                                width="25px"
+                                style={{
+                                    margin: "0",
+                                    position: "absolute",
+                                    left: "8",
+                                    top: "8"
+                                }}
+                                />
+                            </button>
+                        </form>
+                    </CommentOnThis>
+                </CommentContainer>
             </li>   
             )
         })
@@ -106,4 +141,53 @@ return(
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
+`
+
+const CommentContainer = styled.div`
+    display: ${props => props.state? "block": "none"}
+`
+const CommentOnThis = styled.div`
+    height: 83px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    input{
+        width: 90%;
+        height: 40px;
+        background-color: #252525;
+        font-size: 14px;
+        color:#ACACAC;
+        font-family: 'Lato', sans-serif;
+        outline:none;
+        border: none;
+        padding: 10px 15px;
+        border-bottom-left-radius: 8px;
+        border-top-left-radius: 8px;
+        ::-webkit-input-placeholder  { 
+            color: #575757; 
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+        }
+    }
+    button{
+        background-color: #252525;
+        width: 40px;
+        height: 40px;
+        position: relative;
+        border-bottom-right-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    form{
+        width: 90%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
 `
