@@ -52,14 +52,16 @@ export default function CommentContainer({ postComments, setPostComments, postId
         const data = {"text": `${writeComment}`};
         const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${idComment}/comment`, data, config);
         request.then(success => {
+            const { id, text, userId } = success.data.comment;
+            const { avatar, username }= user.user;
             setPostComments({id: postId, comment: [...postComments.comment,
                 {
-                "id": success.data.comment.id,
-                "text": success.data.comment.text,
+                "id": id,
+                "text": text,
                 "user": {
-                    "id": success.data.comment.userId,
-                    "username": user.user.username,
-                    "avatar": user.user.avatar
+                    "id": userId,
+                    "username": username,
+                    "avatar": avatar
                 }
             }]})
         
