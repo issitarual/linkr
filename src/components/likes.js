@@ -30,7 +30,8 @@ export default function likes({post, olderLikes, likedPosts, like, user }){
                         position: 'absolute',
                         bottom: '-40px',
                         left: '-180px',
-                        cursor: 'ponter'
+                        cursor: 'ponter',
+                        zIndex: "0"
                     }}
                 />:
                 <HeartOutline 
@@ -42,7 +43,8 @@ export default function likes({post, olderLikes, likedPosts, like, user }){
                         position: 'absolute',
                         bottom: '-40px',
                         left: '-180px',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        zIndex: "0"
                     }}
                 />
                 }

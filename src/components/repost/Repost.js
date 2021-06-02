@@ -23,6 +23,7 @@ export default function Repost ({id, count}) {
                         position: 'absolute',
                         bottom: '0px',
                         left: '0px',
+                        zIndex: "0"
                     }}
                     onClick = {() => toggleModal()}
                 />

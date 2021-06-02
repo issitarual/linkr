@@ -31,7 +31,8 @@ export default function Comments({post, setPostComments, setWriteComment, postCo
                         position: 'absolute',
                         bottom: '-40px',
                         left: '-180px',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        zIndex: "0"
                     }}
                 />
             </Icone>
@@ -46,4 +47,5 @@ const Icone = styled.div`
     width: 25px;
     height: 25px;
     position: relative;
+    z-index: 0;
 `;

@@ -163,6 +163,7 @@ const InputGroup = styled.div`
     align-items: center;
     height: 45px;
     position: relative;
+    z-index: 3;
     @media (max-width:1200px){
         position: absolute;
         width: 95%;
@@ -236,6 +237,7 @@ const HidePosts = styled.div`
     width: 30px;
     position: fixed;
     width: 100%;
+    z-index: 1;
     display: none;
     @media (max-width:1200px){
         display: block;
