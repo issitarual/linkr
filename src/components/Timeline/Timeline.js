@@ -83,8 +83,17 @@ export default function Timeline({goToLink}){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            const partial = newArray.slice(0,limit)
-            setAllPosts(partial)
+          const partial2 =[...allPosts]
+        
+          for(let i = limit; i<limit+10;i++){
+                if(i===newArray.length){
+                    break;
+                }
+                  partial2.push(newArray[i])
+              
+          }
+
+          setAllPosts(partial2)
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
@@ -96,7 +105,7 @@ export default function Timeline({goToLink}){
             setOlderLikes(sharpedHeart);
         })
 
-        },1000)
+        },2000)
 
        maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
     }
@@ -108,11 +117,20 @@ export default function Timeline({goToLink}){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+          
             setMaxNumberOfPosts(response.data.posts.length)
             
-            const partial = newArray.slice(0,2)
+           // const partial = newArray.slice(0,2)
+           
+            const partial2 = []
             
-            setAllPosts(partial)
+            newArray.forEach((post,index)=>{
+               if(index<8){
+                   partial2.push(post)
+               }
+           })
+
+            setAllPosts(partial2)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -177,10 +195,11 @@ export default function Timeline({goToLink}){
                         
                         <InfiniteScroll
                             pageStart={0}
-                            loadMore={() => partialUpdate( allPosts.length + 2 )}
+                            loadMore={() => partialUpdate( allPosts.length)}
                             hasMore={hasMore}
-                            loader={<div className="x" key={0}>Loading More Posts..</div>}
+                            loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
                             className='Scroller'
+                            threshold={1}
                         >
                             
                             <Posts noPostsMessage={'Nenhum post encontrado'}

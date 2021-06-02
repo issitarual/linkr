@@ -17,6 +17,9 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 /*import dos Posts*/
 import Posts from '../Posts'
 
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
+
 export default function MyLikes({goToLink}){
     const history = useHistory()
     const [likedPosts, setLikedPosts] = useState([]);
@@ -27,19 +30,39 @@ export default function MyLikes({goToLink}){
 
     const inputRef = useRef([])
 
-  
-    useEffect(()=>{
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
+
+  /*Logics of infinite Scroller*/ 
+  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+  const[hasMore,setHasMore] = useState(true)
+ 
+
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
         }
+    }
+    
+    useEffect(()=>{
+       
 
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/liked',config)
 
         getPosts.then((response)=>{
             const newArray = response.data.posts
-            setAllPosts(newArray)
+            
+            setMaxNumberOfPosts(response.data.posts.length)
+                
+               // const partial = newArray.slice(0,2)
+               
+                const partial = []
+                
+                newArray.forEach((post,index)=>{
+                   if(index<8){
+                       partial.push(post)
+                   }
+               })
+             
+            setAllPosts(partial)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -57,6 +80,42 @@ export default function MyLikes({goToLink}){
             return
         })
     },[])
+
+    function partialUpdate(limit){
+        
+        setTimeout(()=>{
+            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/liked`,config)
+        
+        getPosts.then((response)=>{
+            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+          //  const partial = newArray.slice(0,limit)
+           
+          const partial =[...allPosts]
+        
+          for(let i = limit; i<limit+10;i++){
+                if(i===newArray.length){
+                    break;
+                }
+                  partial.push(newArray[i])
+              
+          }
+
+          setAllPosts(partial)
+            let sharpedHeart = []
+            newArray.forEach( post => {
+                post.likes.forEach(n =>{
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
+                }})
+            })
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
+        })
+
+        },2000)
+
+       maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
+    }
 
     
     function sendToHashtag(val){
@@ -88,19 +147,28 @@ export default function MyLikes({goToLink}){
                 
                 <TimelineContent>
 
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={() => partialUpdate( allPosts.length)}
+                        hasMore={hasMore}
+                        loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
+                        className='Scroller'
+                        threshold={1}
+                    >
                 
-                    <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
-                            serverLoading={serverLoading}
-                            allPosts={allPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                    />
-                        
+                        <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
+                                serverLoading={serverLoading}
+                                allPosts={allPosts}
+                                goToUserPosts={goToUserPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                        />
+                    </InfiniteScroll>
+                            
                             
                                         
                     

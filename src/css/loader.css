@@ -14,8 +14,9 @@
     }
 }
 
-
-
+.Scroller.mid{
+    margin: 0 auto;
+}
 
 .Scroller{
     width: auto;

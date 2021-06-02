@@ -23,7 +23,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink} = props;
+    config,inputRef,setTimelineRef,goToLink,sendToHashtag} = props;
 
 return(
 <TimelinePosts>
@@ -92,8 +92,8 @@ return(
                     <ReactHashtag 
                     
                     renderHashtag={(hashtagValue) => (
-                        <Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
-                        
+                        //<Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
+                        <Hashtag onClick={()=>sendToHashtag(hashtagValue)} >{hashtagValue}</Hashtag>
                         
                         )}
                     >
