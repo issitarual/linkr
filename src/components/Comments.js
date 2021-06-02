@@ -4,7 +4,7 @@ import {useContext, useState} from 'react';
 import UserContext from './UserContext';
 import axios from 'axios';
 
-export default function Comments({post, setPostComments, setWriteComment}){
+export default function Comments({post, setPostComments, setWriteComment, postComments}){
     const { user } = useContext(UserContext);
     function loadingComments(id){
         const config = {
@@ -34,7 +34,7 @@ export default function Comments({post, setPostComments, setWriteComment}){
                     }}
                 />
             </Icone>
-            <h6>{post.commentCount} comments</h6>
+            <h6>{postComments.id === post.id || postComments.id === post.repostId? postComments.comment.length: post.commentCount} comments</h6>
         </>
     )
 }

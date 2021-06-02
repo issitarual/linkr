@@ -58,7 +58,7 @@ return(
                     user={user}
                     like={like}
                 />
-            <Comments post={post} setPostComments={setPostComments} setWriteComment={setWriteComment}/>
+            <Comments post={post} postComments = {postComments} setPostComments={setPostComments} setWriteComment={setWriteComment}/>
             <Repost id={post.id} />
             </div>
 
