@@ -78,11 +78,12 @@ export default function Timeline({goToLink}){
 
     function partialUpdate(limit){
         
-        setTimeout(()=>{
+       setTimeout(()=>{
             const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+
           const partial2 =[...allPosts]
         
           for(let i = limit; i<limit+10;i++){
@@ -105,7 +106,7 @@ export default function Timeline({goToLink}){
             setOlderLikes(sharpedHeart);
         })
 
-        },2000)
+       },2000)
 
        maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
     }
@@ -117,11 +118,9 @@ export default function Timeline({goToLink}){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+            console.log(newArray)
           
             setMaxNumberOfPosts(response.data.posts.length)
-            
-           // const partial = newArray.slice(0,2)
-           
             const partial2 = []
             
             newArray.forEach((post,index)=>{
@@ -199,7 +198,9 @@ export default function Timeline({goToLink}){
                             hasMore={hasMore}
                             loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
                             className='Scroller'
-                            threshold={1}
+                           // useWindow={false}
+                            //threshold={0}
+                            isReverse={false}
                         >
                             
                             <Posts noPostsMessage={'Nenhum post encontrado'}

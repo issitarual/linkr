@@ -94,7 +94,7 @@ export default function MyPosts({goToLink}){
             setOlderLikes(sharpedHeart);
         })
 
-        },1000)
+        },100)
 
        maxNumberOfPosts===myPosts.length ? setHasMore(false) : setHasMore(true)
     }

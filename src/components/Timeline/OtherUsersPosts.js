@@ -153,7 +153,7 @@ export default function OtherUsersPosts({goToLink}){
                         hasMore={hasMore}
                         loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
                         className='Scroller'
-                        threshold={1}
+                        threshold={500}
                     >
                 
                         <Posts noPostsMessage={'Este usuário não postou nada'}
