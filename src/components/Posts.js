@@ -9,13 +9,13 @@ import Likes from './likes';
 import Comments from './Comments';
 import styled from 'styled-components';
 import {useState} from 'react'
-
+import CommentContainer from './CommentContainer';
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
  
 export default function Posts(props){
     const [writeComment, setWriteComment] = useState("");
-    const [postComments, setPostComments] = useState([]);
+    const [postComments, setPostComments] = useState({id: null, comment:[]});
     console.log(postComments)
 
     const history=useHistory()
@@ -59,7 +59,7 @@ return(
                     user={user}
                     like={like}
                 />
-            <Comments post={post} setPostComments={setPostComments}/>
+            <Comments post={post} setPostComments={setPostComments} setWriteComment={setWriteComment}/>
             <Repost id={post.id} />
             </div>
 
@@ -91,37 +91,7 @@ return(
                         </LinkDetails>
                     </div>
                 </div>
-                <CommentContainer state={postComments.id === post.id}>
-                    <CommentOnThis>
-                        <img src={user.user.avatar}/>
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            alert("comentei");
-                            }}>
-                            <input
-                                type = "text"
-                                placeholder = "write a comment..."
-                                value = {writeComment}
-                                onChange={e => setWriteComment(e.target.value)}
-                            />
-                            <button
-                                type="submit"
-                            >
-                                <PaperPlaneOutline
-                                color={'#fff'} 
-                                height="25px"
-                                width="25px"
-                                style={{
-                                    margin: "0",
-                                    position: "absolute",
-                                    left: "8",
-                                    top: "8"
-                                }}
-                                />
-                            </button>
-                        </form>
-                    </CommentOnThis>
-                </CommentContainer>
+                <CommentContainer postComments = {postComments} postId = {post.id} avatar = {user.user.avatar} setWriteComment={setWriteComment} writeComment={writeComment}/>
             </li>   
             )
         })
@@ -143,51 +113,3 @@ return(
     padding-right: 20px;
 `
 
-const CommentContainer = styled.div`
-    display: ${props => props.state? "block": "none"}
-`
-const CommentOnThis = styled.div`
-    height: 83px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
-    img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-    input{
-        width: 90%;
-        height: 40px;
-        background-color: #252525;
-        font-size: 14px;
-        color:#ACACAC;
-        font-family: 'Lato', sans-serif;
-        outline:none;
-        border: none;
-        padding: 10px 15px;
-        border-bottom-left-radius: 8px;
-        border-top-left-radius: 8px;
-        ::-webkit-input-placeholder  { 
-            color: #575757; 
-            font-family: 'Lato', sans-serif;
-            font-size: 14px;
-        }
-    }
-    button{
-        background-color: #252525;
-        width: 40px;
-        height: 40px;
-        position: relative;
-        border-bottom-right-radius: 8px;
-        border-top-right-radius: 8px;
-    }
-    form{
-        width: 90%;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
-`

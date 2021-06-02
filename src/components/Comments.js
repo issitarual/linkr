@@ -4,7 +4,7 @@ import {useContext, useState} from 'react';
 import UserContext from './UserContext';
 import axios from 'axios';
 
-export default function Comments({post, setPostComments}){
+export default function Comments({post, setPostComments, setWriteComment}){
     const { user } = useContext(UserContext);
     function loadingComments(id){
         const config = {
@@ -13,7 +13,10 @@ export default function Comments({post, setPostComments}){
             }
         }
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/comments`,config);
-        request.then(success => setPostComments({id: post.id, comment: success.data}));
+        request.then(success => {
+            setPostComments({id: post.id, comment: success.data.comments});
+            setWriteComment("");
+        });
         request.catch(error => alert("Ocorreu um erro, tente novamente"))
     }
     return(
