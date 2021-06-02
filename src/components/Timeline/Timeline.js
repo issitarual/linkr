@@ -157,11 +157,12 @@ export default function Timeline(){
 
    
     return( 
-        
         <Container>
             
             <TimelineContainer>
-            <Title>timeline</Title> 
+                <Title>
+                    <h1>timeline</h1>
+                </Title> 
         
                     <TimelineContent>
                         

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const PostInfo = styled.div`
     width: 350px;
@@ -31,8 +31,6 @@ const PostInfo = styled.div`
     
     }
 `;
-
-
 
 const LinkDescription = styled.p`
     width: 302px;
@@ -68,7 +66,6 @@ const Links = styled.a`
     }           
 `;
 
- 
 const Hashtag = styled.span`
     color: white;
     font-weight: bold;
@@ -79,13 +76,19 @@ const PostComment = styled.p`
     word-wrap: break-word;
     white-space: pre-wrap;
 `;
-const Title = styled.h1`
-    font-family: Oswald;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 43px;
-    line-height: 64px;
-    color: white;
+
+const Title = styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    h1{
+        font-family: Oswald;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 43px;
+        line-height: 64px;
+        color: white;
+    }
 `;
 
 const TimelineContainer = styled.div`
@@ -197,9 +200,9 @@ const TimelinePosts = styled.ul`
 
        h2{
             font-family: 'Lato', sans-serif!important;
-           font-size: 19px;
-           color: #fff;
-           margin: 20px 20px 7px 20px;
+            font-size: 19px;
+            color: #fff;
+            margin: 20px 20px 7px 20px;
        }
 
        .postText{

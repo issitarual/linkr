@@ -99,7 +99,9 @@ export default function MyPosts({goToLink}){
     <Container>
         
         <TimelineContainer>
-        <Title>my posts</Title> 
+            <Title>
+                <h1>my posts</h1>
+            </Title> 
                 
                 <TimelineContent>
 
