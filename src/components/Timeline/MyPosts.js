@@ -1,19 +1,12 @@
-import styled from 'styled-components'
 import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
-import { ConstructOutline, HeartOutline, HeartSharp } from 'react-ionicons';
-import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
-import ReactHashtag from "react-hashtag";
-import TrendingList from './TrendingList';
-import InputNewText from './InputNewText';
-import ActionsPost from './ActionsPost';
+import TrendingList from '../hashtag/TrendingList';
+
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
+import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -29,9 +22,9 @@ export default function MyPosts({goToLink}){
     const history=useHistory()
     const {user} = useContext(UserContext)
     const [myPosts,setMyPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
-   const [likedPosts, setLikedPosts] = useState([]);
-   const [olderLikes, setOlderLikes] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
+    const [likedPosts, setLikedPosts] = useState([]);
+    const [olderLikes, setOlderLikes] = useState([]);
 
    const inputRef = useRef([])
 
@@ -42,11 +35,11 @@ export default function MyPosts({goToLink}){
 
 
 
-   const config = {
-    headers:{
-        'Authorization' : `Bearer ${user.token}`
-    }
-} 
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    } 
 
     useEffect(()=>{
         update();
@@ -76,7 +69,7 @@ export default function MyPosts({goToLink}){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-        }
+    }
 
     function tryingToEdit(id,canCallRef) {
         let postsToEdit = myPosts.map((p) => {
@@ -89,14 +82,18 @@ export default function MyPosts({goToLink}){
         setMyPosts([...postsToEdit]);
 
        
-      setTimeout(()=>{
+        setTimeout(()=>{
 
-        inputRef.current[id].focus()
-       },100) 
+            inputRef.current[id].focus()
+        },100) 
     
     }
 
- 
+  function goToLink(e,link){
+        e.preventDefault()
+       window.open(link)
+    }
+
     function sendToHashtag(val){
         
         const newVal = val.replace('#',"")
@@ -112,7 +109,7 @@ export default function MyPosts({goToLink}){
         }
     }
    
-     return( 
+    return( 
       
     <Container>
         
@@ -172,4 +169,3 @@ export default function MyPosts({goToLink}){
         }
     }
 }
-

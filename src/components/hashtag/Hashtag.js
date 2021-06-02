@@ -1,18 +1,11 @@
-import styled from 'styled-components';
 import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
 import axios from 'axios';
-import ReactHashtag from "react-hashtag";
 import {useParams,useHistory} from 'react-router-dom';
-import Loader from "react-loader-spinner";
-import { HeartOutline, HeartSharp } from 'react-ionicons';
-import ReactTooltip from 'react-tooltip';
 import TrendingList from './TrendingList';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment} from '../timelineStyledComponents'
-
+import {TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -36,28 +29,18 @@ export default function OtherUsersPosts({goToLink}){
 
     const inputRef = useRef([])
 
-    /*Logics of infinite Scroller*/ 
-  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-  const[hasMore,setHasMore] = useState(true)
- 
-  const config = {
-    headers:{
-        'Authorization' : `Bearer ${user.token}`
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
     }
-} 
 
     useEffect(()=>{
         updateHashtagPosts()
         
     },[])
 
-    function updateHashtagPosts(newVal){
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
-        } 
-
+    function updateHashtagPosts(newVal){ 
        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${newVal || hashtag}/posts`,config)
 
         getPosts.then((response)=>{
@@ -101,6 +84,13 @@ export default function OtherUsersPosts({goToLink}){
         else{
             history.push(`/my-posts`)
         }
+    }
+
+    function RepostButton(id){
+        window.confirm("Você quer respostar esse link?");
+        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
+        requestRepost.then(() => console.log("deu bom"));
+        requestRepost.catch(() => console.log("deu ruim"));
     }
    
     return( 
@@ -169,4 +159,3 @@ export default function OtherUsersPosts({goToLink}){
         }
     }
 }
-

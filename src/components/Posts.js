@@ -1,24 +1,23 @@
-import styled from 'styled-components';
-import {useContext, useEffect,useState,useRef} from 'react';
-import NewPost from './Timeline/NewPost';
-
-import axios from 'axios';
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
 import Loader from "react-loader-spinner";
 import ActionsPost from './Timeline/ActionsPost';
-import TrendingList from './Timeline/TrendingList';
+import styled from 'styled-components'
+import TrendingList from './hashtag/TrendingList'
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText'
-
+import { RepeatOutline } from 'react-ionicons';
 import getYouTubeID from 'get-youtube-id';
+import Likes from './likes'
+import Comments from './Comments'
+import Repost from './repost/Repost'
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
 Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
+
  
- export default function Posts(props){
+export default function Posts(props){
 
     function YoutubeId(post){
         const getYouTubeID = require('get-youtube-id');
@@ -57,106 +56,81 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
     config,inputRef,setTimelineRef,goToLink,sendToHashtag} = props;
 
-return(
-<TimelinePosts>
-    {serverLoading 
-        ? <Loader type="Circles" className='loader' color="#FFF"  />
-        : (allPosts.length===0 
-            ? <NoPostsYet>{noPostsMessage}</NoPostsYet>
-            :allPosts.map((post)=>{
-        return(
-        <li key={post.id} id={post.id}>
-            <div className='postLeft'>
-            <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
-            <div className ="ion-icon" 
-                data-tip={
-                    olderLikes.map(n => n.id).includes(post.id) && !likedPosts.map(n => n.id).includes(post.id)?
-                    olderLikes.filter(n => n.id === post.id)[0].likes === 0? "0 pessoas":
-                    `${olderLikes.filter(n => n.id === post.id)[0].names[0]} ${olderLikes.filter(n => n.id === post.id)[0].likes - 1 > 0? `e outra(s) ${olderLikes.filter(n => n.id === post.id)[0].likes - 1} pessoas`: ""} `: 
-                    likedPosts.map(n => n.id).includes(post.id)? 
-                    likedPosts.filter(n => n.id === post.id)[0].likes === 1 ? "Somente você":
-                    likedPosts.filter(n => n.id === post.id)[0].likes === 2? `Você e ${likedPosts.filter(n => n.id === post.id)[0].names.filter(n => n !== user.user.username)}`:
-                    `Você, ${likedPosts.filter(n => n.id === post.id)[0].names.filter(n => n !== user.user.username)[0]} e outras ${likedPosts.filter(n => n.id === post.id)[0].likes - 2} pessoas`:                                        
-                    post.likes.length === 0? "0 pessoas":
-                    post.likes.length === 1? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]}`:
-                    post.likes.length === 2? `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]} e  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]}`:
-                    `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
-                } 
-            >
-                {likedPosts.map(n=>n.id).includes(post.id)?                                  
-                <HeartSharp 
-                    onClick={() => like(post.id)}
-                    color={'#AC2B25'} 
-                    height="25px"
-                    width="25px"
-                />:
-                <HeartOutline 
-                    onClick={() => like(post.id)}
-                    color={'#fff'} 
-                    height="25px"
-                    width="25px"
-                />
-                }
-                <ReactTooltip 
-                    type="light"
-                    textColor="#505050"
-                    place="bottom"
-                    effect="solid"
-                    border="5"
-                />
-            </div> 
-            <h6>
-                {
-                likedPosts.map(n => n.id).includes(post.id)?
-                likedPosts.filter(n => n.id === post.id)[0].likes:
-                olderLikes.map(n => n.id).includes(post.id)?
-                olderLikes.filter(n => n.id === post.id)[0].likes:
-                post.likes.length
-                } likes
-            </h6>
-            </div>
-            <div className='postRight'>
-
-            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
-            <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
-
-                 <PostContent open={!post.toEdit} >
-                    <ReactHashtag 
-                    
-                    renderHashtag={(hashtagValue) => (
+    return(
+        <TimelinePosts>
+            {serverLoading 
+                ? <Loader type="Circles" className='loader' color="#FFF"  />
+                : (allPosts.length===0 
+                    ? <NoPostsYet>{noPostsMessage}</NoPostsYet>
+                    :allPosts.map((post)=>{
+                return(
+                <li key={post.id} id={post.id}>
+                    {post["repostedBy"] ? 
+                            (<RepostIcon>
+                                <RepeatOutline
+                                    color={'#ffffff'}
+                                    height="20px"
+                                    width="20px"
+                                    style={{
+                                        margin: "0",
+                                        marginRight: "10",
+                                        marginBottom: "10"
+                                        
+                                    }}
+                                />
+                                Re-posted by {user.user.username === post.repostedBy.username ? "you" : post.repostedBy.username}
+                            </RepostIcon>) : ""}
+                    <div className = "oficialPost">
                         
-                        <Hashtag onClick={()=>sendToHashtag(hashtagValue)} >{hashtagValue}</Hashtag>
-                        
-                        )}
-                    >
-                        {post.text}  
-                    </ReactHashtag>
-                </PostContent>    
+                        <div className='postLeft'>
+                            <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
+                    <Likes 
+                        post={post} 
+                        olderLikes={olderLikes} 
+                        likedPosts = {likedPosts}
+                        user={user}
+                        like={like}
+                    />
+                <Comments post={post}/>
+                <Repost id={post.id} count={post.repostCount} />
+                </div>
 
-                <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
+                        <div className='postRight'>
+                            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+                            <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
 
-                <LinkDetails id1={getYouTubeID(post.link)}>
-                   
-                     {YoutubeId(post)}
-                   
-                 
-                </LinkDetails>
+              
 
-            </div>
-        </li>   
-        )
-    })
-        )
-    }
+                            <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
 
-  
-</TimelinePosts>
+                            <LinkDetails id1={getYouTubeID(post.link)}>
+                                
+                            {YoutubeId(post)}
+                               
+                            </LinkDetails>
+                        </div>
+                    </div>
+                </li>   
+                )
+            })
+                )
+            }
+        </TimelinePosts>
+    )
 
-)
+}
 
-
-
- }
 
 
  
+
+
+ 
+const RepostIcon = styled.span`
+    font-family: 'Lato', sans-serif!important;
+    font-size: 11px;
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+`;
