@@ -2,10 +2,13 @@ import styled from 'styled-components';
 import {useContext, useState, useEffect} from 'react';
 import UserContext from '../UserContext';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 export default function EachComment ({avatar, username, text, id}){
     const { user } = useContext(UserContext);
-    const [followers, setFollowers] = useState([])
+    const [followers, setFollowers] = useState([]);
+    let history = useHistory();
+
     useEffect(()=>{
         const config = {
             headers:{
@@ -22,7 +25,7 @@ export default function EachComment ({avatar, username, text, id}){
                 <img src={avatar}/>
                 <TextComment>
                     <span>
-                        <h5>{username}</h5>
+                        <h5 onClick = {() => goToUserPosts(id)}>{username}</h5>
                         <h6>{user.user.id === id? "• post’s author": followers.map(n => n.id).includes(id)? "• following" : null}</h6>
                     </span>                
                     <p>{text}</p>
@@ -31,6 +34,14 @@ export default function EachComment ({avatar, username, text, id}){
             <Divisor/>
         </>
     )
+    function goToUserPosts(id){
+        if(id !== user.user.id ){
+            history.push(`/user/${id}`);
+        }
+        else{
+            history.push(`/my-posts`);
+        }
+    }
 }
 
 
@@ -64,6 +75,7 @@ const TextComment = styled.div`
         font-size: 14px;
         font-weight: bold;
         font-family: 'Lato', sans-serif;
+        cursor: pointer;
     }
     h6{
         color: #565656;

@@ -19,6 +19,7 @@ export default function Header (){
     const [stateSearch, setStateSearch] = useState(false);
     
     return(
+        <>
         <ContainerHeader state={state}>
             <Link to ="/timeline">
                 <h1>linkr</h1>
@@ -80,6 +81,8 @@ export default function Header (){
                 onClick={() => setState(!state)}
             />
         </ContainerHeader>
+        <HidePosts/>
+        </>
     ) 
 
     function link (url){
@@ -226,3 +229,15 @@ const CloseMenu = styled.div`
     width: 100vw;
     z-index: 1;
 `;
+
+const HidePosts = styled.div`
+    background-color: #333;
+    height: 140px;
+    width: 30px;
+    position: fixed;
+    width: 100%;
+    display: none;
+    @media (max-width:1200px){
+        display: block;
+    } 
+`
