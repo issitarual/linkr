@@ -38,6 +38,9 @@ export default function Header (){
                 color={'#C6C6C6'} 
                 height="25px"
                 width="25px"
+                style={{
+                    backgroundColor: "#fff"
+                }}
                 />
             </InputGroup>
             <span onClick={() => setState(!state)}>
