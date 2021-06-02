@@ -11,19 +11,31 @@ import ActionsPost from './Timeline/ActionsPost';
 import TrendingList from './Timeline/TrendingList';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText'
+import locationpin from './Timeline/images/locationpin.png'
+
 
 
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../components/timelineStyledComponents'
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent, SpaceBetween, Flex, PinIcon} from '../components/timelineStyledComponents'
  
  export default function Posts(props){
 
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink} = props;
+    config,inputRef,setTimelineRef,goToLink, openMap} = props;
+
+    function pinLocation (post) {
+        if (post.geolocation) {
+            return (
+                <PinIcon onClick={(e)=>{openMap(e, post)}}>
+                    <img src={locationpin} />
+                </PinIcon>
+            )
+        }
+    }
 
 return(
 <TimelinePosts>
@@ -84,10 +96,14 @@ return(
             </h6>
             </div>
             <div className='postRight'>
-
-            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
-            <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
-
+            <SpaceBetween>
+                <Flex>
+                    <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
+                    {pinLocation(post)}
+                </Flex>
+                <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+            </SpaceBetween>
+            
                  <PostContent open={!post.toEdit} >
                     <ReactHashtag 
                     
@@ -129,3 +145,4 @@ return(
 )
 
  }
+

@@ -26,7 +26,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
 
-export default function Timeline({goToLink}){
+export default function Timeline({goToLink, openMap}){
     const history = useHistory()
     const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
@@ -98,9 +98,11 @@ export default function Timeline({goToLink}){
         })
 
         },15000)
+        
 
        maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
     }
+    console.log(allPosts)
 
     function update () {
         
@@ -194,7 +196,7 @@ export default function Timeline({goToLink}){
                                 config={config}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
-                                
+                                openMap={openMap}                               
                             />
 
                         </InfiniteScroll>

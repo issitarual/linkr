@@ -12,24 +12,37 @@ import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
 import Hashtag from './Timeline/Hashtag';
 import LinkPreview from './Timeline/LinkPreview'
+import LocationModal from './Timeline/LocationModal';
 
 export default function App () {
 
     const [user, setUser] = useState(localStorage.lenght!==0 ? JSON.parse(localStorage.getItem('list')) : []);
+    
     const [linkIsOpen, setLinkIsOpen] = useState(false);
     const [linkToOpen, setLinkToOpen] = useState('');
 
+    const [locationIsOpen, setLocationIsOpen] = useState(false);
+    const [postLocation, setPostLocation] = useState();
+
     function goToLink(e,link){
-        e.preventDefault()
+        e.preventDefault();
         setLinkIsOpen(!linkIsOpen);
         setLinkToOpen(link);
-    }  
+    }
+
+    function openMap(e,post){
+        e.preventDefault();
+        console.log('fé');
+        setLocationIsOpen(!locationIsOpen);
+        setPostLocation(post);
+    }
 
     return (
         <UserContext.Provider value={{user, setUser}}> 
             <Router>
                 <GlobalStyle />
                 <LinkPreview linkIsOpen={linkIsOpen} setLinkIsOpen={setLinkIsOpen} link={linkToOpen} />
+                <LocationModal locationIsOpen={locationIsOpen} setLocationIsOpen={setLocationIsOpen} post={postLocation} />
                 <Switch>
                     <Route path='/' exact>
                         <Home />
@@ -39,23 +52,23 @@ export default function App () {
                     </Route>
                     <Route path='/timeline' exact>
                         <Header/>
-                        <Timeline goToLink={goToLink} />
+                        <Timeline goToLink={goToLink} openMap={openMap} />
                     </Route>
                     <Route path='/my-posts' exact>
                         <Header/>
-                        <MyPosts goToLink={goToLink} />
+                        <MyPosts goToLink={goToLink} openMap={openMap} />
                     </Route>
                     <Route path='/hashtag/:hashtag' exact>
                         <Header/>
-                        <Hashtag goToLink={goToLink} />
+                        <Hashtag goToLink={goToLink} openMap={openMap} />
                     </Route>
                     <Route path='/user/:id' exact>
                         <Header/>
-                        <OtherUsersPosts goToLink={goToLink} />
+                        <OtherUsersPosts goToLink={goToLink} openMap={openMap} />
                     </Route>
                     <Route path='/my-likes' exact>
                         <Header/>
-                        <MyLikes goToLink={goToLink} />
+                        <MyLikes goToLink={goToLink} openMap={openMap} />
                     </Route>
                     
                 </Switch>
