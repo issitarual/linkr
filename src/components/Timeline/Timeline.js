@@ -170,9 +170,7 @@ export default function Timeline({goToLink}){
             
             <TimelineContainer>
             <Title>timeline</Title> 
-
-                    <NewPost update={update} />
-        
+                <NewPost update={update} />
                     <TimelineContent>
                         
                         <InfiniteScroll
