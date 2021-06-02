@@ -11,11 +11,6 @@ export default function NewPost ({update}) {
   const [buttonText, letButtonText] = useState('Publicar');
   const { user ,setUser} = useContext(UserContext);
 
-  
-
-    
-   
-
   function createNewPost (event) {
 
     event.preventDefault();
@@ -54,30 +49,30 @@ export default function NewPost ({update}) {
   }
 
   return (
-      <Post>
-        <Icon>
-          <img src={user.user.avatar}/>
-        </Icon>
-        <Form onSubmit={createNewPost}>
-          <p>O que você tem para favoritar hoje?</p>
-          <InputLink
-          autoFocus={true}
-            value={linkToPost} 
-            disabled={disabled} 
-            type="url" 
-            placeholder={"http://..."} 
-            onChange={e => setLinkToPost(e.target.value)} 
-          />
-          <InputDescription
-            value={linkDescription}
-            disabled={disabled}
-            type="text"
-            placeholder={"Muito irado esse link falando de #javascript"}
-            onChange={e => setLinkDescription(e.target.value)}
-          />
-          <Button disabled={disabled}>{buttonText}</Button>
-        </Form>
-      </Post>
+    <Post>
+      <Icon>
+        <img src={user.user.avatar}/>
+      </Icon>
+      <Form onSubmit={createNewPost}>
+        <p>O que você tem para favoritar hoje?</p>
+        <InputLink
+        autoFocus={true}
+          value={linkToPost} 
+          disabled={disabled} 
+          type="url" 
+          placeholder={"http://..."} 
+          onChange={e => setLinkToPost(e.target.value)} 
+        />
+        <InputDescription
+          value={linkDescription}
+          disabled={disabled}
+          type="text"
+          placeholder={"Muito irado esse link falando de #javascript"}
+          onChange={e => setLinkDescription(e.target.value)}
+        />
+        <Button disabled={disabled}>{buttonText}</Button>
+      </Form>
+    </Post>
   );
 
 }
