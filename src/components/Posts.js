@@ -19,6 +19,8 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
  
 export default function Posts(props){
 
+    
+
     function YoutubeId(post){
         const getYouTubeID = require('get-youtube-id');
         const id = getYouTubeID(post.link);
@@ -100,7 +102,16 @@ export default function Posts(props){
                             <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
 
               
-
+                            <PostContent open={!post.toEdit} >
+                                <ReactHashtag 
+                                    renderHashtag={(hashtagValue) => (
+                                    <Hashtag className='hashtagSpan' onClick={()=>(sendToHashtag(hashtagValue))}>{hashtagValue}</Hashtag>
+                                    )}
+                                >
+                                    {post.text}  
+                                </ReactHashtag>
+                            </PostContent>    
+                           
                             <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
 
                             <LinkDetails id1={getYouTubeID(post.link)}>

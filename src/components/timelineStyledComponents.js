@@ -337,6 +337,14 @@ const PostContent = styled.p`
     width: 90%;
     word-wrap: break-word;
     white-space: pre-wrap;
+
+    .hashtagSpan{
+        padding-top: 0px;
+        margin-left: 0px;
+        font-size: 20px;
+
+    }
+   
 `;
 
 const NoPostsYet = styled.p`
