@@ -53,8 +53,10 @@ const TextComment = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
     span{
-        margin: 0;
+        margin: 0!important;
+        padding: 0!important;
         display: flex;
     }
     h5{

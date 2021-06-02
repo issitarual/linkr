@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PaperPlaneOutline } from 'react-ionicons';
 import EachComment from './EachComment';
 
-export default function CommentContainer({ postComments, postId, avatar, setWriteComment, writeComment}){
+export default function CommentContainer({ postComments, postId, avatar, setWriteComment, writeComment, repostIdPost}){
     return(
         <Container state={postComments.id === postId}>
                 {postComments.comment.length > 0? postComments.comment.map(n => <EachComment avatar={n.user.avatar} username = {n.user.username} text={n.text} id={n.user.id}/>): null}    

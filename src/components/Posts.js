@@ -16,7 +16,6 @@ import {PostInfo,LinkDescription,Links,Hashtag,TimelinePosts,LinkDetails,UserNam
 export default function Posts(props){
     const [writeComment, setWriteComment] = useState("");
     const [postComments, setPostComments] = useState({id: null, comment:[]});
-    console.log(postComments)
 
     const history=useHistory()
 
@@ -91,7 +90,7 @@ return(
                         </LinkDetails>
                     </div>
                 </div>
-                <CommentContainer postComments = {postComments} postId = {post.id} avatar = {user.user.avatar} setWriteComment={setWriteComment} writeComment={writeComment}/>
+                <CommentContainer postComments = {postComments} postId = {post.repostId? post.repostId: post.id} avatar = {user.user.avatar} setWriteComment={setWriteComment} writeComment={writeComment}/>
             </li>   
             )
         })

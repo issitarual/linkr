@@ -14,7 +14,7 @@ export default function Comments({post, setPostComments, setWriteComment}){
         }
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/comments`,config);
         request.then(success => {
-            setPostComments({id: post.id, comment: success.data.comments});
+            setPostComments({id: post.repostId? post.repostId: post.id, comment: success.data.comments});
             setWriteComment("");
         });
         request.catch(error => alert("Ocorreu um erro, tente novamente"))
