@@ -1,10 +1,9 @@
-import UserContext from '../UserContext';
-import {useContext, useState } from 'react';
+import {useState } from 'react';
 import {RepeatOutline} from 'react-ionicons';
 import RepostModal from './RepostModal';
+import styled from 'styled-components';
 
-export default function Repost ({id}) {
-    const { user } = useContext(UserContext);
+export default function Repost ({id, count}) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     function toggleModal () {
@@ -13,21 +12,36 @@ export default function Repost ({id}) {
 
     return (
         <>
-        <div className = "ion-icon">
+            <ContainerIcon>
                 <RepeatOutline
                     color={'#ffffff'}
                     height="25px"
                     width="25px"
+                    style={{
+                        cursor: "pointer",
+                        margin: "0",
+                        position: 'absolute',
+                        bottom: '0px',
+                        left: '0px',
+                    }}
                     onClick = {() => toggleModal()}
                 />
-            </div>
+            </ContainerIcon>
             
             <RepostModal
             modalIsOpen={modalIsOpen}
             toggleModal={toggleModal}
             id={id}
             />
-            <h6>Repost</h6>
+            <h6>{count} re-post</h6>
         </>           
     );
 }
+
+const ContainerIcon = styled.div`
+    margin-top: 10px;
+    padding: 0px!important;
+    width: 25px;
+    height: 25px;
+    position: relative;
+`;

@@ -3,9 +3,7 @@ import UserContext from '../UserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-import LinkPreview from './LinkPreview';
-import NewPost from './NewPost';
-
+import NewPost from './NewPost'
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -38,10 +36,9 @@ export default function Timeline(){
             'Authorization' : `Bearer ${user.token}`
         }
     }
-
     
     useEffect(()=>{
-            update()        
+        update()        
     },[]);
 
     UseInterval(() => {

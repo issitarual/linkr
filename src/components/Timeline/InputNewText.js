@@ -6,12 +6,10 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     const inputRef = useRef();
     const [newValue, setNewValue] = useState('');
 
-   
     if(toEdit){
         console.log("passando por aqui");
         inputRef.current.focus();
     }
-        
     
     useEffect(()=>{
         if (toEdit){
@@ -59,9 +57,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         }} readOnly={!post.toEdit} open={post.toEdit}>
             {post.text}
         </InputField>
-        
     )
-
 }
 
 const InputField = styled.textarea`
@@ -76,4 +72,4 @@ const InputField = styled.textarea`
     font-weight: 400;
     color: #4c4c4c;
     font-size: 14px;   
-`
+`;

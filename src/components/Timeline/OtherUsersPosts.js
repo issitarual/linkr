@@ -1,7 +1,7 @@
 import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
-import axios from 'axios'
-import {useParams, useHistory} from 'react-router-dom'
+import axios from 'axios';
+import {useParams, useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
 
 
@@ -60,7 +60,6 @@ export default function OtherUsersPosts(){
         window.open(link)
     }  
 
-
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
@@ -85,8 +84,6 @@ export default function OtherUsersPosts(){
                             likedPosts={likedPosts}
                             user={user}
                             like={like}
-                           // tryingToEdit={tryingToEdit}
-                           // config={config}
                             inputRef={inputRef}
                             goToLink={goToLink}
                      />

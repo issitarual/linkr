@@ -59,37 +59,37 @@ return(
                     like={like}
                 />
             <Comments post={post} postComments = {postComments} setPostComments={setPostComments} setWriteComment={setWriteComment}/>
-            <Repost id={post.id} />
+            <Repost id={post.id} count={post.repostCount}/>
             </div>
 
-                    <div className='postRight'>
-                        <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
-                        <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
+                        <div className='postRight'>
+                            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+                            <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
 
-                        <PostContent open={!post.toEdit} >
-                            <ReactHashtag 
-                                renderHashtag={(hashtagValue) => (
-                                <Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
-                                )}
-                            >
-                                {post.text}  
-                            </ReactHashtag>
-                        </PostContent>    
+                            <PostContent open={!post.toEdit} >
+                                <ReactHashtag 
+                                    renderHashtag={(hashtagValue) => (
+                                    <Hashtag onClick={()=>history.push(`/hashtag/${hashtagValue.replace('#',"")}`)} >{hashtagValue}</Hashtag>
+                                    )}
+                                >
+                                    {post.text}  
+                                </ReactHashtag>
+                            </PostContent>    
 
-                        <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
+                            <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
 
-                        <LinkDetails>
-                            <PostInfo>
-                                <h3>{post.linkTitle}</h3>
+                            <LinkDetails>
+                                <PostInfo>
+                                    <h3>{post.linkTitle}</h3>
+                                    
+                                    <LinkDescription>{post.linkDescription}</LinkDescription>
                                 
-                                <LinkDescription>{post.linkDescription}</LinkDescription>
-                            
-                                <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
-                            </PostInfo> 
-                            <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>                      
-                        </LinkDetails>
+                                    <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+                                </PostInfo> 
+                                <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>                      
+                            </LinkDetails>
+                        </div>
                     </div>
-                </div>
                 <CommentContainer setPostComments={setPostComments} idComment = {post.id} postComments = {postComments} postId = {post.repostId? post.repostId: post.id} avatar = {user.user.avatar} setWriteComment={setWriteComment} writeComment={writeComment}/>
             </li>   
             )
@@ -101,14 +101,13 @@ return(
     </TimelinePosts>
     )
 
- }
+}
 
- const RepostIcon = styled.span`
+const RepostIcon = styled.span`
     font-family: 'Lato', sans-serif!important;
     font-size: 11px;
     display:flex;
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
-`
-
+`;

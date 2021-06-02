@@ -22,22 +22,22 @@ export default function MyPosts({goToLink}){
    const inputRef = useRef([])
 
 
-   const config = {
-    headers:{
-        'Authorization' : `Bearer ${user.token}`
-    }
-} 
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    } 
 
     useEffect(()=>{
         update();
     },[])
 
-        function update () {
-            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
+    function update () {
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-             const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
-           setMyPosts(newArray)
+                const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
+            setMyPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -54,7 +54,7 @@ export default function MyPosts({goToLink}){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-        }
+    }
 
     function tryingToEdit(id,canCallRef) {
         let postsToEdit = myPosts.map((p) => {
@@ -67,13 +67,12 @@ export default function MyPosts({goToLink}){
         setMyPosts([...postsToEdit]);
 
        
-      setTimeout(()=>{
+        setTimeout(()=>{
 
-        inputRef.current[id].focus()
-       },100) 
+            inputRef.current[id].focus()
+        },100) 
     
     }
-
 
   function goToLink(e,link){
         e.preventDefault()
@@ -93,13 +92,6 @@ export default function MyPosts({goToLink}){
         else{
             history.push(`/my-posts`)
         }
-    }
-
-    function RepostButton(id){
-        window.confirm("Você quer respostar esse link?");
-        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
-        requestRepost.then(() => console.log("deu bom"));
-        requestRepost.catch(() => console.log("deu ruim"));
     }
    
     return( 
@@ -124,9 +116,7 @@ export default function MyPosts({goToLink}){
                         config={config}
                         inputRef={inputRef}
                         goToLink={goToLink}
-                    />
-                                
-                                
+                    />             
                                         
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
