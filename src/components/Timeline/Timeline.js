@@ -124,7 +124,6 @@ export default function Timeline({goToLink}){
             })
             setLikedPosts(sharpedHeart);
             setOlderLikes(sharpedHeart);
-            console.log(newArray)
 
         })
 

@@ -42,7 +42,6 @@ export default function NewPost ({update}) {
       update()    
     }).catch((error)=>{
       alert('houve um erro ao publicar seu link');
-      console.log(error)
       letDisabled(false);
       letButtonText('Publicar')
     })
@@ -51,15 +50,29 @@ export default function NewPost ({update}) {
     letButtonText('Publicando...')
     
   }
-
   function toggleEnabled () {
-    if (enableLocation.enable) {
-      const update = {text: 'Localização ativada', textColor: '#238700', enable: true}
-    
+    let atualiza;
+    if (!enableLocation.enable) {
+      atualiza = {text: 'Localização ativada', textColor: '#238700', enable: true}
+      if ("geolocation" in navigator) {
+        getLocation();
+      } else {
+        alert('não foi possível obter sua localização')
+        atualiza = {text: 'Localização desativada', textColor: '#949494', enable: false}
+      }
     } else {
-      const update = {text: 'Localização desativada', textColor: '#949494', enable: false}
+      atualiza = {text: 'Localização desativada', textColor: '#949494', enable: false}
     }
-    setEnableLocation(update);
+    setEnableLocation(atualiza);
+  }
+  let geolocation = [];
+  function getLocation () {
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      geolocation.push(position.coords.latitude);
+      geolocation.push(position.coords.longitude);
+      console.log(geolocation);
+    });
 
   }
 
