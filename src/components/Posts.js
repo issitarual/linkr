@@ -39,21 +39,12 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
            return(
              <>
              <PostInfo>
-                               
-
-
-                               <h3>{post.linkTitle}</h3>
-                           
-                       <LinkDescription>{post.linkDescription}</LinkDescription>
-                           
+                <h3>{post.linkTitle}</h3>
+                <LinkDescription>{post.linkDescription}</LinkDescription>
+                 <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
+            </PostInfo>
                        
-                          
-                           <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
-                       
-                       </PostInfo>*
-                       
-                          
-                           <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
+             <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
             </>
            )
         }
@@ -156,25 +147,9 @@ return(
 
                 <LinkDetails id1={getYouTubeID(post.link)}>
                    
-                {YoutubeId(post)}
+                     {YoutubeId(post)}
                    
-                    {/* <PostInfo>
-                               
-
-
-                            <h3>{post.linkTitle}</h3>
-                        
-                    <LinkDescription>{post.linkDescription}</LinkDescription>
-                        
-                    
-                       
-                        <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
-                    
-                    </PostInfo>*
-                    
-                       
-                        <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/> */}
-                                                       
+                 
                 </LinkDetails>
 
             </div>

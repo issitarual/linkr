@@ -158,14 +158,14 @@ export default function OtherUsersPosts({goToLink}){
                 
                 <TimelineContent>
 
-                    <InfiniteScroll
+                    {/*<InfiniteScroll
                         pageStart={0}
                         loadMore={() => partialUpdate( hashtagPosts.length)}
                         hasMore={hasMore}
                         loader={<div className="Scroller mid" key={0}>Loading More Posts..</div>}
                         className='Scroller'
                         threshold={250}
-                    >  
+                    >  */}
                         <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
                                     serverLoading={serverLoading}
                                     allPosts={hashtagPosts}
@@ -179,7 +179,7 @@ export default function OtherUsersPosts({goToLink}){
                                     sendToHashtag={sendToHashtag}
                         />
 
-                    </InfiniteScroll>
+                   {/*} </InfiniteScroll>*/}
                             
                            
                           

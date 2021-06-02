@@ -181,7 +181,7 @@ const TimelinePosts = styled.ul`
     }
 
     .postRight{
-        width: 503px;
+        width: 80%;
         height: auto;
 
        @media (max-width:1200px){
@@ -250,7 +250,7 @@ const TimelineContent= styled.div`
 `;
 
 const LinkDetails = styled.div`
-    width: 503px;
+    width: 505px;
     height:auto;
     //border: 1px solid #4D4D4D;
     border:${(props)=>(props.id1) ? 'none' : '1px solid #4D4D4D'};
@@ -261,6 +261,10 @@ const LinkDetails = styled.div`
     
     a{
         color: #B7B7B7;
+        
+    }
+
+    a:hover{
         cursor: pointer;
     }
    
