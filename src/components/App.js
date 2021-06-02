@@ -11,7 +11,8 @@ import OtherUsersPosts from './Timeline/OtherUsersPosts';
 import Header from './Header';
 import MyLikes from './my-likes/MyLikes';
 import Hashtag from './hashtag/Hashtag';
-import LinkPreview from './Timeline/LinkPreview'
+import LinkPreview from './Timeline/LinkPreview';
+
 
 export default function App () {
 

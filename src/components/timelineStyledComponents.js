@@ -242,6 +242,7 @@ const TimelinePosts = styled.ul`
        .ion-icon{
            margin-top: -30px;
            height: 60px;
+           padding-right: 38px;
        }
     }
 `;

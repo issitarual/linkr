@@ -84,15 +84,15 @@ export default function MyLikes({goToLink}){
 
                 
                     <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
-                            serverLoading={serverLoading}
-                            allPosts={allPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
+                        serverLoading={serverLoading}
+                        allPosts={allPosts}
+                        goToUserPosts={goToUserPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
                     />
                         
                             

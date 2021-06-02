@@ -12,12 +12,13 @@ export default function Repost ({id}) {
     }
 
     return (
+        <>
         <div className = "ion-icon">
-            <div  onClick = {() => toggleModal()}>
                 <RepeatOutline
                     color={'#ffffff'}
                     height="25px"
                     width="25px"
+                    onClick = {() => toggleModal()}
                 />
             </div>
             
@@ -26,8 +27,7 @@ export default function Repost ({id}) {
             toggleModal={toggleModal}
             id={id}
             />
-            <p>Repost</p>
-        </div>
-           
+            <h6>Repost</h6>
+        </>           
     );
 }

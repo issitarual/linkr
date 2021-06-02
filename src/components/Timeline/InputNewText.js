@@ -27,8 +27,10 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         window.addEventListener("keydown", nomeQualquer);
         return() => {
             window.removeEventListener('keydown', nomeQualquer);
-        }   
         }
+    }
+  
+
     },[toEdit,newValue])
 
     function textToServer (text) {
@@ -41,6 +43,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         
 
         const promise = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, body, config).then((success)=>{
+            tryingToEdit(id);
             update();
         }).catch((error)=>{
             alert('não foi possível salvar as alterações')

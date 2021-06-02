@@ -12,19 +12,21 @@ import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyl
 import Posts from '../Posts'
 
 export default function MyPosts({goToLink}){
-    const history=useHistory();
-    const {user} = useContext(UserContext);
-    const [myPosts,setMyPosts] = useState([]);
+    const history=useHistory()
+    const {user} = useContext(UserContext)
+    const [myPosts,setMyPosts] = useState([])
     const [serverLoading,setServerLoading] = useState(true);
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
-    const inputRef = useRef([]);
 
-   const config = {
-    headers:{
-        'Authorization' : `Bearer ${user.token}`
-    }
-} 
+   const inputRef = useRef([])
+
+
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    } 
 
     useEffect(()=>{
         update();
@@ -78,7 +80,9 @@ export default function MyPosts({goToLink}){
     }
 
     function sendToHashtag(val){
-        console.log(val)
+        
+        const newVal = val.replace('#',"")
+        history.push(`/hashtag/${newVal}`)
     }
 
     function goToUserPosts(id){
@@ -112,9 +116,7 @@ export default function MyPosts({goToLink}){
                         config={config}
                         inputRef={inputRef}
                         goToLink={goToLink}
-                    />
-                                
-                                
+                    />             
                                         
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
