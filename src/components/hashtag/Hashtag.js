@@ -94,8 +94,7 @@ export default function OtherUsersPosts({goToLink}){
         const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${hashtagPosts[lastPost].id}`,config)
 
         getNewPosts.then((response)=>{
-            console.log(response)
-            console.log('foi!')
+            
             
             if(response.data.posts.length<10){
                 setHasMore(false)
@@ -104,7 +103,7 @@ export default function OtherUsersPosts({goToLink}){
             }
             
             const scrollPosts = response.data.posts
-            console.log(scrollPosts)
+            
 
             setHashtagPosts([...hashtagPosts,...scrollPosts])
            
@@ -112,11 +111,24 @@ export default function OtherUsersPosts({goToLink}){
 
         getNewPosts.catch((responseError)=>{
             alert('houve um erro ao atualizar')
-            console.log(responseError)
+            
 
         })
 
        
+    }
+
+    function scrollLoader(){
+        if(hasMore){
+            return(
+
+                <div className="loader" key={0}>Loading More Posts...</div>
+            )
+        }else{
+            return(
+                ''
+            )
+        }
     }
    
     return( 
@@ -134,9 +146,10 @@ export default function OtherUsersPosts({goToLink}){
                         pageStart={0}
                         loadMore={()=>scrollPage(hashtagPosts.length-1)}
                         hasMore={hasMore}
-                        loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                        loader={ <div className="loader" key={0}>Loading More Posts...</div>}
                         threshold={1}
                         className='Scroller'
+                        initialLoad={false}
                     > 
                         <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
                                     serverLoading={serverLoading}
@@ -149,6 +162,7 @@ export default function OtherUsersPosts({goToLink}){
                                     inputRef={inputRef}
                                     goToLink={goToLink}
                                     sendToHashtag={sendToHashtag}
+                                    updateHashtagPosts={updateHashtagPosts}
                         />
                     </InfiniteScroll>
 

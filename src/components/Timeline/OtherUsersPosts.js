@@ -61,12 +61,14 @@ export default function OtherUsersPosts(){
           const newArray = response.data.posts
           
           setUsersPosts(newArray)
-          console.log(response.data.posts)
+          
 
           if(response.data.posts[0]["repostedBy"]){
             setPageUser(response.data.posts[0].repostedBy.username)
+            setUserImage(response.data.posts[0].repostedBy.avatar)
             }else{
                 setPageUser(response.data.posts[0].user.username)
+                setUserImage(response.data.posts[0].user.avatar)
             }
 
           setServerLoading(false) 
@@ -153,8 +155,7 @@ export default function OtherUsersPosts(){
         const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${usersPosts[lastPost].id}`,config)
 
         getNewPosts.then((response)=>{
-            console.log(response)
-            console.log('foi!')
+            
             
             if(response.data.posts.length<10){
                 setHasMore(false)
@@ -163,7 +164,7 @@ export default function OtherUsersPosts(){
             }
             
             const scrollPosts = response.data.posts
-            console.log(scrollPosts)
+            
 
             setUsersPosts([...usersPosts,...scrollPosts])
            
@@ -171,7 +172,7 @@ export default function OtherUsersPosts(){
 
         getNewPosts.catch((responseError)=>{
             alert('houve um erro ao atualizar')
-            console.log(responseError)
+        
 
         })
 

@@ -89,7 +89,7 @@ const Title = styled.div`
     display: flex;
     align-items: center;
     margin-left: 10px;
-    border: 1px solid pink;
+    
 
     @media (max-width:800px){
         width: 100%px;
@@ -174,7 +174,7 @@ const TimelinePosts = styled.ul`
     height: auto;
     display: flex;
     flex-direction: column;
-    border: 1px solid yellow;
+    
     
     
 

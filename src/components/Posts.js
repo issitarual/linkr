@@ -56,23 +56,16 @@ export default function Posts(props){
      }
 
      function saveOtherUserInfo(userInfo){
-        console.log(userInfo)
-         /*if(userInfo["repostedBy"]){
-             
+       
+         
             goToUserPosts(userInfo.user.id)
-           
-            }else{
-                goToUserPosts(userInfo.user.id)
-            }*/
-
-            goToUserPosts(userInfo.user.id)
-            //getUsersPosts(userInfo.user.id)
+        
 
     }
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts} = props;
+    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts,updateHashtagPosts} = props;
 
     return(
        
@@ -163,7 +156,7 @@ const RepostIcon = styled.div`
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
-    border: 1px solid red;
+   
     width: 503px;
     margin-left:118px;
 

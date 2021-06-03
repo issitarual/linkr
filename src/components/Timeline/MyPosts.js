@@ -119,8 +119,7 @@ export default function MyPosts({goToLink}){
         const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${myPosts[lastPost].id}`,config)
 
         getNewPosts.then((response)=>{
-            console.log(response)
-            console.log('foi!')
+           
 
             if(response.data.posts.length<10){
                 setHasMore(false)
@@ -130,7 +129,7 @@ export default function MyPosts({goToLink}){
             
             
             const scrollPosts = response.data.posts
-            console.log(scrollPosts)
+           
 
             setMyPosts([...myPosts,...scrollPosts])
            
@@ -138,8 +137,7 @@ export default function MyPosts({goToLink}){
 
         getNewPosts.catch((responseError)=>{
             alert('houve um erro ao atualizar')
-            console.log(responseError)
-
+            
         })
 
        

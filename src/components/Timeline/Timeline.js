@@ -56,36 +56,25 @@ export default function Timeline(){
         getNumberofFollowing.then((response) => setNumberofFollowing(response.data.users))
     },[])
 
-    /*UseInterval(() => {
+    UseInterval(() => {
     
-        let idPost = ''
         
-        if(allPosts[0]["repostId"]){
-             idPost = allPosts[0].repostId
-        }else{
-            idPost = allPosts[0].id
-        }
-
-        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?earlierThan=${idPost}`,config)
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?earlierThan=${allPosts[0].id}`,config)
 
     
         getNewPosts.then((response)=>{
-            console.log(response)
-            console.log('foi!')
+           
             const newerPosts = response.data.posts
             const newTimeline=newerPosts.concat(allPosts)
-            console.log('newtimeline')
-            console.log(newTimeline)
-           setAllPosts([...newTimeline])
-        })
+            setAllPosts([...newTimeline])
+         })
+            
 
         getNewPosts.catch((responseError)=>{
-            alert('houve um erro ao atualizar')
-            console.log(responseError)
-
+            alert('houve um erro ao atualizar os posts. Por favor recarregue a página')
         })
 
-    }, 15000); */
+    }, 15000); 
 
 
     
@@ -97,8 +86,6 @@ export default function Timeline(){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            console.log(response)
-
             setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
@@ -155,54 +142,9 @@ export default function Timeline(){
         ) 
     }
 
-    function att2(){
-       /* let idPost = ''
-        
-        if(allPosts[0]["repostId"]){
-             idPost = allPosts[0].repostId
-        }else{
-            idPost = allPosts[0].id
-        }*/
-
-        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?earlierThan=${allPosts[0].id}`,config)
-
     
-        getNewPosts.then((response)=>{
-            console.log(response)
-            console.log('foi!')
-            
-            const newerPosts = response.data.posts
-            
-            const newTimeline=newerPosts.concat(allPosts)
-            console.log('newtimeline')
-            console.log(newTimeline)
-           
-            setAllPosts([...newTimeline])
-
-        })
-
-        getNewPosts.catch((responseError)=>{
-            alert('houve um erro ao atualizar')
-            console.log(responseError)
-
-        })
-    }
-
     function scrollPage(lastPost){
         
-        //let idPost = ''
-       
-        
-        /*console.log(lastPost)
-        console.log(allPosts.length-1)
-        
-        if(allPosts[lastPost]["repostId"]){
-             idPost = allPosts[lastPost].repostId
-        }else{
-            idPost = allPosts[lastPost].id
-        }*/
-        
-        //console.log(idPost)
 
         if(allPosts[lastPost]===undefined){
             return
@@ -211,26 +153,21 @@ export default function Timeline(){
         const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${allPosts[lastPost].id}`,config)
 
         getNewPosts.then((response)=>{
-            console.log(response)
-            console.log('foi!')
-
+        
             if(response.data.posts.length<10){
                 setHasMore(false)
             }else{
                 setHasMore(true)
             }
             
-            
-            const scrollPosts = response.data.posts
-            console.log(scrollPosts)
-
-            setAllPosts([...allPosts,...scrollPosts])
+             const scrollPosts = response.data.posts
+         setAllPosts([...allPosts,...scrollPosts])
            
         })
 
         getNewPosts.catch((responseError)=>{
-            alert('houve um erro ao atualizar')
-            console.log(responseError)
+            alert('houve um erro ao buscas mais post. Por favor recarregue a página')
+            
 
         })
 
@@ -244,11 +181,7 @@ export default function Timeline(){
             
             <TimelineContainer>
             <Title><h1>timeline</h1></Title> 
-                
-                <button onClick={()=>console.log(allPosts)}>see posts state</button>
-                <button onClick={att2}>att timeline2</button>
-               
-                
+            
                     <TimelineContent>
                       
                             <NewPost update={update} />

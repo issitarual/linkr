@@ -94,8 +94,7 @@ export default function MyLikes({goToLink}){
         const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${allPosts[lastPost].id}`,config)
 
         getNewPosts.then((response)=>{
-            console.log(response)
-            console.log('foi!')
+           
             
             if(response.data.posts.length<10){
                 setHasMore(false)
@@ -104,15 +103,13 @@ export default function MyLikes({goToLink}){
             }
             
             const scrollPosts = response.data.posts
-            console.log(scrollPosts)
-
             setAllPosts([...allPosts,...scrollPosts])
            
         })
 
         getNewPosts.catch((responseError)=>{
             alert('houve um erro ao atualizar')
-            console.log(responseError)
+           
 
         })
 
