@@ -4,7 +4,6 @@ import axios from 'axios';
 import {useParams, useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
 
-import OtherUserContext from '../OtherUserContext';
 
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
@@ -14,7 +13,7 @@ import Posts from '../Posts'
 import InfiniteScroll from 'react-infinite-scroller';
 
 
-export default function OtherUsersPosts(){
+export default function OtherUsersPosts({goToLink}){
     const {id} = useParams();
     const {user} = useContext(UserContext);
     const [usersPosts,setUsersPosts] = useState([]);
@@ -23,7 +22,6 @@ export default function OtherUsersPosts(){
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
 
-    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
     
 
 
@@ -52,7 +50,6 @@ export default function OtherUsersPosts(){
           const newArray = response.data.posts
           
           setUsersPosts(newArray)
-          console.log(response.data.posts)
 
           if(response.data.posts[0]["repostedBy"]){
             setPageUser(response.data.posts[0].repostedBy.username)
@@ -77,11 +74,6 @@ export default function OtherUsersPosts(){
             return
         })
     }
-
-    function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }  
 
     function goToUserPosts(id){
         if(id!==user.user.id){

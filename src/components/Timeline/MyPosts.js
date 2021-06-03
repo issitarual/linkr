@@ -89,13 +89,6 @@ export default function MyPosts({goToLink}){
     
     }
 
-    
-
-  function goToLink(e,link){
-        e.preventDefault()
-       window.open(link)
-    }
-
     function sendToHashtag(val){
         
         const newVal = val.replace('#',"")

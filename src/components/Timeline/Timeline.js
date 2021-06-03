@@ -1,6 +1,5 @@
 import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
-import OtherUserContext from '../OtherUserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
@@ -21,7 +20,7 @@ import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineSty
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
 
-export default function Timeline(){
+export default function Timeline({goToLink}){
     const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
@@ -30,9 +29,6 @@ export default function Timeline(){
     const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
     const [timelineRef,setTimelineRef] = useState(false);
-
-    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
-
     /*Logics of infinite Scroller*/ 
     const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
     const[hasMore,setHasMore] = useState(true)
@@ -107,11 +103,6 @@ export default function Timeline(){
             return
         })
     }
-        
-    function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }  
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
