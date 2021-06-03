@@ -19,6 +19,7 @@ export default function Header (){
     const [stateSearch, setStateSearch] = useState(false);
     
     return(
+        <>
         <ContainerHeader state={state}>
             <Link to ="/timeline">
                 <h1>linkr</h1>
@@ -38,6 +39,9 @@ export default function Header (){
                 color={'#C6C6C6'} 
                 height="25px"
                 width="25px"
+                style={{
+                    backgroundColor: "#fff"
+                }}
                 />
             </InputGroup>
             <span onClick={() => setState(!state)}>
@@ -77,6 +81,8 @@ export default function Header (){
                 onClick={() => setState(!state)}
             />
         </ContainerHeader>
+        <HidePosts/>
+        </>
     ) 
 
     function link (url){
@@ -84,6 +90,8 @@ export default function Header (){
             localStorage.clear();
         }
         setState(!state);
+        setStateSearch(false);
+        setSearch("");
         history.push(url); 
     }
 
@@ -155,6 +163,7 @@ const InputGroup = styled.div`
     align-items: center;
     height: 45px;
     position: relative;
+    z-index: 3;
     @media (max-width:1200px){
         position: absolute;
         width: 95%;
@@ -192,13 +201,13 @@ const Menu = styled.div`
         box-sizing: border-box;
         background-color: #171717;
         border-bottom-left-radius: 20px;
-        z-index: 2;
+        z-index: 8;
 `;
 
 const Usernames = styled.div`
     display: ${props => props.state? "block": "none"};
     position: absolute;
-    width: 541px;
+    width: 542px;
     top: 52px;
     right: calc(50% - 278px);
     background-color: #E7E7E7;
@@ -219,5 +228,18 @@ const CloseMenu = styled.div`
     left: 0;
     height: 100vh;
     width: 100vw;
-    z-index: 1;
+    z-index: 4;
 `;
+
+const HidePosts = styled.div`
+    background-color: #333;
+    height: 140px;
+    width: 30px;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    display: none;
+    @media (max-width:1200px){
+        display: block;
+    } 
+`

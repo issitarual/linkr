@@ -3,8 +3,10 @@ import UserContext from '../UserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-import NewPost from './NewPost';
-import styled from 'styled-components';
+import NewPost from './NewPost'
+import LinkPreview from './LinkPreview'
+
+import getYouTubeID from 'get-youtube-id';
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -18,7 +20,7 @@ import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineSty
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
 
-export default function Timeline(){
+export default function Timeline({goToLink}){
     const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
@@ -37,7 +39,16 @@ export default function Timeline(){
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
-    }
+    }      
+    
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }   
     
     useEffect(()=>{
         update()        
@@ -104,11 +115,9 @@ export default function Timeline(){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            setMaxNumberOfPosts(response.data.posts.length)
             
-            const partial = newArray.slice(0,2)
-            
-            setAllPosts(partial)
+
+            setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -126,11 +135,6 @@ export default function Timeline(){
             return
         })
     }
-        
-    function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }  
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
@@ -169,14 +173,7 @@ export default function Timeline(){
             <TimelineContainer>
                 <Title><h1>timeline</h1></Title> 
                     <TimelineContent>
-                        
-                        <InfiniteScroll
-                            pageStart={0}
-                            loadMore={() => partialUpdate( allPosts.length + 2 )}
-                            hasMore={hasMore}
-                            loader={<div className="x" key={0}>Loading ...</div>}
-                            className='x'
-                        >
+                      
                             <NewPost update={update} />
 
                             {numberofFollowing.length === 0 ? <NoOneYet> Você ainda não segue ninguem, <br/> procure por perfis na busca </NoOneYet> :
@@ -193,10 +190,7 @@ export default function Timeline(){
                                 config={config}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
-                                
                             />}
-
-                        </InfiniteScroll>
 
                         <TrendingList send={sendToHashtag}/>
                     
@@ -205,7 +199,6 @@ export default function Timeline(){
 
         </Container>
     )
-
 
 
     function like (id){

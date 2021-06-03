@@ -9,6 +9,9 @@ import {TimelineContainer,Container,TimelineContent,} from '../timelineStyledCom
 
 /*import dos Posts*/
 import Posts from '../Posts'
+
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
     
 
 export default function OtherUsersPosts({goToLink}){
@@ -30,13 +33,16 @@ export default function OtherUsersPosts({goToLink}){
     useEffect(()=>{
         updateHashtagPosts()
         
-    },[hashtag])
+    },[])
 
     function updateHashtagPosts(newVal){ 
        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${newVal || hashtag}/posts`,config)
 
         getPosts.then((response)=>{
             const newArray = response.data.posts
+            
+           
+          
             setHashtagPosts(newArray)
             setServerLoading(false) 
             let sharpedHeart = []
@@ -56,7 +62,6 @@ export default function OtherUsersPosts({goToLink}){
             return
         })
     }
-
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
@@ -85,27 +90,31 @@ export default function OtherUsersPosts({goToLink}){
                 
                 <TimelineContent>
 
-                <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
-                            serverLoading={serverLoading}
-                            allPosts={hashtagPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                />
-                            
-                           
-                          
-                            
-                                        
+                    
+                        <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
+                                    serverLoading={serverLoading}
+                                    allPosts={hashtagPosts}
+                                    goToUserPosts={goToUserPosts}
+                                    olderLikes={olderLikes}
+                                    likedPosts={likedPosts}
+                                    user={user}
+                                    like={like}
+                                    inputRef={inputRef}
+                                    goToLink={goToLink}
+                                    sendToHashtag={sendToHashtag}
+                        />
 
                     <TrendingList send={sendToHashtag}/>
 
                 </TimelineContent>
         </TimelineContainer>
+
+                  
+                            
+                           
+                          
+                            
+                                        
 
     </Container>
     )
