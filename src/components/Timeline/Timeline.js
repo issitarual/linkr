@@ -40,7 +40,7 @@ export default function Timeline(){
         
     /*Logics of infinite Scroller*/ 
         const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-        const[hasMore,setHasMore] = useState(true)
+        const[hasMore,setHasMore] = useState(false)
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
@@ -124,6 +124,8 @@ export default function Timeline(){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
+
+        setHasMore(true)
     }
         
     function goToLink(e,link){
@@ -193,11 +195,11 @@ export default function Timeline(){
         })
     }
 
-    function scrollPage(){
+    function scrollPage(lastPost){
         
         let idPost = ''
-        console.log(allPosts.length)
-        const lastPost = allPosts.length-1
+       
+        
         console.log(lastPost)
         console.log(allPosts.length-1)
         
@@ -356,23 +358,36 @@ export default function Timeline(){
                             <NewPost update={update} />
 
                             {numberofFollowing.length === 0 ? <NoOneYet> Você ainda não segue ninguem, <br/> procure por perfis na busca </NoOneYet> :
-                            <Posts noPostsMessage={'Quem você segue ainda não publicou nenhum post'}
-                                update={update}
-                                serverLoading={serverLoading}
-                                allPosts={allPosts}
-                                goToUserPosts={goToUserPosts}
-                                olderLikes={olderLikes}
-                                likedPosts={likedPosts}
-                                user={user}
-                                like={like}
-                                tryingToEdit={tryingToEdit}
-                                config={config}
-                                inputRef={inputRef}
-                                goToLink={goToLink}
-                                sendToHashtag={sendToHashtag}
+                            <>
                             
+                            <InfiniteScroll
+                                pageStart={0}
+                                loadMore={()=>scrollPage(allPosts.length-1)}
+                                hasMore={hasMore}
+                                loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                            >
+                              
+                                <Posts noPostsMessage={'Quem você segue ainda não publicou nenhum post'}
+                                    update={update}
+                                    serverLoading={serverLoading}
+                                    allPosts={allPosts}
+                                    goToUserPosts={goToUserPosts}
+                                    olderLikes={olderLikes}
+                                    likedPosts={likedPosts}
+                                    user={user}
+                                    like={like}
+                                    tryingToEdit={tryingToEdit}
+                                    config={config}
+                                    inputRef={inputRef}
+                                    goToLink={goToLink}
+                                    sendToHashtag={sendToHashtag}
+                                />
                                 
-                            />}
+                            </InfiniteScroll>
+                                    
+                            
+
+                            </>}
 
                         <TrendingList send={sendToHashtag}/>
                     
