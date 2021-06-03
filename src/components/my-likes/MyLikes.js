@@ -1,17 +1,11 @@
-import styled from 'styled-components';
 import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
 import axios from 'axios';
-import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
-import Loader from "react-loader-spinner";
-import { HeartOutline, HeartSharp } from 'react-ionicons';
-import TrendingList from '../Timeline/TrendingList';
+import TrendingList from '../hashtag/TrendingList';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment} from '../timelineStyledComponents'
+import {TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
     
     
 /*import dos Posts*/
@@ -90,15 +84,15 @@ export default function MyLikes({goToLink}){
 
                 
                     <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
-                            serverLoading={serverLoading}
-                            allPosts={allPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
+                        serverLoading={serverLoading}
+                        allPosts={allPosts}
+                        goToUserPosts={goToUserPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
                     />
                         
                             
@@ -138,4 +132,3 @@ export default function MyLikes({goToLink}){
         }
     }
 }
-
