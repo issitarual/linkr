@@ -121,6 +121,7 @@ export default function MyLikes({goToLink}){
         
         <TimelineContainer>
             <h1>my likes</h1> 
+
                 
                 <TimelineContent>
 
@@ -132,6 +133,8 @@ export default function MyLikes({goToLink}){
                         threshold={1}
                         className='Scroller'
                     > 
+                
+
                         <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
                                 serverLoading={serverLoading}
                                 allPosts={allPosts}
@@ -142,7 +145,6 @@ export default function MyLikes({goToLink}){
                                 like={like}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
-                                
                                 sendToHashtag={sendToHashtag}
                         />
 

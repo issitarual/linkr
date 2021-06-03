@@ -142,6 +142,7 @@ export default function MyPosts({goToLink}){
                 
                 <TimelineContent>
 
+
                         <InfiniteScroll
                                 pageStart={0}
                                 loadMore={()=>scrollPage(myPosts.length-1)}
@@ -168,7 +169,7 @@ export default function MyPosts({goToLink}){
                             />
 
                         </InfiniteScroll>
-                                
+    
                      
                                         
                     <TrendingList send={sendToHashtag}/>

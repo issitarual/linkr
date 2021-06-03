@@ -1,19 +1,24 @@
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
 import Loader from "react-loader-spinner";
+
 import ActionsPost from './Timeline/ActionsPost';
 import styled from 'styled-components'
 import TrendingList from './hashtag/TrendingList'
 import { ChevronUpCircleSharp, HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText'
+
 import { RepeatOutline } from 'react-ionicons';
 import getYouTubeID from 'get-youtube-id';
-import Likes from './likes'
-import Comments from './Comments'
+
+
+import Likes from './likes';
+import Comments from '../components/Comments/Comments';
+import CommentContainer from '../components/Comments/CommentContainer';
 import Repost from './repost/Repost'
 import {useContext} from 'react'
-
-import OtherUserContext from '../components/OtherUserContext';
+import styled from 'styled-components';
+import {useState} from 'react'
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
@@ -23,7 +28,8 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
     
  
 export default function Posts(props){
-    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
+    const [writeComment, setWriteComment] = useState("");
+    const [postComments, setPostComments] = useState({id: null, comment:[]});
     function YoutubeId(post){
         const getYouTubeID = require('get-youtube-id');
         const id = getYouTubeID(post.link);
@@ -64,17 +70,16 @@ export default function Posts(props){
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
     config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts,updateHashtagPosts} = props;
 
-    return(
-       
-        <TimelinePosts>
-            
-            {serverLoading 
-                ? <Loader type="Circles" className='loader' color="#FFF"  />
-                : (allPosts.length===0 
-                    ? <NoPostsYet>{noPostsMessage}</NoPostsYet>
-                    :allPosts.map((post)=>{
-                return(
+return(
+    <TimelinePosts>
+        {serverLoading 
+            ? <Loader type="Circles" className='loader' color="#FFF"  />
+            : (allPosts.length===0 
+            ? <NoPostsYet>{noPostsMessage}</NoPostsYet>
+            :allPosts.map((post)=>{
+            return(
                 <li key={post.id} id={post.id}>
+
                     {post["repostedBy"] ? 
                             (<RepostIcon>
                                 <RepeatOutline
@@ -128,16 +133,14 @@ export default function Posts(props){
                                             {YoutubeId(post)}
                                             
                                             </LinkDetails>
+
                         </div>
                     </div>
+                    <CommentContainer setPostComments={setPostComments} idComment = {post.id} postComments = {postComments} postId = {post.repostId? post.repostId: post.id} avatar = {user.user.avatar} setWriteComment={setWriteComment} writeComment={writeComment}/>
                 </li>   
-                )
-            })
-                )
-            }
-        </TimelinePosts>
+            )}))}        
+    </TimelinePosts>
     )
-
 }
 
 
@@ -153,10 +156,10 @@ const RepostIcon = styled.div`
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
-   
+
     width: 503px;
     margin-left:118px;
-
+    color: #fff;
     @media(max-width:1200px){
         margin-left:118px;
     }

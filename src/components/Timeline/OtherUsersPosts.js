@@ -4,6 +4,7 @@ import axios from 'axios';
 import {useParams, useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
 
+<<<<<<< HEAD
 import OtherUserContext from '../OtherUserContext';
 import styled from 'styled-components';
 
@@ -11,6 +12,11 @@ import styled from 'styled-components';
 import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
     
 /*import dos Posts*/
+=======
+
+/*import de style components*/
+import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
+>>>>>>> main
 import Posts from '../Posts'
 
 /*InfiniteScroller*/
@@ -32,7 +38,6 @@ export default function OtherUsersPosts({goToLink}){
     const [followingUsers, setFollowingUsers] = useState([])
     const [isFollowing, setIsFollowing] = useState(false)
 
-    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
     
 
 
@@ -61,7 +66,10 @@ export default function OtherUsersPosts({goToLink}){
           const newArray = response.data.posts
           
           setUsersPosts(newArray)
+<<<<<<< HEAD
           
+=======
+>>>>>>> main
 
           if(response.data.posts[0]["repostedBy"]){
             setPageUser(response.data.posts[0].repostedBy.username)
@@ -89,6 +97,7 @@ export default function OtherUsersPosts({goToLink}){
         })
     }
 
+<<<<<<< HEAD
 
     useEffect(() => {
         getFollowingList()
@@ -106,6 +115,8 @@ export default function OtherUsersPosts({goToLink}){
     }
 
     
+=======
+>>>>>>> main
     function goToUserPosts(id){
         if(id!==user.user.id){
         history.push(`/user/${id}`)
@@ -120,6 +131,7 @@ export default function OtherUsersPosts({goToLink}){
         history.push(`/hashtag/${newVal}`)
     }
 
+<<<<<<< HEAD
     function follow(){
         const requestToFollow = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/follow`, {}, config)
         requestToFollow.then(() => {setDisabFollow(false); getFollowingList()});
@@ -224,6 +236,32 @@ export default function OtherUsersPosts({goToLink}){
                 </TimelineContent>
             </TimelineContainer>
         </Container>
+=======
+    return(  
+    <Container>
+        <TimelineContainer>
+            <Title>{ !serverLoading 
+            ? `${pageUser}'s posts`  
+            :'Other Posts'}</Title> 
+                <TimelineContent>                
+                    <Posts noPostsMessage={'Este usuário não postou nada'}
+                        serverLoading={serverLoading}
+                        allPosts={usersPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
+                        goToUserPosts={goToUserPosts}
+                        getUsersPosts={getUsersPosts}
+                        sendToHashtag={sendToHashtag}                                
+                    />                  
+                    <TrendingList send={sendToHashtag}/>
+                </TimelineContent>
+        </TimelineContainer>
+    </Container>
+>>>>>>> main
     )
 
     function like (id){

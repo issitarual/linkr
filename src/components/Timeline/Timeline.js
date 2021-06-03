@@ -1,13 +1,14 @@
 import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
-import OtherUserContext from '../OtherUserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-import NewPost from './NewPost';
+
 import styled from 'styled-components';
 
-import isEqual from 'lodash.isequal';
+
+import NewPost from './NewPost'
+import LinkPreview from './LinkPreview'
 
 import getYouTubeID from 'get-youtube-id';
 
@@ -34,20 +35,23 @@ export default function Timeline({goToLink}){
     const [numberofFollowing, setNumberofFollowing] = useState([])
     const [timelineRef,setTimelineRef] = useState(false);
 
-    
-    const[test,setTest] = useState([])
-   
-        
+
+
     /*Logics of infinite Scroller*/ 
-        const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+        
         const[hasMore,setHasMore] = useState(false)
+
+  
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
     }
     
-   useEffect(()=>{
+   
+    
+    useEffect(()=>{
+
         update()        
     },[]);
 
@@ -104,7 +108,7 @@ export default function Timeline({goToLink}){
 
         setHasMore(true)
     }
-        
+
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
@@ -170,8 +174,10 @@ export default function Timeline({goToLink}){
         <Container>
             
             <TimelineContainer>
+
             <Title><h1>timeline</h1></Title> 
             
+
                     <TimelineContent>
                       
                             <NewPost update={update} />
