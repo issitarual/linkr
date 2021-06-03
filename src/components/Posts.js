@@ -12,7 +12,6 @@ import Repost from './repost/Repost'
 import {useContext} from 'react'
 import styled from 'styled-components';
 import {useState} from 'react'
-import OtherUserContext from '../components/OtherUserContext';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
@@ -24,7 +23,6 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 export default function Posts(props){
     const [writeComment, setWriteComment] = useState("");
     const [postComments, setPostComments] = useState({id: null, comment:[]});
-    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
     function YoutubeId(post){
         const getYouTubeID = require('get-youtube-id');
         const id = getYouTubeID(post.link);
@@ -79,6 +77,7 @@ return(
             : (allPosts.length===0 
             ? <NoPostsYet>{noPostsMessage}</NoPostsYet>
             :allPosts.map((post)=>{
+                console.log(post)
             return(
                 <li key={post.id} id={post.id}>
                     {
