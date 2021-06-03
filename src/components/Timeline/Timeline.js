@@ -3,7 +3,8 @@ import UserContext from '../UserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-import NewPost from './NewPost'
+import NewPost from './NewPost';
+import styled from 'styled-components';
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -25,6 +26,7 @@ export default function Timeline(){
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
+    const [numberofFollowing, setNumberofFollowing] = useState([])
     const [timelineRef,setTimelineRef] = useState(false);
 
     /*Logics of infinite Scroller*/ 
@@ -40,6 +42,11 @@ export default function Timeline(){
     useEffect(()=>{
         update()        
     },[]);
+
+    useEffect(() => {
+        const getNumberofFollowing = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/follows", config)
+        getNumberofFollowing.then((response) => setNumberofFollowing(response.data.users))
+    },[])
 
     UseInterval(() => {
     
@@ -174,7 +181,9 @@ export default function Timeline(){
                             className='x'
                         >
                             <NewPost update={update} />
-                            <Posts noPostsMessage={'Nenhum post encontrado'}
+
+                            {numberofFollowing.length === 0 ? <NoOneYet> Você ainda não segue ninguem, <br/> procure por perfis na busca </NoOneYet> :
+                            <Posts noPostsMessage={'Quem você segue ainda não publicou nenhum post'}
                                 update={update}
                                 serverLoading={serverLoading}
                                 allPosts={allPosts}
@@ -188,7 +197,7 @@ export default function Timeline(){
                                 inputRef={inputRef}
                                 goToLink={goToLink}
                                 
-                            />
+                            />}
 
                         </InfiniteScroll>
 
@@ -229,3 +238,7 @@ export default function Timeline(){
         }
     }
 }
+
+const NoOneYet = styled.h1`
+    margin-top: 20px;
+`;

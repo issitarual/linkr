@@ -4,7 +4,7 @@ import axios from 'axios';
 import {useContext} from 'react';
 import UserContext from '../UserContext';
 
-export default function RepostModal ({id, modalIsOpen, toggleModal}) {
+export default function RepostModal ({id, modalIsOpen, toggleModal, update}) {
     const { user } = useContext(UserContext);
     
     const config = {
@@ -15,7 +15,7 @@ export default function RepostModal ({id, modalIsOpen, toggleModal}) {
 
     function RepostButton(id){
         const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
-        requestRepost.then((response) => toggleModal());
+        requestRepost.then((response) => {toggleModal(); update()});
         requestRepost.catch(() => alert("Não foi possivel executar essa operação"));
     }
 
