@@ -109,7 +109,7 @@ export default function Posts(props){
                                         like={like}
                                     />
                                 <Comments post={post}/>
-                                <Repost id={post.id} count={post.repostCount} />
+                                <Repost id={post.id} count={post.repostCount} update={update} />
                                 </div>
 
                                         <div className='postRight'>

@@ -2,7 +2,7 @@ import {useState } from 'react';
 import {RepeatOutline} from 'react-ionicons';
 import RepostModal from './RepostModal';
 
-export default function Repost ({id, count}) {
+export default function Repost ({id, count, update}) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     function toggleModal () {
@@ -21,6 +21,7 @@ export default function Repost ({id, count}) {
             </div>
             
             <RepostModal
+            update={update}
             modalIsOpen={modalIsOpen}
             toggleModal={toggleModal}
             id={id}

@@ -4,7 +4,8 @@ import OtherUserContext from '../OtherUserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-import NewPost from './NewPost'
+import NewPost from './NewPost';
+import styled from 'styled-components';
 
 import isEqual from 'lodash.isequal';
 
@@ -30,9 +31,10 @@ export default function Timeline(){
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
+    const [numberofFollowing, setNumberofFollowing] = useState([])
     const [timelineRef,setTimelineRef] = useState(false);
 
-    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
+    
     const[test,setTest] = useState([])
    
         
@@ -53,81 +55,57 @@ export default function Timeline(){
         update()        
     },[]);
 
-    /*UseInterval(() => {
+    useEffect(() => {
+        const getNumberofFollowing = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/follows", config)
+        getNumberofFollowing.then((response) => setNumberofFollowing(response.data.users))
+    },[])
+
+    UseInterval(() => {
     
-    const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-    
-    let holder='v'
-
-    if(allPosts[0]["repostId"]){
-
-        holder=allPosts[0].repost.id
-    }else{
-        holder = allPosts[0].id
-    }
-
-    console.log(allPosts[0])
-    console.log(holder)
-    
-    
-
-    let numberHolder=0
-   
-    getNewPosts.then((response)=>{
-     
-     
-
-       response.data.posts.forEach((post,index)=>{
+        let idPost = ''
         
-        if(post["repostId"]){
-            console.log('tem repostId :' + index)
-
-            if(post.repostId===holder.id){
-                numberHolder=index
-            }
+        if(allPosts[0]["repostId"]){
+             idPost = allPosts[0].repostId
         }else{
-            if(post.id===holder.id){
-                numberHolder=index
-            }
+            idPost = allPosts[0].id
         }
 
-        
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?earlierThan=${idPost}`,config)
+
+    
+        getNewPosts.then((response)=>{
+            console.log(response)
+            console.log('foi!')
+            const newerPosts = response.data.posts
+            const newTimeline=newerPosts.concat(allPosts)
+            console.log('newtimeline')
+            console.log(newTimeline)
+
+           // setAllPosts([...newerPosts,...allPosts])
+           setAllPosts([...newTimeline])
+           //alert('atualizou')
+
         })
-    
 
-    
-        
-            const newPosts = response.data.posts.splice(0,numberHolder)
-            setAllPosts([...newPosts,...allPosts])
-    
-    })
-       
-    
-    
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            console.log(responseError)
 
-    }, 15000); */
+        })
+
+    }, 15000); 
 
 
     
 
     function update () {
         
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
         setServerLoading(true)
-        console.log('alou')
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            console.log(response.data.posts)
-
-            response.data.posts.forEach((post,index)=>{
-                if(post["repostId"]){
-                    console.log('tem repostId :' + index)
-                }
-
-                
-            })
-            
+            console.log(response)
 
             setAllPosts(newArray)
             setServerLoading(false)
@@ -183,28 +161,89 @@ export default function Timeline(){
         ) 
     }
 
-    function att(){
+    function att2(){
+        let idPost = ''
+        
+        if(allPosts[0]["repostId"]){
+             idPost = allPosts[0].repostId
+        }else{
+            idPost = allPosts[0].id
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?earlierThan=${idPost}`,config)
+
+    
+        getNewPosts.then((response)=>{
+            console.log(response)
+            console.log('foi!')
+            const newerPosts = response.data.posts
+            const newTimeline=newerPosts.concat(allPosts)
+            console.log('newtimeline')
+            console.log(newTimeline)
+
+           // setAllPosts([...newerPosts,...allPosts])
+           setAllPosts([...newTimeline])
+
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            console.log(responseError)
+
+        })
+    }
+
+    function scrollPage(){
+        
+        let idPost = ''
+        console.log(allPosts.length)
+        const lastPost = allPosts.length-1
+        console.log(lastPost)
+        console.log(allPosts.length-1)
+        
+        if(allPosts[lastPost]["repostId"]){
+             idPost = allPosts[lastPost].repostId
+        }else{
+            idPost = allPosts[lastPost].id
+        }
+        console.log(idPost)
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${idPost}`,config)
+
+        getNewPosts.then((response)=>{
+            console.log(response)
+            console.log('foi!')
+            
+            
+            const scrollPosts = response.data.posts
+            console.log(scrollPosts)
+
+            setAllPosts([...allPosts,...scrollPosts])
+           // const newTimeline=scrollPosts.concat(allPosts)
+            //console.log('newtimeline')
+           // console.log(newTimeline)
+
+           // setAllPosts([...newerPosts,...allPosts])
+          // setAllPosts([...newTimeline])
+
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            console.log(responseError)
+
+        })
+
+       // alert('clickei')
+    }
+
+    /*function att(){
 
 
         const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
     
-            /*let holder='v'
-
-            if(allPosts[0]["repostId"]){
-
-                holder=allPosts[0].repost.id
-            }else{
-                holder = allPosts[0].id
-            }
-
-            console.log('posta na posicao 0')
-            console.log(allPosts[0])
-            
-            console.log('id do post')
-            console.log(holder)
-            */
-        
-
+           
+    
    
         getNewPosts.then((response)=>{
         
@@ -213,22 +252,6 @@ export default function Timeline(){
             console.log(allPosts[0])
         const firstPostNow=allPosts[0]
         
-       /* if(firstPostNow["repostId"]){
-            console.log(firstPostNow.repostId)
-        }
-            
-            
-        for(let i =0; i<response.data.posts.length;i++){
-
-            if(newPosts[i]["repostId"]){
-
-                if(firstPostNow.repostId===newPosts.repostId){
-                    console.log('igual')
-                }
-            }
-           
-            
-        }*/
 
         const concating = newPosts.concat(allPosts)
         let spliceLimit = ''
@@ -315,22 +338,25 @@ export default function Timeline(){
 
        },100) 
         
-    }
+    }*/
 
    
     return( 
-        
         <Container>
             
             <TimelineContainer>
-            <Title>timeline</Title> 
-                <button onClick={att}>att timeline</button>
+            <Title><h1>timeline</h1></Title> 
+                
                 <button onClick={()=>console.log(allPosts)}>see posts state</button>
+                <button onClick={att2}>att timeline2</button>
+               
                 
                     <TimelineContent>
                       
                             <NewPost update={update} />
-                            <Posts noPostsMessage={'Nenhum post encontrado'}
+
+                            {numberofFollowing.length === 0 ? <NoOneYet> Você ainda não segue ninguem, <br/> procure por perfis na busca </NoOneYet> :
+                            <Posts noPostsMessage={'Quem você segue ainda não publicou nenhum post'}
                                 update={update}
                                 serverLoading={serverLoading}
                                 allPosts={allPosts}
@@ -344,13 +370,15 @@ export default function Timeline(){
                                 inputRef={inputRef}
                                 goToLink={goToLink}
                                 sendToHashtag={sendToHashtag}
-                            />
+                            
+                                
+                            />}
 
                         <TrendingList send={sendToHashtag}/>
                     
                     </TimelineContent>
             </TimelineContainer>
-
+            <button onClick={scrollPage}>Scroll test</button>           
         </Container>
     )
                             
@@ -389,3 +417,7 @@ export default function Timeline(){
         }
     }
 }
+
+const NoOneYet = styled.h1`
+    margin-top: 20px;
+`;

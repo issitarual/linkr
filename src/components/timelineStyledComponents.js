@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
  const PostInfo = styled.div`
      
@@ -40,8 +40,6 @@ import styled from 'styled-components'
     }
 `;
 
-
-
 const LinkDescription = styled.p`
     width: 302px;
     min-height: 40px;
@@ -76,7 +74,6 @@ const Links = styled.a`
     }           
 `;
 
- 
 const Hashtag = styled.span`
     color: white;
     font-weight: bold;
@@ -87,13 +84,37 @@ const PostComment = styled.p`
     word-wrap: break-word;
     white-space: pre-wrap;
 `;
-const Title = styled.h1`
-    font-family: Oswald;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 43px;
-    line-height: 64px;
-    color: white;
+
+const Title = styled.div`
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+
+    @media (max-width:800px){
+        width: 500px;
+        margin-left: 50px;
+    }
+
+    h1{
+        font-family: Oswald;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 43px;
+        line-height: 64px;
+        color: white;
+        margin-left: 15px;
+        margin-top: 30px;
+    }
+
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+
+        @media (max-width:800px){
+            margin-left:10px ;
+        }
+    }
 `;
 
 const TimelineContainer = styled.div`
@@ -126,9 +147,10 @@ const TimelineContainer = styled.div`
         position: fixed;
         z-index:0;
         right: 174px;
-        top: 226px;
+        top: 260px;
         color: white;
         border-radius: 16px;
+
         @media (max-width: 1200px){
             display: none;
     
@@ -234,9 +256,9 @@ const TimelinePosts = styled.ul`
 
        h2{
             font-family: 'Lato', sans-serif!important;
-           font-size: 19px;
-           color: #fff;
-           margin: 20px 20px 7px 20px;
+            font-size: 19px;
+            color: #fff;
+            margin: 20px 20px 7px 20px;
        }
 
        .postText{
@@ -292,6 +314,7 @@ const TimelineContent= styled.div`
 
     @media (max-width: 1200px){
         justify-content: center;
+        width: 100%;
         align-items: center;
     }  
 `;
