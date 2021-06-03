@@ -167,10 +167,8 @@ export default function Timeline(){
         <Container>
             
             <TimelineContainer>
-                <Title>
-                    <h1>timeline</h1>
-                </Title> 
-        
+            <Title>timeline</Title> 
+                <NewPost update={update} />
                     <TimelineContent>
                         
                         <InfiniteScroll
