@@ -77,7 +77,6 @@ return(
             : (allPosts.length===0 
             ? <NoPostsYet>{noPostsMessage}</NoPostsYet>
             :allPosts.map((post)=>{
-                console.log(post)
             return(
                 <li key={post.id} id={post.id}>
                     {

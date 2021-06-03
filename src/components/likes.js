@@ -20,9 +20,9 @@ export default function Likes({post, olderLikes, likedPosts, like, user }){
                     `${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[0]},  ${post.likes.map(n => n["user.username"]).filter(n => n !== user.user.username)[1]} e outras ${post.likes.length -2} pessoas`
                 } 
             >
-                {likedPosts.map(n=>n.id).includes(post.id) && likedPosts.map(n=>n.repostId).includes(post.repostId)?                                  
+                {likedPosts.map(n=>n.id).includes(post.id)?                                  
                 <HeartSharp 
-                    onClick={() => like(post.id, post.repostId)}
+                    onClick={() => like(post.id)}
                     color={'#AC2B25'} 
                     height="25px"
                     width="25px"
