@@ -90,10 +90,7 @@ export default function MyLikes({goToLink}){
         
         <TimelineContainer>
             <h1>my likes</h1> 
-                
-                <TimelineContent>
-
-                
+                <TimelineContent>  
                         <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
                                 serverLoading={serverLoading}
                                 allPosts={allPosts}

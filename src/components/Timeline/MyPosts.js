@@ -135,6 +135,7 @@ export default function MyPosts({goToLink}){
                             inputRef={inputRef}
                             goToLink={goToLink}
                             sendToHashtag={sendToHashtag}
+
                         />
                                 
                      
