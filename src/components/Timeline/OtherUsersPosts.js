@@ -56,23 +56,12 @@ export default function OtherUsersPosts(){
           setUsersPosts(newArray)
           console.log(response.data.posts)
 
-         /* if(response.data.posts[0]["repostedBy"]){
-                console.log('tem')
-          }else{
-              console.log('nao tem')
-          }*/
-
           if(response.data.posts[0]["repostedBy"]){
             setPageUser(response.data.posts[0].repostedBy.username)
             }else{
                 setPageUser(response.data.posts[0].user.username)
             }
 
-
-
-        
-            //setPageUser(response.data.posts[0].user.username)
-          // setPageUser(OtherUser.userName)
           setServerLoading(false) 
           let sharpedHeart = []
           newArray.forEach( post => {

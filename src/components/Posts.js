@@ -99,42 +99,42 @@ export default function Posts(props){
                             </RepostIcon>) : ""}
                     <div className = "oficialPost">
                         
-                        <div className='postLeft'>
-                            <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
-                    <Likes 
-                        post={post} 
-                        olderLikes={olderLikes} 
-                        likedPosts = {likedPosts}
-                        user={user}
-                        like={like}
-                    />
-                <Comments post={post}/>
-                <Repost id={post.id} count={post.repostCount} />
-                </div>
+                                        <div className='postLeft'>
+                                            <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
+                                    <Likes 
+                                        post={post} 
+                                        olderLikes={olderLikes} 
+                                        likedPosts = {likedPosts}
+                                        user={user}
+                                        like={like}
+                                    />
+                                <Comments post={post}/>
+                                <Repost id={post.id} count={post.repostCount} />
+                                </div>
 
-                        <div className='postRight'>
-                            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
-                            {/*(<UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>*/}
-                            <UserName id={post.user.id} onClick={()=>saveOtherUserInfo(post)}>{post.user.username}</UserName>
+                                        <div className='postRight'>
+                                            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+                                            {/*(<UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>*/}
+                                            <UserName id={post.user.id} onClick={()=>saveOtherUserInfo(post)}>{post.user.username}</UserName>
 
-              
-                            <PostContent open={!post.toEdit} >
-                                <ReactHashtag 
-                                    renderHashtag={(hashtagValue) => (
-                                    <Hashtag className='hashtagSpan' onClick={()=>(sendToHashtag(hashtagValue))}>{hashtagValue}</Hashtag>
-                                    )}
-                                >
-                                    {post.text}  
-                                </ReactHashtag>
-                            </PostContent>    
-                           
-                            <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
+                            
+                                            <PostContent open={!post.toEdit} >
+                                                <ReactHashtag 
+                                                    renderHashtag={(hashtagValue) => (
+                                                    <Hashtag className='hashtagSpan' onClick={()=>(sendToHashtag(hashtagValue))}>{hashtagValue}</Hashtag>
+                                                    )}
+                                                >
+                                                    {post.text}  
+                                                </ReactHashtag>
+                                            </PostContent>    
+                                        
+                                            <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
 
-                            <LinkDetails id1={getYouTubeID(post.link)}>
-                                
-                            {YoutubeId(post)}
-                               
-                            </LinkDetails>
+                                            <LinkDetails id1={getYouTubeID(post.link)}>
+                                                
+                                            {YoutubeId(post)}
+                                            
+                                            </LinkDetails>
                         </div>
                     </div>
                 </li>   
@@ -160,6 +160,17 @@ const RepostIcon = styled.div`
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
-    border: 1px solid red;
+    
+    width: 503px;
+    margin-left:118px;
+
+    @media(max-width:1200px){
+        margin-left:118px;
+    }
+    
+    @media(max-width:690px){
+        margin-left:0px;
+        width: 100%;
+    }
    
 `;

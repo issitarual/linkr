@@ -134,7 +134,7 @@ export default function MyPosts({goToLink}){
                             config={config}
                             inputRef={inputRef}
                             goToLink={goToLink}
-                            //getUsersPosts={getUsersPosts}
+                            
                         />
                                 
                      

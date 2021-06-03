@@ -165,6 +165,7 @@ export default function Timeline(){
                                 config={config}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
+                                sendToHashtag={sendToHashtag}
                             />
 
                         <TrendingList send={sendToHashtag}/>

@@ -152,7 +152,15 @@ const TimelinePosts = styled.ul`
     display: flex;
     flex-direction: column;
     
-    @media (max-width:610px){
+    
+
+    @media (max-width:1200px){
+        align-items: center;
+        width: 690px;
+        min-width:360px;
+    }
+
+    @media (max-width:710px){
         align-items: center;
         width: 90%;
         min-width:360px;
@@ -170,6 +178,7 @@ const TimelinePosts = styled.ul`
         background: #1E1E1E;
         border-radius:16px;
         margin-top:10px;
+        
         color: white;
 
         @media (max-width:610px){
@@ -178,6 +187,8 @@ const TimelinePosts = styled.ul`
 
         @media (max-width:1200px){
             width: 90%;
+           // margin-left: auto;
+           // margin-right: auto;
         }
     }
 
@@ -197,15 +208,19 @@ const TimelinePosts = styled.ul`
         border-radius:16px;
         background-color: #171717;
         color: white;
-        width: 610px;
+        width: auto;
+       
+       
 
         @media (max-width:610px){
             width: 90%;
         }
 
-        /*@media (max-width:1200px){
+        @media (max-width:1200px){
             width: 100%;
-        }*/
+            margin :0 auto;
+            
+        }
 
     }
 
@@ -284,9 +299,7 @@ const TimelineContent= styled.div`
 const LinkDetails = styled.div`
     width: 505px;
     height:auto;
-    //border: 1px solid #4D4D4D;
     border:${(props)=>(props.id1) ? 'none' : '1px solid #4D4D4D'};
-   //opacity: 
     margin: 20px 0;
     border-radius: 16px;
     display: flex;
