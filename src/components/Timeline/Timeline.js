@@ -47,10 +47,6 @@ export default function Timeline(){
         }
     }
     
-    
-
-   
-    
    useEffect(()=>{
         update()        
     },[]);
@@ -60,7 +56,7 @@ export default function Timeline(){
         getNumberofFollowing.then((response) => setNumberofFollowing(response.data.users))
     },[])
 
-    UseInterval(() => {
+    /*UseInterval(() => {
     
         let idPost = ''
         
@@ -80,11 +76,7 @@ export default function Timeline(){
             const newTimeline=newerPosts.concat(allPosts)
             console.log('newtimeline')
             console.log(newTimeline)
-
-           // setAllPosts([...newerPosts,...allPosts])
            setAllPosts([...newTimeline])
-           //alert('atualizou')
-
         })
 
         getNewPosts.catch((responseError)=>{
@@ -93,7 +85,7 @@ export default function Timeline(){
 
         })
 
-    }, 15000); 
+    }, 15000); */
 
 
     
@@ -164,27 +156,28 @@ export default function Timeline(){
     }
 
     function att2(){
-        let idPost = ''
+       /* let idPost = ''
         
         if(allPosts[0]["repostId"]){
              idPost = allPosts[0].repostId
         }else{
             idPost = allPosts[0].id
-        }
+        }*/
 
-        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?earlierThan=${idPost}`,config)
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?earlierThan=${allPosts[0].id}`,config)
 
     
         getNewPosts.then((response)=>{
             console.log(response)
             console.log('foi!')
+            
             const newerPosts = response.data.posts
+            
             const newTimeline=newerPosts.concat(allPosts)
             console.log('newtimeline')
             console.log(newTimeline)
-
-           // setAllPosts([...newerPosts,...allPosts])
-           setAllPosts([...newTimeline])
+           
+            setAllPosts([...newTimeline])
 
         })
 
@@ -197,37 +190,42 @@ export default function Timeline(){
 
     function scrollPage(lastPost){
         
-        let idPost = ''
+        //let idPost = ''
        
         
-        console.log(lastPost)
+        /*console.log(lastPost)
         console.log(allPosts.length-1)
         
         if(allPosts[lastPost]["repostId"]){
              idPost = allPosts[lastPost].repostId
         }else{
             idPost = allPosts[lastPost].id
-        }
-        console.log(idPost)
+        }*/
+        
+        //console.log(idPost)
 
-        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${idPost}`,config)
+        if(allPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${allPosts[lastPost].id}`,config)
 
         getNewPosts.then((response)=>{
             console.log(response)
             console.log('foi!')
+
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
             
             
             const scrollPosts = response.data.posts
             console.log(scrollPosts)
 
             setAllPosts([...allPosts,...scrollPosts])
-           // const newTimeline=scrollPosts.concat(allPosts)
-            //console.log('newtimeline')
-           // console.log(newTimeline)
-
-           // setAllPosts([...newerPosts,...allPosts])
-          // setAllPosts([...newTimeline])
-
+           
         })
 
         getNewPosts.catch((responseError)=>{
@@ -236,113 +234,11 @@ export default function Timeline(){
 
         })
 
-       // alert('clickei')
+    
+
+       
     }
 
-    /*function att(){
-
-
-        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-    
-           
-    
-   
-        getNewPosts.then((response)=>{
-        
-        const newPosts=response.data.posts
-            console.log(newPosts)
-            console.log(allPosts[0])
-        const firstPostNow=allPosts[0]
-        
-
-        const concating = newPosts.concat(allPosts)
-        let spliceLimit = ''
-        if(firstPostNow["repostId"]){
-            console.log('O primeiro post atual  incluir repost id')
-
-            for(let i=0; i< newPosts.length;i++){
-                if(newPosts[i]["repostId"]){
-                   // console.log(`Ò novo post na posição ${i} é repost`)
-                   if(newPosts[i].repostId===firstPostNow.repostId){
-                       console.log(`O splice vai até ${i}`)
-                       spliceLimit=i
-                       break
-                   }else{
-                       console.log(` ${i+1}  posts são novos`)
-                   }
-                }else {
-                    if(newPosts[i].id===firstPostNow.repostId){
-                    console.log(`O splice vai até ${i} e não são reposts`)
-                    spliceLimit=i
-                       break
-                    //console.log(`Ò novo post na posição ${i} NÃO é repost`)
-                    }else{
-                        console.log(` ${i+1}  posts são novos e não são reposts`)
-                    }
-                }   
-            }
-        }else{
-            console.log('O primeiro post atual nao incluir repost id')
-
-            for(let i=0; i< newPosts.length;i++){
-                if(newPosts[i]["repostId"]){
-                    if(newPosts[i].repostId===firstPostNow.id){
-                        console.log(`O splice vai até ${i}`)
-                        spliceLimit=i
-                        break
-                    }else{
-                        console.log(` ${i+1}  posts são novos`)
-                    }
-                }else {
-                    if(newPosts[i].id===firstPostNow.id){
-                    console.log(`O splice vai até ${i} e não são reposts`)
-                    //console.log(`Ò novo post na posição ${i} NÃO é repost`)
-                    spliceLimit=i
-                       break
-                    }else{
-                        console.log(` ${i+1}  posts são novos e não são reposts`)
-                    }
-                }   
-            }
-        
-        }
-
-        const newTimeline = newPosts.splice(0,spliceLimit)
-        console.log('splicelimit')
-        console.log(spliceLimit)
-
-        console.log(newTimeline)
-
-        const aa=[...newTimeline,...allPosts]
-        console.log('o q dever a estar setado')
-        console.log(aa)
-
-        const bb= newTimeline.concat(allPosts)
-
-       console.log('bb')
-       console.log(bb)
-
-       setTest(bb)
-        
-        
-      
-       //setAllPosts([...newTimeline,...allPosts])
-       
-        setAllPosts(newTimeline.concat(allPosts))
-        })
-
-        getNewPosts.catch((responseError)=>{
-            alert('houve um erro ao atualizar a timeline')
-        })
-       
-       setTimeout(()=>{
-        setAllPosts(test)
-
-       },100) 
-        
-    }*/
-
-   
     return( 
         <Container>
             
@@ -360,12 +256,14 @@ export default function Timeline(){
                             {numberofFollowing.length === 0 ? <NoOneYet> Você ainda não segue ninguem, <br/> procure por perfis na busca </NoOneYet> :
                             <>
                             
-                            <InfiniteScroll
+                             <InfiniteScroll
                                 pageStart={0}
                                 loadMore={()=>scrollPage(allPosts.length-1)}
                                 hasMore={hasMore}
                                 loader={<div className="loader" key={0}>Loading More Posts...</div>}
-                            >
+                                threshold={1}
+                                className='Scroller'
+                            > 
                               
                                 <Posts noPostsMessage={'Quem você segue ainda não publicou nenhum post'}
                                     update={update}
@@ -383,7 +281,7 @@ export default function Timeline(){
                                     sendToHashtag={sendToHashtag}
                                 />
                                 
-                            </InfiniteScroll>
+                             </InfiniteScroll> 
                                     
                             
 
@@ -393,18 +291,12 @@ export default function Timeline(){
                     
                     </TimelineContent>
             </TimelineContainer>
-            <button onClick={scrollPage}>Scroll test</button>           
+                    
         </Container>
     )
                             
                                 
-                                
-
-                       
-
-
-
-
+                            
     function like (id){
         const config = {
             headers: {

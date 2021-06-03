@@ -29,7 +29,7 @@ export default function MyPosts({goToLink}){
 
   /*Logics of infinite Scroller*/ 
   const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-  const[hasMore,setHasMore] = useState(true)
+  const [hasMore,setHasMore] = useState(true)
  
 
 
@@ -108,6 +108,42 @@ export default function MyPosts({goToLink}){
             history.push(`/my-posts`)
         }
     }
+
+    function scrollPage(lastPost){
+        
+
+        if(myPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${myPosts[lastPost].id}`,config)
+
+        getNewPosts.then((response)=>{
+            console.log(response)
+            console.log('foi!')
+
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            
+            const scrollPosts = response.data.posts
+            console.log(scrollPosts)
+
+            setMyPosts([...myPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            console.log(responseError)
+
+        })
+
+       
+    }
    
     return( 
       
@@ -120,22 +156,32 @@ export default function MyPosts({goToLink}){
                 
                 <TimelineContent>
 
-                   
-                        <Posts noPostsMessage={'Você ainda não postou nada'}
-                            update={update}
-                            serverLoading={serverLoading}
-                            allPosts={myPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            tryingToEdit={tryingToEdit}
-                            config={config}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                            
-                        />
+                        <InfiniteScroll
+                                pageStart={0}
+                                loadMore={()=>scrollPage(myPosts.length-1)}
+                                hasMore={hasMore}
+                                loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                                threshold={1}
+                                className='Scroller'
+                        > 
+                       
+                            <Posts noPostsMessage={'Você ainda não postou nada'}
+                                update={update}
+                                serverLoading={serverLoading}
+                                allPosts={myPosts}
+                                goToUserPosts={goToUserPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                tryingToEdit={tryingToEdit}
+                                config={config}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                                
+                            />
+
+                        </InfiniteScroll>
                                 
                      
                                         

@@ -37,7 +37,7 @@ export default function OtherUsersPosts(){
 
 
   /*Logics of infinite Scroller*/ 
-  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+  
   const[hasMore,setHasMore] = useState(true)
 
   // const inputRef = useRef([])
@@ -142,6 +142,41 @@ export default function OtherUsersPosts(){
             unfollow()
 
     }
+
+    function scrollPage(lastPost){
+        
+
+        if(usersPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${usersPosts[lastPost].id}`,config)
+
+        getNewPosts.then((response)=>{
+            console.log(response)
+            console.log('foi!')
+            
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+            console.log(scrollPosts)
+
+            setUsersPosts([...usersPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            console.log(responseError)
+
+        })
+
+       
+    }
     
     return( 
       
@@ -160,8 +195,15 @@ export default function OtherUsersPosts(){
                 
                 <TimelineContent>
 
-                  
-                
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={()=>scrollPage(usersPosts.length-1)}
+                        hasMore={hasMore}
+                        loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                        threshold={1}
+                        className='Scroller'
+                    > 
+                        
                         <Posts noPostsMessage={'Este usuário não postou nada'}
                                 serverLoading={serverLoading}
                                 allPosts={usersPosts}
@@ -176,6 +218,8 @@ export default function OtherUsersPosts(){
                                 sendToHashtag={sendToHashtag}
                                 
                         />
+
+                    </InfiniteScroll>
 
                    
                     

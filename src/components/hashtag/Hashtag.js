@@ -24,6 +24,11 @@ export default function OtherUsersPosts({goToLink}){
     const [likedPosts, setLikedPosts] = useState([]);
     const inputRef = useRef([]);
 
+
+    /*Logics of infinite Scroller*/ 
+  
+  const[hasMore,setHasMore] = useState(true)
+
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
@@ -78,6 +83,41 @@ export default function OtherUsersPosts({goToLink}){
             history.push(`/my-posts`)
         }
     }
+
+    function scrollPage(lastPost){
+        
+
+        if(hashtagPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${hashtagPosts[lastPost].id}`,config)
+
+        getNewPosts.then((response)=>{
+            console.log(response)
+            console.log('foi!')
+            
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+            console.log(scrollPosts)
+
+            setHashtagPosts([...hashtagPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            console.log(responseError)
+
+        })
+
+       
+    }
    
     return( 
       
@@ -90,7 +130,14 @@ export default function OtherUsersPosts({goToLink}){
                 
                 <TimelineContent>
 
-                    
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={()=>scrollPage(hashtagPosts.length-1)}
+                        hasMore={hasMore}
+                        loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                        threshold={1}
+                        className='Scroller'
+                    > 
                         <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
                                     serverLoading={serverLoading}
                                     allPosts={hashtagPosts}
@@ -103,6 +150,7 @@ export default function OtherUsersPosts({goToLink}){
                                     goToLink={goToLink}
                                     sendToHashtag={sendToHashtag}
                         />
+                    </InfiniteScroll>
 
                     <TrendingList send={sendToHashtag}/>
 

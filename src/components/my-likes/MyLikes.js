@@ -22,6 +22,7 @@ export default function MyLikes({goToLink}){
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const inputRef = useRef([]);
+    
 
 
   /*Logics of infinite Scroller*/ 
@@ -81,6 +82,42 @@ export default function MyLikes({goToLink}){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
     }
+
+
+    function scrollPage(lastPost){
+        
+
+        if(allPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${allPosts[lastPost].id}`,config)
+
+        getNewPosts.then((response)=>{
+            console.log(response)
+            console.log('foi!')
+            
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+            console.log(scrollPosts)
+
+            setAllPosts([...allPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            console.log(responseError)
+
+        })
+
+       
+    }
     return( 
       
     <Container>
@@ -90,7 +127,14 @@ export default function MyLikes({goToLink}){
                 
                 <TimelineContent>
 
-                
+                     <InfiniteScroll
+                        pageStart={0}
+                        loadMore={()=>scrollPage(allPosts.length-1)}
+                        hasMore={hasMore}
+                        loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                        threshold={1}
+                        className='Scroller'
+                    > 
                         <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
                                 serverLoading={serverLoading}
                                 allPosts={allPosts}
@@ -104,6 +148,8 @@ export default function MyLikes({goToLink}){
                                 
                                 sendToHashtag={sendToHashtag}
                         />
+
+                    </InfiniteScroll>
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>

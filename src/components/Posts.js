@@ -4,7 +4,7 @@ import Loader from "react-loader-spinner";
 import ActionsPost from './Timeline/ActionsPost';
 import styled from 'styled-components'
 import TrendingList from './hashtag/TrendingList'
-import { HeartOutline, HeartSharp } from 'react-ionicons';
+import { ChevronUpCircleSharp, HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText'
 import { RepeatOutline } from 'react-ionicons';
 import getYouTubeID from 'get-youtube-id';
@@ -56,14 +56,17 @@ export default function Posts(props){
      }
 
      function saveOtherUserInfo(userInfo){
-        
-         if(userInfo["repostedBy"]){
+        console.log(userInfo)
+         /*if(userInfo["repostedBy"]){
              
             goToUserPosts(userInfo.user.id)
            
             }else{
                 goToUserPosts(userInfo.user.id)
-            }
+            }*/
+
+            goToUserPosts(userInfo.user.id)
+            //getUsersPosts(userInfo.user.id)
 
     }
     const history=useHistory()
@@ -160,12 +163,17 @@ const RepostIcon = styled.div`
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
-    
+    border: 1px solid red;
     width: 503px;
     margin-left:118px;
 
     @media(max-width:1200px){
         margin-left:118px;
+    }
+
+
+    @media(max-width:730px){
+        margin-left:30px;
     }
     
     @media(max-width:690px){
