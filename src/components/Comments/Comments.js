@@ -1,12 +1,11 @@
 import { ChatbubblesOutline } from 'react-ionicons';
 import styled from 'styled-components';
 import {useContext, useState} from 'react';
-import UserContext from './UserContext';
+import UserContext from '../UserContext';
 import axios from 'axios';
 
-export default function Comments({post}){
+export default function Comments({post, setPostComments, setWriteComment, postComments}){
     const { user } = useContext(UserContext);
-    const [postComments, setPostComments] = useState([]);
     function loadingComments(id){
         const config = {
             headers:{
@@ -14,7 +13,10 @@ export default function Comments({post}){
             }
         }
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/comments`,config);
-        request.then(success => setPostComments(success));
+        request.then(success => {
+            setPostComments({id: post.repostId? post.repostId: post.id, comment: success.data.comments});
+            setWriteComment("");
+        });
         request.catch(error => alert("Ocorreu um erro, tente novamente"))
     }
     return(
@@ -28,11 +30,13 @@ export default function Comments({post}){
                     style={{ 
                         position: 'absolute',
                         bottom: '-40px',
-                        left: '-180px'
+                        left: '-180px',
+                        cursor: 'pointer',
+                        zIndex: "0"
                     }}
                 />
             </Icone>
-            <h6>{post.commentCount} comments</h6>
+            <h6>{postComments.id === post.id || postComments.id === post.repostId? postComments.comment.length: post.commentCount} comments</h6>
         </>
     )
 }
@@ -43,4 +47,5 @@ const Icone = styled.div`
     width: 25px;
     height: 25px;
     position: relative;
+    z-index: 0;
 `;
