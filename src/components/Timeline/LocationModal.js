@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import Modal from 'react-modal';
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
+import { CloseOutline } from 'react-ionicons'
+
 
 export default function LocationModal ({ loc, username, locationIsOpen, setLocationIsOpen }) {
 
@@ -11,12 +13,11 @@ export default function LocationModal ({ loc, username, locationIsOpen, setLocat
         setLocationIsOpen(false);
     }
 
-
     return (
 
         <Modal
             isOpen={locationIsOpen}
-            aria-labelledby="modal-title"
+            aria-labelledby="Google Maps"
             style={{
                 overlay: {
                   position: 'fixed',
@@ -35,18 +36,30 @@ export default function LocationModal ({ loc, username, locationIsOpen, setLocat
                     overflow: 'auto',
                     WebkitOverflowScrolling: 'touch',
                     borderRadius: '20px',
-                    width: '70vw',
-                    height: '85vh',
-                    padding: '15px 16px 21px 30px',
-                    margin: '5vh 18vw 10vh 12vw'
+                    width: '790px',
+                    height: '354px',
+                    padding: '15px 35px 21px 30px',
+                    marginTop: 'calc((100vh - 354px) / 2 - 50px )',
+                    marginBottom: 'calc((100vh - 354px) / 2 + 50px)',
+                    marginRight: 'calc((100vw - 790px) / 2 + 50px)',
+                    marginLeft: 'calc((100vw - 790px) / 2 - 50px)'
                 }
             }}
         >
-            <p>{`${username}'s location`}</p>
-
-            <button onClick={closeMap}>fechar</button>
+            
 
             <DisplayFlex>
+                <User>{`${username}'s location`}</User>
+                <CloseButton onClick={closeMap} >
+                    <CloseOutline
+                        color={'#ffffff'} 
+                        height="35px"
+                        width="35px"
+                    />
+                </CloseButton>
+            </DisplayFlex>
+
+            <Map>
             {console.log(loc)}
                 <GoogleMapReact 
                     bootstrapURLKeys={{
@@ -57,27 +70,23 @@ export default function LocationModal ({ loc, username, locationIsOpen, setLocat
                     defaultZoom={8}
                 ></GoogleMapReact>
 
-            </DisplayFlex>           
+            </Map>           
 
         </Modal>      
     )
 }
 
-const Iframe = styled.iframe`
-    width: calc(100% - 10px);
-    height: calc(100% - 50px);
+const Map = styled.div`
+    width: 713px;
+    height: 240px;
+    z-index: 8;
+    margin: 10px 0 0 0;
 `;
-
-const NewTabButton = styled.button`
-    width: 138px;
-    height: 31px;
-    background-color: #1877F2;
-    border-radius: 5px;
-    color: white;
-    font-family: Lato;
-    font-size: 14px;
+const DisplayFlex = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 `;
-
 const CloseButton = styled.button`
     font-size: 40px;
     background-color: rgba(0,0,0,0);
@@ -85,13 +94,9 @@ const CloseButton = styled.button`
     font-family: Lato;
     height: auto;
 `;
-
-const DisplayFlex = styled.div`
-    /* display: flex;
-    justify-content: space-between;
-    align-items: flex-start; */
-    width: 300px;
-    height: 300px;
-    z-index: 8;
+const User = styled.div`
+    font-family: Oswald;
+    font-size: 38px;
+    color: #ffffff;
+    font-weight: 700;
 `;
-
