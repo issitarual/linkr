@@ -170,8 +170,18 @@ const TimelinePosts = styled.ul`
         background: #1E1E1E;
         border-radius:16px;
         margin-top:10px;
-        color: white
+        color: white;
+
+        @media (max-width:610px){
+            width: 100%;
+        }
+
+        @media (max-width:1200px){
+            width: 90%;
+        }
     }
+
+    
 
     span{
         padding-top: 10px;
@@ -192,6 +202,10 @@ const TimelinePosts = styled.ul`
         @media (max-width:610px){
             width: 90%;
         }
+
+        /*@media (max-width:1200px){
+            width: 100%;
+        }*/
 
     }
 
@@ -257,11 +271,13 @@ const TimelinePosts = styled.ul`
 
 const TimelineContent= styled.div`
     display: flex;
-    justify-content:  space-between;
+    justify-content:space-between;
     height: auto;
+    flex-direction: column;
 
     @media (max-width: 1200px){
         justify-content: center;
+        align-items: center;
     }  
 `;
 

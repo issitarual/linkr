@@ -13,10 +13,15 @@ import MyLikes from './my-likes/MyLikes';
 import Hashtag from './hashtag/Hashtag';
 import LinkPreview from './Timeline/LinkPreview';
 
+import OtherUserContext from './OtherUserContext';
+
 
 export default function App () {
 
     const [user, setUser] = useState(localStorage.lenght!==0 ? JSON.parse(localStorage.getItem('list')) : []);
+
+    const [OtherUser, setOtherUser] = useState({});
+    
     const [linkIsOpen, setLinkIsOpen] = useState(false);
     const [linkToOpen, setLinkToOpen] = useState('');
 
@@ -28,6 +33,7 @@ export default function App () {
 
     return (
         <UserContext.Provider value={{user, setUser}}> 
+        <OtherUserContext.Provider value={{OtherUser,setOtherUser}}>
             <Router>
                 <GlobalStyle />
                 <LinkPreview linkIsOpen={linkIsOpen} setLinkIsOpen={setLinkIsOpen} link={linkToOpen} />
@@ -61,6 +67,7 @@ export default function App () {
                     
                 </Switch>
             </Router>
+         </OtherUserContext.Provider>
         </UserContext.Provider>
 
     );

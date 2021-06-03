@@ -11,16 +11,19 @@ import getYouTubeID from 'get-youtube-id';
 import Likes from './likes'
 import Comments from './Comments'
 import Repost from './repost/Repost'
+import {useContext} from 'react'
+
+import OtherUserContext from '../components/OtherUserContext';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
 Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
 
- 
-export default function Posts(props){
 
     
-
+ 
+export default function Posts(props){
+    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
     function YoutubeId(post){
         const getYouTubeID = require('get-youtube-id');
         const id = getYouTubeID(post.link);
@@ -52,14 +55,26 @@ export default function Posts(props){
     
      }
 
-     
+     function saveOtherUserInfo(userInfo){
+        
+         if(userInfo["repostedBy"]){
+             
+            goToUserPosts(userInfo.user.id)
+           
+            }else{
+                goToUserPosts(userInfo.user.id)
+            }
+
+    }
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink,sendToHashtag} = props;
+    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts} = props;
 
     return(
+       
         <TimelinePosts>
+            
             {serverLoading 
                 ? <Loader type="Circles" className='loader' color="#FFF"  />
                 : (allPosts.length===0 
@@ -99,7 +114,8 @@ export default function Posts(props){
 
                         <div className='postRight'>
                             <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
-                            <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
+                            {/*(<UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>*/}
+                            <UserName id={post.user.id} onClick={()=>saveOtherUserInfo(post)}>{post.user.username}</UserName>
 
               
                             <PostContent open={!post.toEdit} >
@@ -137,11 +153,13 @@ export default function Posts(props){
 
 
  
-const RepostIcon = styled.span`
+const RepostIcon = styled.div`
     font-family: 'Lato', sans-serif!important;
     font-size: 11px;
     display:flex;
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
+    border: 1px solid red;
+   
 `;

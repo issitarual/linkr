@@ -1,5 +1,6 @@
 import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
+import OtherUserContext from '../OtherUserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
@@ -29,8 +30,12 @@ export default function Timeline(){
     const inputRef = useRef([]);
     const [timelineRef,setTimelineRef] = useState(false);
 
+    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
 
-        /*Logics of infinite Scroller*/ 
+    console.log('console do otheruser:')
+    console.log(OtherUser)
+        
+    /*Logics of infinite Scroller*/ 
         const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
         const[hasMore,setHasMore] = useState(true)
     const config = {

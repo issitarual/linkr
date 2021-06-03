@@ -4,6 +4,7 @@ import axios from 'axios';
 import {useParams, useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
 
+import OtherUserContext from '../OtherUserContext';
 
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
@@ -23,6 +24,8 @@ export default function OtherUsersPosts(){
     const [pageUser,setPageUser] = useState(null);
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
+
+    const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
     
 
 
@@ -40,14 +43,36 @@ export default function OtherUsersPosts(){
 } 
      useEffect(()=>{
         
+        getUsersPosts()
+                    
+    },[id])
 
+    function getUsersPosts(){
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
 
         getPosts.then((response)=>{
           const newArray = response.data.posts
           
           setUsersPosts(newArray)
-            setPageUser(response.data.posts[0].user.username)
+          console.log(response.data.posts)
+
+         /* if(response.data.posts[0]["repostedBy"]){
+                console.log('tem')
+          }else{
+              console.log('nao tem')
+          }*/
+
+          if(response.data.posts[0]["repostedBy"]){
+            setPageUser(response.data.posts[0].repostedBy.username)
+            }else{
+                setPageUser(response.data.posts[0].user.username)
+            }
+
+
+
+        
+            //setPageUser(response.data.posts[0].user.username)
+          // setPageUser(OtherUser.userName)
           setServerLoading(false) 
           let sharpedHeart = []
           newArray.forEach( post => {
@@ -64,12 +89,21 @@ export default function OtherUsersPosts(){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    },[])
+    }
 
     function goToLink(e,link){
         e.preventDefault()
         window.open(link)
     }  
+
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
@@ -98,6 +132,8 @@ export default function OtherUsersPosts(){
                                 like={like}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
+                                goToUserPosts={goToUserPosts}
+                                getUsersPosts={getUsersPosts}
                                 
                         />
 

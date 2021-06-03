@@ -89,6 +89,8 @@ export default function MyPosts({goToLink}){
     
     }
 
+    
+
   function goToLink(e,link){
         e.preventDefault()
        window.open(link)
@@ -132,6 +134,7 @@ export default function MyPosts({goToLink}){
                             config={config}
                             inputRef={inputRef}
                             goToLink={goToLink}
+                            //getUsersPosts={getUsersPosts}
                         />
                                 
                      
