@@ -17,7 +17,7 @@ import Comments from '../components/Comments/Comments';
 import CommentContainer from '../components/Comments/CommentContainer';
 import Repost from './repost/Repost'
 import {useContext} from 'react'
-import styled from 'styled-components';
+
 import {useState} from 'react'
 
 /*import de style components*/
