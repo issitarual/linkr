@@ -33,7 +33,7 @@ export default function Timeline(){
     const [timelineRef,setTimelineRef] = useState(false);
 
     const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
-
+    const[test,setTest] = useState([])
    
         
     /*Logics of infinite Scroller*/ 
@@ -291,20 +291,30 @@ export default function Timeline(){
         const aa=[...newTimeline,...allPosts]
         console.log('o q dever a estar setado')
         console.log(aa)
+
+        const bb= newTimeline.concat(allPosts)
+
+       console.log('bb')
+       console.log(bb)
+
+       setTest(bb)
         
         
       
-
-       setAllPosts([...newTimeline,...allPosts])
-        
-        
+       //setAllPosts([...newTimeline,...allPosts])
+       
+        setAllPosts(newTimeline.concat(allPosts))
         })
 
         getNewPosts.catch((responseError)=>{
             alert('houve um erro ao atualizar a timeline')
         })
        
+       setTimeout(()=>{
+        setAllPosts(test)
 
+       },100) 
+        
     }
 
    
@@ -315,6 +325,8 @@ export default function Timeline(){
             <TimelineContainer>
             <Title>timeline</Title> 
                 <button onClick={att}>att timeline</button>
+                <button onClick={()=>console.log(allPosts)}>see posts state</button>
+                
                     <TimelineContent>
                       
                             <NewPost update={update} />
