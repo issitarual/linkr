@@ -1,16 +1,21 @@
 import styled from 'styled-components'
 
-const PostInfo = styled.div`
-    width: 350px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    padding-left:20px;
+ const PostInfo = styled.div`
+     
+        width: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding-left:20px;
+        height: auto;
+        
+        @media (max-width:1200px){
+            width: 70%;
+        }
     
     @media (max-width:1200px){
         width: 70%;
     }
-
     h3{
         width: 250px;
         min-height: 38px;
@@ -20,11 +25,9 @@ const PostInfo = styled.div`
         font-weight: bold;
         font-family: 'Lato', sans-serif!important;
         font-size: 16px;
-
         @media (max-width:1200px){
             width: 90%;
         }  
-
         @media (max-width:800px){
             font-size: 10px;
         } 
@@ -42,7 +45,6 @@ const LinkDescription = styled.p`
     font-family: 'Lato', sans-serif!important;
     color: #9B9595;
     overflow-y:hidden;
-
     @media (max-width:1200px){
         width: 90%;
     }   
@@ -56,7 +58,6 @@ const Links = styled.a`
     white-space: pre-wrap ;  
     word-wrap: break-word; 
     overflow-y: hidden;
-
     @media (max-width:1200px){
         width: 90%;
     }
@@ -99,7 +100,6 @@ const TimelineContainer = styled.div`
         display: flex;
         flex-direction: column;
     }
-
     h1{
         color: white;
         margin-bottom: 40px;
@@ -144,16 +144,20 @@ const TimelinePosts = styled.ul`
     display: flex;
     flex-direction: column;
     
-    @media (max-width:610px){
+    
+    @media (max-width:1200px){
         align-items: center;
-        width: 90%;
+        width: 690px;
         min-width:360px;
     }
-
+    @media (max-width:710px){
+        align-items: center;
+        width: 100%;
+        min-width:360px;
+    }
     svg{
         margin: 40px 180px;
     }
-
     li{
         width: 610px;
         min-height:276px;
@@ -162,15 +166,23 @@ const TimelinePosts = styled.ul`
         background: #1E1E1E;
         border-radius:16px;
         margin-top:10px;
-        color: white
+        
+        color: white;
+        @media (max-width:610px){
+            width: 100%;
+        }
+        @media (max-width:1200px){
+            width: 100%;
+           // margin-left: auto;
+           // margin-right: auto;
+        }
     }
-
+    
     span{
         padding-top: 10px;
         margin-left: 40px;
         font-size: 12px;
     }
-
     .oficialPost{
         display: flex;       
         padding-top:10px;
@@ -179,29 +191,30 @@ const TimelinePosts = styled.ul`
         border-radius:16px;
         background-color: #171717;
         color: white;
-        width: 610px;
-
+        width: auto;
+       
+       
         @media (max-width:610px){
             width: 90%;
         }
-
+        @media (max-width:1200px){
+            width: 100%;
+            margin :0 auto;
+            
+        }
     }
-
     .postRight{
-        width: 503px;
+        width: 80%;
         height: auto;
-
        @media (max-width:1200px){
            width: 80%;
        }
-
        h2{
             font-family: 'Lato', sans-serif!important;
            font-size: 19px;
            color: #fff;
            margin: 20px 20px 7px 20px;
        }
-
        .postText{
            width: 502px;
            height: auto;
@@ -209,13 +222,11 @@ const TimelinePosts = styled.ul`
            color: #a3a3a3;
            font-family: 'Lato', sans-serif!important;
            font-size: 17px;
-
            @media (max-width:1200px){
                 width: 20%;
             }
         }
     }
-
     .postLeft{
         width: 87px;
         min-height: 230px;
@@ -223,11 +234,9 @@ const TimelinePosts = styled.ul`
         display: flex;
         flex-direction: column;
         align-items: center;
-
         @media (max-width:1200px){
            width: 20%;
        }
-
        img{
            border-radius:50%;
            width: 50px;
@@ -249,27 +258,44 @@ const TimelinePosts = styled.ul`
 
 const TimelineContent= styled.div`
     display: flex;
-    justify-content:  space-between;
+    justify-content:space-between;
     height: auto;
-
+    flex-direction: column;
     @media (max-width: 1200px){
         justify-content: center;
+        align-items: center;
     }  
 `;
 
 const LinkDetails = styled.div`
-    width: 503px;
-    height:155px;
-    border: 1px solid #4D4D4D;
+    width: 505px;
+    height:auto;
+    border:${(props)=>(props.id1) ? 'none' : '1px solid #4D4D4D'};
     margin: 20px 0;
     border-radius: 16px;
     display: flex;
+    
+    a{
+        color: #B7B7B7;
+        
+    }
+    a:hover{
+        cursor: pointer;
+    }
+   
     color: #CECECE;
-
+    h3{
+        width: 80%;
+        white-space: pre-wrap ;  
+            word-wrap: break-word; 
+            overflow-y: hidden;
+            height: auto;
+            font-size: 14px;
+        
+    }
     @media (max-width:1200px){
         width: 95%;
     }
-
     img{
         width: 153px;
         height: 155px;
@@ -279,11 +305,9 @@ const LinkDetails = styled.div`
             width: 30%;
         }
     }
-
     img:hover{
         cursor: pointer;
     }
-
    
 `;
 
@@ -307,6 +331,12 @@ const PostContent = styled.p`
     width: 90%;
     word-wrap: break-word;
     white-space: pre-wrap;
+    .hashtagSpan{
+        padding-top: 0px;
+        margin-left: 0px;
+        font-size: 20px;
+    }
+   
 `;
 
 const NoPostsYet = styled.p`
@@ -315,8 +345,20 @@ const NoPostsYet = styled.p`
     margin-top: 20px;
 `;
 
-export{PostInfo}
+const IframeContent = styled.div`
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    
+    a{
+        margin-top: 5px;
+    }
+`
+
+
+export {PostInfo}
 export{LinkDescription}
 export{Links}
 export{Hashtag}
-export{PostComment,Title,TimelineContainer,Container,TimelinePosts,TimelineContent,LinkDetails,UserName,PostContent,NoPostsYet}
+export{PostComment,Title,TimelineContainer,Container,TimelinePosts,TimelineContent,LinkDetails,UserName,PostContent,NoPostsYet,IframeContent}

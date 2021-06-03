@@ -7,12 +7,13 @@ import TrendingList from '../hashtag/TrendingList';
 
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
-    
-/*import dos Posts*/
 import Posts from '../Posts'
 
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
 
-export default function OtherUsersPosts(){
+
+export default function OtherUsersPosts({goToLink}){
     const {id} = useParams();
     const {user} = useContext(UserContext);
     const [usersPosts,setUsersPosts] = useState([]);
@@ -20,23 +21,42 @@ export default function OtherUsersPosts(){
     const [pageUser,setPageUser] = useState(null);
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
-    const inputRef = useRef([]);
-    const history=useHistory();
+
+    
 
 
-    const config = {
-        headers:{
-            'Authorization' : `Bearer ${user.token}`
-        }
+  /*Logics of infinite Scroller*/ 
+  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+  const[hasMore,setHasMore] = useState(true)
+
+   const inputRef = useRef([])
+   const history=useHistory()
+
+   const config = {
+    headers:{
+        'Authorization' : `Bearer ${user.token}`
     }
+} 
+     useEffect(()=>{
+        
+        getUsersPosts()
+                    
+    },[id])
 
-    useEffect(()=>{
+    function getUsersPosts(){
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
 
         getPosts.then((response)=>{
           const newArray = response.data.posts
-           setUsersPosts(newArray)
-            setPageUser(response.data.posts[0].user.username)
+          
+          setUsersPosts(newArray)
+
+          if(response.data.posts[0]["repostedBy"]){
+            setPageUser(response.data.posts[0].repostedBy.username)
+            }else{
+                setPageUser(response.data.posts[0].user.username)
+            }
+
           setServerLoading(false) 
           let sharpedHeart = []
           newArray.forEach( post => {
@@ -53,46 +73,45 @@ export default function OtherUsersPosts(){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    },[])
+    }
 
-    function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }  
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
     }
-    
-    return( 
-      
+
+    return(  
     <Container>
-        
         <TimelineContainer>
             <Title>{ !serverLoading 
             ? `${pageUser}'s posts`  
             :'Other Posts'}</Title> 
-                
-                <TimelineContent>
-
-                
+                <TimelineContent>                
                     <Posts noPostsMessage={'Este usuário não postou nada'}
-                            serverLoading={serverLoading}
-                            allPosts={usersPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                     />
-                    
+                        serverLoading={serverLoading}
+                        allPosts={usersPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
+                        goToUserPosts={goToUserPosts}
+                        getUsersPosts={getUsersPosts}
+                        sendToHashtag={sendToHashtag}                                
+                    />                  
                     <TrendingList send={sendToHashtag}/>
-
                 </TimelineContent>
         </TimelineContainer>
-
     </Container>
     )
     function like (id){

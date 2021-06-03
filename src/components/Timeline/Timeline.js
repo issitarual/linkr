@@ -4,6 +4,9 @@ import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
 import NewPost from './NewPost'
+import LinkPreview from './LinkPreview'
+
+import getYouTubeID from 'get-youtube-id';
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -17,7 +20,7 @@ import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineSty
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
 
-export default function Timeline(){
+export default function Timeline({goToLink}){
     const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
@@ -26,16 +29,22 @@ export default function Timeline(){
     const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
     const [timelineRef,setTimelineRef] = useState(false);
-
-
-        /*Logics of infinite Scroller*/ 
-        const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-        const[hasMore,setHasMore] = useState(true)
+    /*Logics of infinite Scroller*/ 
+    const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+    const[hasMore,setHasMore] = useState(true)
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
-    }
+    }      
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }   
     
     useEffect(()=>{
         update()        
@@ -65,30 +74,7 @@ export default function Timeline(){
     }, 15000); 
 
 
-    function partialUpdate(limit){
-        
-        setTimeout(()=>{
-            const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
-        
-        getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            const partial = newArray.slice(0,limit)
-            setAllPosts(partial)
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-                }})
-            })
-            setLikedPosts(sharpedHeart);
-            setOlderLikes(sharpedHeart);
-        })
-
-        },1000)
-
-       maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
-    }
+    
 
     function update () {
         
@@ -97,11 +83,9 @@ export default function Timeline(){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            setMaxNumberOfPosts(response.data.posts.length)
             
-            const partial = newArray.slice(0,2)
-            
-            setAllPosts(partial)
+
+            setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -119,11 +103,6 @@ export default function Timeline(){
             return
         })
     }
-        
-    function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }  
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
@@ -162,16 +141,8 @@ export default function Timeline(){
             
             <TimelineContainer>
             <Title>timeline</Title> 
-                <NewPost update={update} />
                     <TimelineContent>
-                        
-                        <InfiniteScroll
-                            pageStart={0}
-                            loadMore={() => partialUpdate( allPosts.length + 2 )}
-                            hasMore={hasMore}
-                            loader={<div className="x" key={0}>Loading ...</div>}
-                            className='x'
-                        >
+                      
                             <NewPost update={update} />
                             <Posts noPostsMessage={'Nenhum post encontrado'}
                                 update={update}
@@ -186,10 +157,8 @@ export default function Timeline(){
                                 config={config}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
-                                
+                                sendToHashtag={sendToHashtag}
                             />
-
-                        </InfiniteScroll>
 
                         <TrendingList send={sendToHashtag}/>
                     
@@ -198,6 +167,12 @@ export default function Timeline(){
 
         </Container>
     )
+                            
+                                
+                                
+
+                       
+
 
 
 

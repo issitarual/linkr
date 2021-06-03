@@ -14,9 +14,10 @@ import Hashtag from './hashtag/Hashtag';
 import LinkPreview from './Timeline/LinkPreview';
 
 
+
 export default function App () {
 
-    const [user, setUser] = useState(localStorage.lenght!==0 ? JSON.parse(localStorage.getItem('list')) : []);
+    const [user, setUser] = useState(localStorage.lenght!==0 ? JSON.parse(localStorage.getItem('list')) : []);    
     const [linkIsOpen, setLinkIsOpen] = useState(false);
     const [linkToOpen, setLinkToOpen] = useState('');
 

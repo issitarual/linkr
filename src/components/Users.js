@@ -5,11 +5,11 @@ export default function Users({ avatar, username, following, id, userId, setOthe
     let history = useHistory();
 
     return(
-        <Container onClick = {() => goToUserPosts(id)}>
-            <img src = {avatar}/>
-            <h5>{username}</h5>
-            <h6>{following === true? "• following": null} </h6>
-        </Container>
+            <Container onClick={() => goToUserPosts(id)}>
+                <img src = {avatar}/>
+                <h5>{username}</h5>
+                <h6>{following === true? "• following": null} </h6>
+            </Container>
     )
 
     function goToUserPosts(id){

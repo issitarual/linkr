@@ -2,7 +2,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 
-export default function likes({post, olderLikes, likedPosts, like, user }){
+export default function Likes({post, olderLikes, likedPosts, like, user }){
     return (
         <>
             <Icone 
@@ -29,7 +29,9 @@ export default function likes({post, olderLikes, likedPosts, like, user }){
                     style={{ 
                         position: 'absolute',
                         bottom: '-40px',
-                        left: '-180px'
+                        left: '-180px',
+                        cursor: 'ponter',
+                        zIndex: "0"
                     }}
                 />:
                 <HeartOutline 
@@ -40,7 +42,9 @@ export default function likes({post, olderLikes, likedPosts, like, user }){
                     style={{ 
                         position: 'absolute',
                         bottom: '-40px',
-                        left: '-180px'
+                        left: '-180px',
+                        cursor: 'pointer',
+                        zIndex: "0"
                     }}
                 />
                 }
