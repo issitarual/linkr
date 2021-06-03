@@ -170,6 +170,10 @@ const InputGroup = styled.div`
         top: 90px;
         right: calc(50% - 47%);
     }   
+    @media (max-width: 610px){
+        right: calc(51% - 47%)!important;
+    } 
+    
     input{
         width: 500px;
         height: 45px;
@@ -219,6 +223,9 @@ const Usernames = styled.div`
         right: calc(50% - 47%);
         top: 129px;
     } 
+    @media (max-width: 610px){
+        right: calc(51% - 47%)!important;
+    } 
 `;
 
 const CloseMenu = styled.div`
@@ -242,4 +249,4 @@ const HidePosts = styled.div`
     @media (max-width:1200px){
         display: block;
     } 
-`
+`;
