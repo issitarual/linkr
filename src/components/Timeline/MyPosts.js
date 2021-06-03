@@ -32,8 +32,6 @@ export default function MyPosts({goToLink}){
   const [hasMore,setHasMore] = useState(true)
  
 
-
-
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
@@ -44,8 +42,6 @@ export default function MyPosts({goToLink}){
         update();
     },[])
 
-
-  
         function update () {
             const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
@@ -88,10 +84,6 @@ export default function MyPosts({goToLink}){
     
     }
 
-    
-
-  
-
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
@@ -123,7 +115,6 @@ export default function MyPosts({goToLink}){
             }else{
                 setHasMore(true)
             }
-            
             
             const scrollPosts = response.data.posts
            

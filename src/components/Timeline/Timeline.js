@@ -77,9 +77,6 @@ export default function Timeline({goToLink}){
 
     }, 15000); 
 
-
-    
-
     function update () {
         
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
@@ -108,8 +105,6 @@ export default function Timeline({goToLink}){
         setHasMore(true)
     }
         
-   
-
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
@@ -168,9 +163,6 @@ export default function Timeline({goToLink}){
             
 
         })
-
-    
-
        
     }
 

@@ -57,10 +57,7 @@ export default function Posts(props){
 
      function saveOtherUserInfo(userInfo){
        
-         
             goToUserPosts(userInfo.user.id)
-        
-
     }
     const history=useHistory()
 
