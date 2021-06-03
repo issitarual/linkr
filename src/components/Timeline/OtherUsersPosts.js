@@ -11,8 +11,11 @@ import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyl
 /*import dos Posts*/
 import Posts from '../Posts'
 
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
 
-export default function OtherUsersPosts(){
+
+export default function OtherUsersPosts({goToLink}){
     const {id} = useParams();
     const {user} = useContext(UserContext);
     const [usersPosts,setUsersPosts] = useState([]);
@@ -25,40 +28,51 @@ export default function OtherUsersPosts(){
     const history=useHistory();
     const [disabFollow, setDisabFollow] = useState(false);
     const [followingUsers, setFollowingUsers] = useState([])
-    const [isFollowing, setIsFollowing] = useState(false)
-
+    const [isFollowing, setIsFollowing] = useState(false);
 
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
-    }
+    } 
 
     useEffect(()=>{
+        
+        getUsersPosts()
+                    
+    },[id])
+
+    function getUsersPosts(){
         const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
 
         getPosts.then((response)=>{
-            const newArray = response.data.posts
-            setUsersPosts(newArray)
-            setPageUser(response.data.posts[0].user.username)
-            setUserImage(response.data.posts[0].user.avatar)
-            setServerLoading(false) 
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-                }})
-            })
-            setLikedPosts(sharpedHeart);
-            setOlderLikes(sharpedHeart);
+          const newArray = response.data.posts
+          
+          setUsersPosts(newArray)
+
+          if(response.data.posts[0]["repostedBy"]){
+            setPageUser(response.data.posts[0].repostedBy.username)
+            }else{
+                setPageUser(response.data.posts[0].user.username)
+            }
+
+          setServerLoading(false) 
+          let sharpedHeart = []
+          newArray.forEach( post => {
+              post.likes.forEach(n =>{
+              if(n.userId === user.user.id){
+                  sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
+              }})
+          })
+          setLikedPosts(sharpedHeart);
+          setOlderLikes(sharpedHeart);
         })
 
         getPosts.catch((responseError)=>{
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    },[])
+    }
 
 
     useEffect(() => {
@@ -80,6 +94,15 @@ export default function OtherUsersPosts(){
         e.preventDefault()
         window.open(link)
     }  
+
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")

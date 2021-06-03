@@ -11,6 +11,13 @@ import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyl
 /*import dos Posts*/
 import Posts from '../Posts'
 
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
+
+ 
+
+ 
+
 export default function MyPosts({goToLink}){
     const history=useHistory();
     const {user} = useContext(UserContext);
@@ -19,6 +26,12 @@ export default function MyPosts({goToLink}){
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
     const inputRef = useRef([]);
+
+  /*Logics of infinite Scroller*/ 
+  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+  const[hasMore,setHasMore] = useState(true)
+ 
+
 
 
     const config = {
@@ -31,12 +44,14 @@ export default function MyPosts({goToLink}){
         update();
     },[])
 
-    function update () {
-        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
+
+  
+        function update () {
+            const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
         getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
-            setMyPosts(newArray)
+             const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
+             setMyPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -103,20 +118,25 @@ export default function MyPosts({goToLink}){
                 
                 <TimelineContent>
 
-                    <Posts noPostsMessage={'Você ainda não postou nada'}
-                        update={update}
-                        serverLoading={serverLoading}
-                        allPosts={myPosts}
-                        goToUserPosts={goToUserPosts}
-                        olderLikes={olderLikes}
-                        likedPosts={likedPosts}
-                        user={user}
-                        like={like}
-                        tryingToEdit={tryingToEdit}
-                        config={config}
-                        inputRef={inputRef}
-                        goToLink={goToLink}
-                    />             
+                   
+                        <Posts noPostsMessage={'Você ainda não postou nada'}
+                            update={update}
+                            serverLoading={serverLoading}
+                            allPosts={myPosts}
+                            goToUserPosts={goToUserPosts}
+                            olderLikes={olderLikes}
+                            likedPosts={likedPosts}
+                            user={user}
+                            like={like}
+                            tryingToEdit={tryingToEdit}
+                            config={config}
+                            inputRef={inputRef}
+                            goToLink={goToLink}
+                            sendToHashtag={sendToHashtag}
+
+                        />
+                                
+                     
                                         
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>

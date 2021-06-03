@@ -11,6 +11,9 @@ import {TimelineContainer,Container,TimelineContent} from '../timelineStyledComp
 /*import dos Posts*/
 import Posts from '../Posts'
 
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
+
 export default function MyLikes({goToLink}){
     const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
@@ -20,18 +23,27 @@ export default function MyLikes({goToLink}){
     const [serverLoading,setServerLoading] = useState(true);
     const inputRef = useRef([]);
 
-  
-    useEffect(()=>{
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
+
+  /*Logics of infinite Scroller*/ 
+  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+  const[hasMore,setHasMore] = useState(true)
+ 
+
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
         }
+    }
+    
+    useEffect(()=>{
+       
 
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/liked',config)
 
         getPosts.then((response)=>{
             const newArray = response.data.posts
+            
+           
             setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
@@ -51,7 +63,6 @@ export default function MyLikes({goToLink}){
         })
     },[])
 
-    
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
@@ -76,28 +87,25 @@ export default function MyLikes({goToLink}){
         
         <TimelineContainer>
             <h1>my likes</h1> 
-                
-                <TimelineContent>
-
-                
-                    <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
-                        serverLoading={serverLoading}
-                        allPosts={allPosts}
-                        goToUserPosts={goToUserPosts}
-                        olderLikes={olderLikes}
-                        likedPosts={likedPosts}
-                        user={user}
-                        like={like}
-                        inputRef={inputRef}
-                        goToLink={goToLink}
-                    />
-                        
-                            
-                                        
-                    
+                <TimelineContent>  
+                        <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
+                                serverLoading={serverLoading}
+                                allPosts={allPosts}
+                                goToUserPosts={goToUserPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                                sendToHashtag={sendToHashtag}
+                        />
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>
+                   
+                            
+                            
 
     </Container>
     )
