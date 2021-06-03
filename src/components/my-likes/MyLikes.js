@@ -104,6 +104,8 @@ export default function MyLikes({goToLink}){
                                 like={like}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
+                                
+                                sendToHashtag={sendToHashtag}
                         />
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>

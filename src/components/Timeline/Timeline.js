@@ -6,6 +6,8 @@ import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
 import NewPost from './NewPost'
 
+import isEqual from 'lodash.isequal';
+
 import getYouTubeID from 'get-youtube-id';
 
 /*import dos Posts*/
@@ -32,8 +34,7 @@ export default function Timeline(){
 
     const {OtherUser ,setOtherUser} = useContext(OtherUserContext);
 
-    console.log('console do otheruser:')
-    console.log(OtherUser)
+   
         
     /*Logics of infinite Scroller*/ 
         const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
@@ -48,32 +49,63 @@ export default function Timeline(){
 
    
     
-    useEffect(()=>{
+   /* useEffect(()=>{
         update()        
     },[]);
 
     UseInterval(() => {
     
     const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+    
+    let holder='v'
 
+    if(allPosts[0]["repostId"]){
+
+        holder=allPosts[0].repost.id
+    }else{
+        holder = allPosts[0].id
+    }
+
+    console.log(allPosts[0])
+    console.log(holder)
+    
+    
+
+    let numberHolder=0
+   
     getNewPosts.then((response)=>{
      
-     const holder = allPosts[0]
-
-       let numberHolder='x'
+     
 
        response.data.posts.forEach((post,index)=>{
+        
+        if(post["repostId"]){
+            console.log('tem repostId :' + index)
+
+            if(post.repostId===holder.id){
+                numberHolder=index
+            }
+        }else{
             if(post.id===holder.id){
                 numberHolder=index
             }
-       })
-       const newPosts = response.data.posts.splice(0,numberHolder)
-        setAllPosts([...newPosts,...allPosts])
+        }
 
-    })
+        
+        })
     
 
-    }, 15000); 
+    
+        
+            const newPosts = response.data.posts.splice(0,numberHolder)
+            setAllPosts([...newPosts,...allPosts])
+    
+    })
+       
+    
+    
+
+    }, 15000); */
 
 
     
@@ -85,6 +117,15 @@ export default function Timeline(){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+            console.log(response.data.posts)
+
+            response.data.posts.forEach((post,index)=>{
+                if(post["repostId"]){
+                    console.log('tem repostId :' + index)
+                }
+
+                
+            })
             
 
             setAllPosts(newArray)
@@ -141,6 +182,48 @@ export default function Timeline(){
         ) 
     }
 
+    function att(){
+
+
+        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+    
+    /*let holder='v'
+
+    if(allPosts[0]["repostId"]){
+
+        holder=allPosts[0].repost.id
+    }else{
+        holder = allPosts[0].id
+    }
+
+    console.log('posta na posicao 0')
+    console.log(allPosts[0])
+    
+    console.log('id do post')
+    console.log(holder)
+    */
+    
+
+   
+    getNewPosts.then((response)=>{
+     
+     console.log(response.data.posts)
+     console.log(allPosts[0])
+        
+     for(let i=0; i<response.data.posts.length;i++){
+         if(isEqual(allPosts[0],response.data.posts[i])){
+                console.log('igual na posição :' + i)
+                break
+
+         }
+     }
+       
+    
+    })
+       
+
+    }
+
    
     return( 
         
@@ -148,7 +231,7 @@ export default function Timeline(){
             
             <TimelineContainer>
             <Title>timeline</Title> 
-                
+                <button onClick={att}>att timeline</button>
                     <TimelineContent>
                       
                             <NewPost update={update} />

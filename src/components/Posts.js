@@ -100,7 +100,7 @@ export default function Posts(props){
                     <div className = "oficialPost">
                         
                                         <div className='postLeft'>
-                                            <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
+                                            <img src={post.user.avatar} onClick={()=>saveOtherUserInfo(post)}/>
                                     <Likes 
                                         post={post} 
                                         olderLikes={olderLikes} 

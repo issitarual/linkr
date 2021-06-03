@@ -123,6 +123,7 @@ export default function OtherUsersPosts(){
                                 goToLink={goToLink}
                                 goToUserPosts={goToUserPosts}
                                 getUsersPosts={getUsersPosts}
+                                sendToHashtag={sendToHashtag}
                                 
                         />
 
