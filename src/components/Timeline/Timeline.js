@@ -23,7 +23,7 @@ import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineSty
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
 
-export default function Timeline(){
+export default function Timeline({goToLink}){
     const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
@@ -66,6 +66,7 @@ export default function Timeline(){
            
             const newerPosts = response.data.posts
             const newTimeline=newerPosts.concat(allPosts)
+            
             setAllPosts([...newTimeline])
          })
             
@@ -107,10 +108,7 @@ export default function Timeline(){
         setHasMore(true)
     }
         
-    function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }  
+   
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
