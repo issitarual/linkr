@@ -3,12 +3,7 @@ import UserContext from '../UserContext';
 import axios from 'axios';
 import {useParams, useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-
-
-/*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
-    
-/*import dos Posts*/
 import Posts from '../Posts'
 
 
@@ -65,34 +60,38 @@ export default function OtherUsersPosts(){
         history.push(`/hashtag/${newVal}`)
     }
     
-    return( 
-      
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }
+
+    return(  
     <Container>
-        
         <TimelineContainer>
-            <Title>{ !serverLoading 
-            ? `${pageUser}'s posts`  
-            :'Other Posts'}</Title> 
-                
-                <TimelineContent>
-
-                
-                    <Posts noPostsMessage={'Este usuário não postou nada'}
-                            serverLoading={serverLoading}
-                            allPosts={usersPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                     />
-                    
-                    <TrendingList send={sendToHashtag}/>
-
-                </TimelineContent>
+            <Title>
+                { !serverLoading 
+                ? `${pageUser}'s posts`  
+                :'Other Posts'}
+            </Title> 
+            <TimelineContent>              
+                <Posts noPostsMessage={'Este usuário não postou nada'}
+                        serverLoading={serverLoading}
+                        allPosts={usersPosts}
+                        olderLikes={olderLikes}
+                        likedPosts={likedPosts}
+                        user={user}
+                        like={like}
+                        inputRef={inputRef}
+                        goToLink={goToLink}
+                        goToUserPosts={goToUserPosts}
+                    />
+                <TrendingList send={sendToHashtag}/>
+            </TimelineContent>
         </TimelineContainer>
-
     </Container>
     )
     function like (id){

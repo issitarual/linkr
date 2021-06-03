@@ -146,7 +146,7 @@ const TimelinePosts = styled.ul`
     
     @media (max-width:610px){
         align-items: center;
-        width: 90%;
+        width: 100%;
         min-width:360px;
     }
 
@@ -162,7 +162,11 @@ const TimelinePosts = styled.ul`
         background: #1E1E1E;
         border-radius:16px;
         margin-top:10px;
-        color: white
+        color: white;
+        @media (max-width:610px){
+            width: 100%;
+            border-radius: 0px;
+    }
     }
 
     span{

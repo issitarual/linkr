@@ -28,9 +28,9 @@ export default function Timeline(){
     const [timelineRef,setTimelineRef] = useState(false);
 
 
-        /*Logics of infinite Scroller*/ 
-        const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-        const[hasMore,setHasMore] = useState(true)
+    /*Logics of infinite Scroller*/ 
+    const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+    const[hasMore,setHasMore] = useState(true)
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`

@@ -201,7 +201,7 @@ const Menu = styled.div`
         box-sizing: border-box;
         background-color: #171717;
         border-bottom-left-radius: 20px;
-        z-index: 4;
+        z-index: 8;
 `;
 
 const Usernames = styled.div`
