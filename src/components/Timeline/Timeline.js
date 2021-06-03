@@ -49,11 +49,11 @@ export default function Timeline(){
 
    
     
-   /* useEffect(()=>{
+   useEffect(()=>{
         update()        
     },[]);
 
-    UseInterval(() => {
+    /*UseInterval(() => {
     
     const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
     
@@ -114,6 +114,7 @@ export default function Timeline(){
         
         const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
         setServerLoading(true)
+        console.log('alou')
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
@@ -187,39 +188,66 @@ export default function Timeline(){
 
         const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
     
-    /*let holder='v'
+            /*let holder='v'
 
-    if(allPosts[0]["repostId"]){
+            if(allPosts[0]["repostId"]){
 
-        holder=allPosts[0].repost.id
-    }else{
-        holder = allPosts[0].id
-    }
+                holder=allPosts[0].repost.id
+            }else{
+                holder = allPosts[0].id
+            }
 
-    console.log('posta na posicao 0')
-    console.log(allPosts[0])
-    
-    console.log('id do post')
-    console.log(holder)
-    */
-    
+            console.log('posta na posicao 0')
+            console.log(allPosts[0])
+            
+            console.log('id do post')
+            console.log(holder)
+            */
+        
 
    
-    getNewPosts.then((response)=>{
-     
-     console.log(response.data.posts)
-     console.log(allPosts[0])
+        getNewPosts.then((response)=>{
         
-     for(let i=0; i<response.data.posts.length;i++){
-         if(isEqual(allPosts[0],response.data.posts[i])){
-                console.log('igual na posição :' + i)
-                break
+        const newPosts=response.data.posts
+            console.log(newPosts)
+            console.log(allPosts[0])
+        const firstPostNow=allPosts[0]
+        
+       /* if(firstPostNow["repostId"]){
+            console.log(firstPostNow.repostId)
+        }
+            
+            
+        for(let i =0; i<response.data.posts.length;i++){
 
-         }
-     }
-       
-    
-    })
+            if(newPosts[i]["repostId"]){
+
+                if(firstPostNow.repostId===newPosts.repostId){
+                    console.log('igual')
+                }
+            }
+           
+            
+        }*/
+
+        const concating = newPosts.concat(allPosts)
+        
+        console.log('atualizao + velha')
+        console.log(concating)
+
+        const NewTimeline = concating.slice(0,9)
+
+        console.log('nova timeline')
+        console.log(NewTimeline)
+
+        setAllPosts(NewTimeline)
+        
+        
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar a timeline')
+        })
        
 
     }
