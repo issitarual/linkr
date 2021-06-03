@@ -90,14 +90,15 @@ const Post = styled.div`
 
   @media (max-width:1200px){
     margin: 0 auto;
-            
-        }
+    width: calc(690px - 8%);
+    min-width:360px;
+  }
   
 
   @media (max-width:610px){
-            width: 90%;
-            
-        }
+    width: 100%!important;
+    border-radius: 0;
+  }
 `;
 
 const Form = styled.form`

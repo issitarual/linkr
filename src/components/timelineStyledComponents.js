@@ -109,7 +109,9 @@ const TimelineContainer = styled.div`
         @media (max-width:1200px){
             margin: 10px auto;
         }
-        
+        @media (max-width:610px){
+            margin: 20px!important;
+        }        
     }
     .trending{
         background-color: #171717;
@@ -150,7 +152,7 @@ const TimelinePosts = styled.ul`
         width: 690px;
         min-width:360px;
     }
-    @media (max-width:710px){
+    @media (max-width:610px){
         align-items: center;
         width: 100%;
         min-width:360px;
@@ -169,12 +171,11 @@ const TimelinePosts = styled.ul`
         
         color: white;
         @media (max-width:610px){
-            width: 100%;
+            width: 100% !important;
+            border-radius: 0;
         }
         @media (max-width:1200px){
-            width: 100%;
-           // margin-left: auto;
-           // margin-right: auto;
+            width: 90%;
         }
     }
     
