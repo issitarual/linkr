@@ -2,7 +2,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 
-export default function likes({post, olderLikes, likedPosts, like, user }){
+export default function Likes({post, olderLikes, likedPosts, like, user }){
     return (
         <>
             <Icone 
