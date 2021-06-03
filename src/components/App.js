@@ -22,7 +22,8 @@ export default function App () {
     const [linkToOpen, setLinkToOpen] = useState('');
 
     const [locationIsOpen, setLocationIsOpen] = useState(false);
-    const [postLocation, setPostLocation] = useState();
+    const [locationCoords, setLocationCoords] = useState([0,0]);
+    const [locationUsername, setLocationUsername] = useState('');
 
     function goToLink(e,link){
         e.preventDefault();
@@ -32,9 +33,9 @@ export default function App () {
 
     function openMap(e,post){
         e.preventDefault();
-        console.log('fé');
         setLocationIsOpen(!locationIsOpen);
-        setPostLocation(post);
+        setLocationCoords([parseFloat(post.geolocation.latitude) , parseFloat(post.geolocation.longitude)]);
+        setLocationUsername(post.user.username);
     }
 
     return (
@@ -42,7 +43,7 @@ export default function App () {
             <Router>
                 <GlobalStyle />
                 <LinkPreview linkIsOpen={linkIsOpen} setLinkIsOpen={setLinkIsOpen} link={linkToOpen} />
-                <LocationModal locationIsOpen={locationIsOpen} setLocationIsOpen={setLocationIsOpen} post={postLocation} />
+                <LocationModal locationIsOpen={locationIsOpen} setLocationIsOpen={setLocationIsOpen} loc={locationCoords} username={locationUsername} />
                 <Switch>
                     <Route path='/' exact>
                         <Home />

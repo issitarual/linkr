@@ -1,14 +1,16 @@
 import styled from 'styled-components'
-import React from 'react';
 import Modal from 'react-modal';
+import React, { Component } from 'react';
+import GoogleMapReact from 'google-map-react';
 
-export default function LocationModal ({ post, locationIsOpen, setLocationIsOpen }) {
+export default function LocationModal ({ loc, username, locationIsOpen, setLocationIsOpen }) {
 
     Modal.setAppElement('.root') 
 
     function closeMap () {
         setLocationIsOpen(false);
     }
+
 
     return (
 
@@ -40,9 +42,22 @@ export default function LocationModal ({ post, locationIsOpen, setLocationIsOpen
                 }
             }}
         >
-            {/* <p>`${post.user}'s location`</p> */}
-            <p>MAPA!!!!!!!!</p>
+            <p>{`${username}'s location`}</p>
+
             <button onClick={closeMap}>fechar</button>
+
+            <DisplayFlex>
+            {console.log(loc)}
+                <GoogleMapReact 
+                    bootstrapURLKeys={{
+                        key: 'AIzaSyBcxyx-xIbCFp88e_tiMPKwTYHAL4438og', 
+                        language: 'pt-br'
+                    }}
+                    center={loc}
+                    defaultZoom={8}
+                ></GoogleMapReact>
+
+            </DisplayFlex>           
 
         </Modal>      
     )
@@ -72,8 +87,11 @@ const CloseButton = styled.button`
 `;
 
 const DisplayFlex = styled.div`
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: flex-start; */
+    width: 300px;
+    height: 300px;
+    z-index: 8;
 `;
 

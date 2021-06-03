@@ -126,10 +126,8 @@ return(
                         <LinkDescription>{post.linkDescription}</LinkDescription>
                        
                         <Links href={post.link} onClick={(e)=>goToLink(e,post.link)}>{post.link}</Links>
-                    
                     </PostInfo> 
-                    <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>
-                                                       
+                    <img src={post.linkImage} onClick={(e)=>goToLink(e,post.link)}/>                                                       
                 </LinkDetails>
 
             </div>
