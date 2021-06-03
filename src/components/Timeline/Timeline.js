@@ -231,16 +231,71 @@ export default function Timeline(){
         }*/
 
         const concating = newPosts.concat(allPosts)
+        let spliceLimit = ''
+        if(firstPostNow["repostId"]){
+            console.log('O primeiro post atual  incluir repost id')
+
+            for(let i=0; i< newPosts.length;i++){
+                if(newPosts[i]["repostId"]){
+                   // console.log(`Ò novo post na posição ${i} é repost`)
+                   if(newPosts[i].repostId===firstPostNow.repostId){
+                       console.log(`O splice vai até ${i}`)
+                       spliceLimit=i
+                       break
+                   }else{
+                       console.log(` ${i+1}  posts são novos`)
+                   }
+                }else {
+                    if(newPosts[i].id===firstPostNow.repostId){
+                    console.log(`O splice vai até ${i} e não são reposts`)
+                    spliceLimit=i
+                       break
+                    //console.log(`Ò novo post na posição ${i} NÃO é repost`)
+                    }else{
+                        console.log(` ${i+1}  posts são novos e não são reposts`)
+                    }
+                }   
+            }
+        }else{
+            console.log('O primeiro post atual nao incluir repost id')
+
+            for(let i=0; i< newPosts.length;i++){
+                if(newPosts[i]["repostId"]){
+                    if(newPosts[i].repostId===firstPostNow.id){
+                        console.log(`O splice vai até ${i}`)
+                        spliceLimit=i
+                        break
+                    }else{
+                        console.log(` ${i+1}  posts são novos`)
+                    }
+                }else {
+                    if(newPosts[i].id===firstPostNow.id){
+                    console.log(`O splice vai até ${i} e não são reposts`)
+                    //console.log(`Ò novo post na posição ${i} NÃO é repost`)
+                    spliceLimit=i
+                       break
+                    }else{
+                        console.log(` ${i+1}  posts são novos e não são reposts`)
+                    }
+                }   
+            }
         
-        console.log('atualizao + velha')
-        console.log(concating)
+        }
 
-        const NewTimeline = concating.slice(0,9)
+        const newTimeline = newPosts.splice(0,spliceLimit)
+        console.log('splicelimit')
+        console.log(spliceLimit)
 
-        console.log('nova timeline')
-        console.log(NewTimeline)
+        console.log(newTimeline)
 
-        setAllPosts(NewTimeline)
+        const aa=[...newTimeline,...allPosts]
+        console.log('o q dever a estar setado')
+        console.log(aa)
+        
+        
+      
+
+       setAllPosts([...newTimeline,...allPosts])
         
         
         })
