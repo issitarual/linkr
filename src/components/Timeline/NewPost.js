@@ -95,8 +95,8 @@ const Post = styled.div`
   
 
   @media (max-width:610px){
-            width: 90%;
-            
+            width: 100%;
+            border-radius:0 ;
         }
 `;
 
@@ -107,9 +107,11 @@ const Form = styled.form`
   align-items: flex-end;
 
   @media (max-width:610px){
-            width: 100%;
-            
-        }
+    width: 100%;       
+  }
+  @media (max-width:1200px){
+    width: 90%;
+  }
   p {
     color: #707070;
     font-size: 20px;

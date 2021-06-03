@@ -62,7 +62,7 @@ export default function OtherUsersPosts({goToLink}){
           newArray.forEach( post => {
               post.likes.forEach(n =>{
               if(n.userId === user.user.id){
-                  sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"]), repostId: post.repostIdrepostId})
+                  sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"]), repostId: post.repostId})
               }})
           })
           setLikedPosts(sharpedHeart);
@@ -121,7 +121,7 @@ export default function OtherUsersPosts({goToLink}){
             }
         }
         if(likedPosts.map(n => n.id).includes(id)){
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/dislike`, {}, config)
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${repostId? repostId: id}/dislike`, {}, config)
             request.then(success => {
                 setLikedPosts(likedPosts.filter( (n,i) => n.id !== id))
                 if(olderLikes.map(n => n.id).includes(id))
@@ -130,7 +130,7 @@ export default function OtherUsersPosts({goToLink}){
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
         else{
-            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/like`, {}, config)
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${repostId? repostId: id}/like`, {}, config)
             request.then(success => {
                 setLikedPosts([...likedPosts, {id: id, likes: success.data.post.likes.length, names: success.data.post.likes.map(n => n.username), repostId: repostId}])
                 if(olderLikes.map(n => n.id).includes(id)){

@@ -107,7 +107,7 @@ const TimelineContainer = styled.div`
         font-family: 'Oswald', sans-serif !important;
         font-weight: bold;
         @media (max-width:1200px){
-            margin: 10px auto;
+            margin: 20px;
         }
         
     }
@@ -150,7 +150,7 @@ const TimelinePosts = styled.ul`
         width: 690px;
         min-width:360px;
     }
-    @media (max-width:710px){
+    @media (max-width:610px){
         align-items: center;
         width: 100%;
         min-width:360px;
@@ -169,10 +169,11 @@ const TimelinePosts = styled.ul`
         
         color: white;
         @media (max-width:610px){
-            width: 100%;
+            width: 100%!important;
+            border-radius: 0;
         }
         @media (max-width:1200px){
-            width: 100%;
+            width: 90%;
            // margin-left: auto;
            // margin-right: auto;
         }
