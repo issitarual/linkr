@@ -87,6 +87,9 @@ const Title = styled.div`
         width: 500px;
         margin-left: 50px;
     }
+    @media (max-width: 610px){
+        width: 100%!important;
+    }
 
     h1{
         font-family: Oswald;
