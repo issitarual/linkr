@@ -1,10 +1,12 @@
-import { useEffect, useState,useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id,inputRef,setTimeLineRef}) {
-
+export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id,inputRef,setTimelineRef}) {
+   
     const [newValue, setNewValue] = useState(post.text);
+
+    
     
     useEffect(()=>{
         if (toEdit){
@@ -22,41 +24,42 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
         window.addEventListener("keydown", nomeQualquer);
         return() => {
             window.removeEventListener('keydown', nomeQualquer);
-        }   
         }
+    }
+  
+
     },[toEdit,newValue])
 
     function textToServer (text) {
+
+        console.clear()
         
         const body = {
             "text": text
         }
         
-        tryingToEdit(id);
+
         const promise = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}`, body, config).then((success)=>{
-           
+            tryingToEdit(id);
             update();
         }).catch((error)=>{
             alert('não foi possível salvar as alterações')
-            tryingToEdit(id)
 
         })
     }
     
     return ( 
-        <InputField onChange={(e)=>{
+        <InputField ref={inputRef} onChange={(e)=>{
             setNewValue(e.target.value);
-        }} readOnly={!post.toEdit} open={post.toEdit} ref={el => inputRef.current[id] = el} value={newValue===post.text ? post.text : newValue}>
+        }} readOnly={!post.toEdit} open={post.toEdit} value={newValue===post.text ? post.text : newValue}>
             {post.text}
         </InputField>
-        
     )
-
 }
 
 const InputField = styled.textarea`
     display: ${(props) => (props.open) ? 'initial' : 'none'};
-    
+    width: 502px;
     height: auto;
     resize: none;
     border-radius: 7px;
@@ -65,9 +68,5 @@ const InputField = styled.textarea`
     font-family: Lato;
     font-weight: 400;
     color: #4c4c4c;
-    font-size: 14px; 
-    width: 90%;
-    word-wrap: break-word;
-    white-space: pre-wrap;  
-  
-`
+    font-size: 14px;   
+`;

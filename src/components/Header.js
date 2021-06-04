@@ -19,6 +19,7 @@ export default function Header (){
     const [stateSearch, setStateSearch] = useState(false);
     
     return(
+        <>
         <ContainerHeader state={state}>
             <Link to ="/timeline">
                 <h1>linkr</h1>
@@ -38,6 +39,9 @@ export default function Header (){
                 color={'#C6C6C6'} 
                 height="25px"
                 width="25px"
+                style={{
+                    backgroundColor: "#fff"
+                }}
                 />
             </InputGroup>
             <span onClick={() => setState(!state)}>
@@ -77,6 +81,8 @@ export default function Header (){
                 onClick={() => setState(!state)}
             />
         </ContainerHeader>
+        <HidePosts/>
+        </>
     ) 
 
     function link (url){
@@ -84,6 +90,8 @@ export default function Header (){
             localStorage.clear();
         }
         setState(!state);
+        setStateSearch(false);
+        setSearch("");
         history.push(url); 
     }
 
@@ -155,12 +163,15 @@ const InputGroup = styled.div`
     align-items: center;
     height: 45px;
     position: relative;
-    @media (max-width:1200px){
+    z-index: 3;
+    @media (max-width:840px){
         position: absolute;
-        width: 95%;
+        width: 94%;
         top: 90px;
-        right: calc(50% - 47%);
+        right: 3%;
+        left: 3%
     }   
+    
     input{
         width: 500px;
         height: 45px;
@@ -177,7 +188,7 @@ const InputGroup = styled.div`
             font-family: 'Lato', sans-serif;
             font-size: 19px;
         }
-        @media (max-width:1200px){
+        @media (max-width:840px){
         width: 100%;
         } 
     }
@@ -192,22 +203,23 @@ const Menu = styled.div`
         box-sizing: border-box;
         background-color: #171717;
         border-bottom-left-radius: 20px;
-        z-index: 2;
+        z-index: 8;
 `;
 
 const Usernames = styled.div`
     display: ${props => props.state? "block": "none"};
     position: absolute;
-    width: 541px;
+    width: 542px;
     top: 52px;
     right: calc(50% - 278px);
     background-color: #E7E7E7;
     padding: 18px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    @media (max-width:1200px){
-        width: 95%;
-        right: calc(50% - 47%);
+    @media (max-width:840px){
+        width: 94%;
+        right: 3%;
+        left: 3%;
         top: 129px;
     } 
 `;
@@ -219,5 +231,18 @@ const CloseMenu = styled.div`
     left: 0;
     height: 100vh;
     width: 100vw;
+    z-index: 4;
+`;
+
+const HidePosts = styled.div`
+    background-color: #333;
+    height: 140px;
+    position: fixed;
+    width: 100%;
     z-index: 1;
+    display: none;
+    @media (max-width:840px){
+        display: block;
+        width: 100%;
+    } 
 `;

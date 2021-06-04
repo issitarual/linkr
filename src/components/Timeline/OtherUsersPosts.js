@@ -1,48 +1,77 @@
-import styled from 'styled-components'
-import {useContext, useEffect,useState,useRef} from 'react'
+import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
-import axios from 'axios'
-import ReactHashtag from "react-hashtag";
-import {useParams, useHistory} from 'react-router-dom'
-import ReactTooltip from 'react-tooltip';
-import Loader from "react-loader-spinner";
-import { HeartOutline, HeartSharp } from 'react-ionicons';
-import TrendingList from './TrendingList';
+import axios from 'axios';
+import {useParams, useHistory} from 'react-router-dom';
+import TrendingList from '../hashtag/TrendingList';
+import styled from 'styled-components';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,PostComment} from '../timelineStyledComponents'
+import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
     
+
 /*import dos Posts*/
+
 import Posts from '../Posts'
 
-
-export default function OtherUsersPosts({goToLink}){
-     const {id} = useParams()
-    const {user} = useContext(UserContext)
-    const [usersPosts,setUsersPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
-   const [pageUser,setPageUser] = useState(null)
-   const [likedPosts, setLikedPosts] = useState([]);
-   const [olderLikes, setOlderLikes] = useState([]);
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
 
 
-   const inputRef = useRef([])
-   const history=useHistory()
+export default function OtherUsersPosts({goToLink, openmap}){
+    const {id} = useParams();
+    const {user} = useContext(UserContext);
+    const [usersPosts,setUsersPosts] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
+    const [pageUser,setPageUser] = useState(null);
+    const [userImage, setUserImage] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
+    const [olderLikes, setOlderLikes] = useState([]);
+    const inputRef = useRef([]);
+    const history=useHistory();
+    const [disabFollow, setDisabFollow] = useState(false);
+    const [followingUsers, setFollowingUsers] = useState([])
+
+
+    
+
+
+  /*Logics of infinite Scroller*/ 
+  
+  const[hasMore,setHasMore] = useState(true)
+
+  
+
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    } 
+
 
     useEffect(()=>{
-        const config = {
-            headers:{
-                'Authorization' : `Bearer ${user.token}`
-            }
-        } 
+        
+        getUsersPosts()
+                    
+    },[id])
 
-        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
+    function getUsersPosts(newUser){
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${newUser || id}/posts`,config)
 
         getPosts.then((response)=>{
           const newArray = response.data.posts
-           setUsersPosts(newArray)
-            setPageUser(response.data.posts[0].user.username)
+          
+          setUsersPosts(newArray)
+
+          if(response.data.posts[0]["repostedBy"]){
+            setPageUser(response.data.posts[0].repostedBy.username)
+            setUserImage(response.data.posts[0].repostedBy.avatar)
+            }else{
+                setPageUser(response.data.posts[0].user.username)
+                setUserImage(response.data.posts[0].user.avatar)
+            }
+
           setServerLoading(false) 
           let sharpedHeart = []
           newArray.forEach( post => {
@@ -59,54 +88,160 @@ export default function OtherUsersPosts({goToLink}){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
+        
+        
+    }
+
+
+    useEffect(() => {
+        getFollowingList()
     },[])
 
+    useEffect(() =>{
+        const peopleIFollow = followingUsers && followingUsers.filter((user) => user.username === pageUser);
+        peopleIFollow && peopleIFollow.length > 0 ? setIsFollowing(true) : setIsFollowing(false);
+    }, [followingUsers, pageUser])
+
+    function getFollowingList(){
+        const getFollowing = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/follows", config)
+        getFollowing.then((response) => setFollowingUsers(response.data.users))
+        getFollowing.catch()
+    }
 
 
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+            setServerLoading(true)
+            getUsersPosts(id)
+            history.push(`/user/${id}`)
 
-    function changeLoad(){
-        setServerLoading(!serverLoading)
-        
+        }
+        else{
+            history.push(`/my-posts`)
+        }
     }
 
     function sendToHashtag(val){
-        
         const newVal = val.replace('#',"")
-       
         history.push(`/hashtag/${newVal}`)
     }
+
+    function follow(){
+        const requestToFollow = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/follow`, {}, config)
+        requestToFollow.then(() => {setDisabFollow(false); getFollowingList()});
+        requestToFollow.catch(()=> alert("Não foi possivel executar essa operação"));
+    }
+
+    function unfollow(){
+        const requestToUnfollow = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/unfollow`, {}, config)
+        requestToUnfollow.then(() => {setDisabFollow(false); getFollowingList()});
+        requestToUnfollow.catch(()=> alert("Não foi possivel executar essa operação"));
+    }
+
+    function ifFollowing(){
+        setDisabFollow(true);
+        if(!isFollowing)
+            follow() 
+        else 
+            unfollow()
+
+    }
+
+
+    function goToOtherUser(newUser){
+        setServerLoading(true) 
+        getUsersPosts(newUser)
+        history.push(`/user/${newUser}`)
+    }
+
+    function scrollPage(lastPost){
+        
+
+        if(usersPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts =  axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts?offset=20`,config)
+
+        getNewPosts.then((response)=>{
+            
+            
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+            
+
+            setUsersPosts([...usersPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+        
+
+        })
+
+       
+    }
     
-   
     return( 
       
-    <Container>
-        
-        <TimelineContainer>
-            <Title>{ !serverLoading 
-            ? `${pageUser}'s posts`  
-            :'Other Posts'}</Title> 
+        <Container>
+            <TimelineContainer>
+                <Title>
+                    <img src={userImage}/> 
+                    <h1>{ !serverLoading 
+                        ? `${pageUser}'s posts`  
+                        :'Other Posts'}
+                    </h1>
+                    <Follow onClick={ifFollowing} disabled={disabFollow} following={isFollowing}>
+                        <p>{!isFollowing ? "Follow" : "Unfollow"}</p>
+                    </Follow>
+                </Title> 
                 
                 <TimelineContent>
 
-                
-                    <Posts noPostsMessage={'Este usuário não postou nada'}
-                            serverLoading={serverLoading}
-                            allPosts={usersPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                     />
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={()=>scrollPage(usersPosts.length-1)}
+                        hasMore={hasMore}
+                        loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                        threshold={1}
+                        className='Scroller'
+                    > 
+                        
+                        <Posts noPostsMessage={'Este usuário não postou nada'}
+                                serverLoading={serverLoading}
+                                allPosts={usersPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                                goToUserPosts={goToUserPosts}
+                                getUsersPosts={getUsersPosts}
+                                sendToHashtag={sendToHashtag}
+                                goToOtherUser={goToOtherUser}
+                                openmap={openmap}
+                                
+                        />
+
+                    </InfiniteScroll>
+
+                   
                     
                     <TrendingList send={sendToHashtag}/>
-
                 </TimelineContent>
-        </TimelineContainer>
+            </TimelineContainer>
+        </Container>
 
-    </Container>
     )
+
     function like (id){
         const config = {
             headers: {
@@ -135,3 +270,23 @@ export default function OtherUsersPosts({goToLink}){
     }
 }
 
+
+const Follow = styled.button`
+    width: 112px;
+    height: 30px;
+    background: ${props => (!props.following ? "#1877F2" : "white" )};
+    color: ${props => (props.following ? "#1877F2" : "white" )};
+    border-radius: 5px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 700; 
+    margin-left: 950px;
+    position: absolute;
+
+    @media (max-width:1080px){
+       position: initial;
+       margin-left: 0px;
+
+    }
+
+`;

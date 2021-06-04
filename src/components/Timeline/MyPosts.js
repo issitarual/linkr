@@ -1,39 +1,38 @@
-import styled from 'styled-components'
 import {useContext, useEffect,useState,useRef} from 'react'
 import UserContext from '../UserContext';
 import axios from 'axios';
-import { ConstructOutline, HeartOutline, HeartSharp } from 'react-ionicons';
-import Loader from "react-loader-spinner";
 import {useHistory} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
-import ReactHashtag from "react-hashtag";
-import TrendingList from './TrendingList';
-import InputNewText from './InputNewText';
-import ActionsPost from './ActionsPost';
+import TrendingList from '../hashtag/TrendingList';
+
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent} from '../timelineStyledComponents'
+import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
 
 /*import dos Posts*/
 import Posts from '../Posts'
 
-export default function MyPosts({goToLink}){
-    const history=useHistory()
-    const {user} = useContext(UserContext)
-    const [myPosts,setMyPosts] = useState([])
-   const [serverLoading,setServerLoading] = useState(true)
-   const [likedPosts, setLikedPosts] = useState([]);
-   const [olderLikes, setOlderLikes] = useState([]);
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
 
-   const inputRef = useRef([])
+export default function MyPosts({goToLink,openmap}){
+    const history=useHistory();
+    const {user} = useContext(UserContext);
+    const [myPosts,setMyPosts] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
+    const [likedPosts, setLikedPosts] = useState([]);
+    const [olderLikes, setOlderLikes] = useState([]);
+    const inputRef = useRef([]);
 
+  /*Logics of infinite Scroller*/ 
+  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+  const [hasMore,setHasMore] = useState(true)
+ 
 
-   const config = {
-    headers:{
-        'Authorization' : `Bearer ${user.token}`
-    }
-} 
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    } 
 
     useEffect(()=>{
         update();
@@ -44,7 +43,7 @@ export default function MyPosts({goToLink}){
 
         getPosts.then((response)=>{
              const newArray = (response.data.posts.map((m)=>({...m, toEdit: false})));
-           setMyPosts(newArray)
+             setMyPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
             newArray.forEach( post => {
@@ -61,7 +60,7 @@ export default function MyPosts({goToLink}){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-        }
+    }
 
     function tryingToEdit(id,canCallRef) {
         let postsToEdit = myPosts.map((p) => {
@@ -74,16 +73,10 @@ export default function MyPosts({goToLink}){
         setMyPosts([...postsToEdit]);
 
        
-      setTimeout(()=>{
-
-        inputRef.current[id].focus()
-       },100) 
-    
+        
     }
 
- 
     function sendToHashtag(val){
-        
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
     }
@@ -96,32 +89,81 @@ export default function MyPosts({goToLink}){
             history.push(`/my-posts`)
         }
     }
+
+    function scrollPage(lastPost){
+        
+
+        if(myPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts?offset=20`,config)
+
+        getNewPosts.then((response)=>{
+           
+
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+           
+
+            setMyPosts([...myPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            
+        })
+
+       
+    }
    
-     return( 
+    return( 
       
     <Container>
         
         <TimelineContainer>
-        <Title>my posts</Title> 
+            <Title>
+                <h1>my posts</h1>
+            </Title> 
                 
                 <TimelineContent>
 
-                    <Posts noPostsMessage={'Você ainda não postou nada'}
-                        update={update}
-                        serverLoading={serverLoading}
-                        allPosts={myPosts}
-                        goToUserPosts={goToUserPosts}
-                        olderLikes={olderLikes}
-                        likedPosts={likedPosts}
-                        user={user}
-                        like={like}
-                        tryingToEdit={tryingToEdit}
-                        config={config}
-                        inputRef={inputRef}
-                        goToLink={goToLink}
-                    />
+
+                        <InfiniteScroll
+                                pageStart={0}
+                                loadMore={()=>scrollPage(myPosts.length-1)}
+                                hasMore={hasMore}
+                                loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                                threshold={1}
+                                className='Scroller'
+                        > 
+                       
+                            <Posts noPostsMessage={'Você ainda não postou nada'}
+                                update={update}
+                                serverLoading={serverLoading}
+                                allPosts={myPosts}
+                                goToUserPosts={goToUserPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                tryingToEdit={tryingToEdit}
+                                config={config}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                                openmap={openmap}
                                 
-                                
+                            />
+
+                        </InfiniteScroll>
+    
+                     
                                         
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
@@ -156,4 +198,3 @@ export default function MyPosts({goToLink}){
         }
     }
 }
-

@@ -1,71 +1,77 @@
 import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
-import TrendingList from '../hashtag/TrendingList';
+import {useParams,useHistory} from 'react-router-dom';
+import TrendingList from './TrendingList';
 
 /*import de style components*/
-import {TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
-    
-    
+import {TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
+
 /*import dos Posts*/
 import Posts from '../Posts'
 
 /*InfiniteScroller*/
 import InfiniteScroll from 'react-infinite-scroller';
-
-export default function MyLikes({goToLink, openmap}){
-    const history = useHistory();
-    const [likedPosts, setLikedPosts] = useState([]);
-    const [olderLikes, setOlderLikes] = useState([]);
-    const { user } = useContext(UserContext);
-    const [allPosts,setAllPosts] = useState([]);
-    const [serverLoading,setServerLoading] = useState(true);
-    const inputRef = useRef([]);
     
 
+export default function OtherUsersPosts({goToLink, openmap}){
+    const {hashtag} = useParams();
+    const history=useHistory();
+    const {user} = useContext(UserContext);
+    const [hashtagPosts,setHashtagPosts] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
+    const [olderLikes, setOlderLikes] = useState([]);
+    const [likedPosts, setLikedPosts] = useState([]);
+    const inputRef = useRef([]);
 
-  /*Logics of infinite Scroller*/ 
-  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
+
+    /*Logics of infinite Scroller*/ 
+  
   const[hasMore,setHasMore] = useState(true)
- 
 
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
     }
-    
-    useEffect(()=>{
-       
 
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/liked',config)
+    useEffect(()=>{
+        updateHashtagPosts()
+        
+    },[])
+
+    function updateHashtagPosts(newVal){ 
+       const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${newVal || hashtag}/posts`,config)
 
         getPosts.then((response)=>{
             const newArray = response.data.posts
             
            
-            setAllPosts(newArray)
-            setServerLoading(false)
+          
+            setHashtagPosts(newArray)
+            setServerLoading(false) 
             let sharpedHeart = []
             newArray.forEach( post => {
                 post.likes.forEach(n =>{
                 if(n.userId === user.user.id){
                     sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
                 }})
-            })
+            })   
             setLikedPosts(sharpedHeart);
             setOlderLikes(sharpedHeart);
+
         })
 
         getPosts.catch((responseError)=>{
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
-    },[])
+    }
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
+        setServerLoading(true) 
+        updateHashtagPosts(newVal)
         history.push(`/hashtag/${newVal}`)
     }
 
@@ -78,23 +84,17 @@ export default function MyLikes({goToLink, openmap}){
         }
     }
 
-    function sendToHashtag(val){
-        const newVal = val.replace('#',"")
-        history.push(`/hashtag/${newVal}`)
-    }
-
-
     function scrollPage(lastPost){
         
 
-        if(allPosts[lastPost]===undefined){
+        if(hashtagPosts[lastPost]===undefined){
             return
         }
 
-        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/liked?offset=20',config)
+        const getNewPosts =  axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${hashtag}/posts?offset=20`,config)
 
         getNewPosts.then((response)=>{
-           
+            
             
             if(response.data.posts.length<10){
                 setHasMore(false)
@@ -103,63 +103,84 @@ export default function MyLikes({goToLink, openmap}){
             }
             
             const scrollPosts = response.data.posts
-            setAllPosts([...allPosts,...scrollPosts])
+            
+
+            setHashtagPosts([...hashtagPosts,...scrollPosts])
            
         })
 
         getNewPosts.catch((responseError)=>{
             alert('houve um erro ao atualizar')
-           
+            
 
         })
 
        
     }
+
+    function scrollLoader(){
+        if(hasMore){
+            return(
+
+                <div className="loader" key={0}>Loading More Posts...</div>
+            )
+        }else{
+            return(
+                ''
+            )
+        }
+    }
+   
     return( 
       
     <Container>
         
         <TimelineContainer>
-            <h1>my likes</h1> 
-
+            <h1>{ !serverLoading 
+            ? `#${hashtag}'s posts`  
+            :'carregando'}</h1> 
                 
                 <TimelineContent>
 
-                     <InfiniteScroll
+                    <InfiniteScroll
                         pageStart={0}
-                        loadMore={()=>scrollPage(allPosts.length-1)}
+                        loadMore={()=>scrollPage(hashtagPosts.length-1)}
                         hasMore={hasMore}
-                        loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                        loader={ <div className="loader" key={0}>Loading More Posts...</div>}
                         threshold={1}
                         className='Scroller'
+                        initialLoad={false}
                     > 
-                
-
-                        <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
-                                serverLoading={serverLoading}
-                                allPosts={allPosts}
-                                goToUserPosts={goToUserPosts}
-                                olderLikes={olderLikes}
-                                likedPosts={likedPosts}
-                                user={user}
-                                like={like}
-                                inputRef={inputRef}
-                                goToLink={goToLink}
-                                sendToHashtag={sendToHashtag}
-                                openmap={openmap}
+                        <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
+                                    serverLoading={serverLoading}
+                                    allPosts={hashtagPosts}
+                                    goToUserPosts={goToUserPosts}
+                                    olderLikes={olderLikes}
+                                    likedPosts={likedPosts}
+                                    user={user}
+                                    like={like}
+                                    inputRef={inputRef}
+                                    goToLink={goToLink}
+                                    openmap={openmap}
+                                    sendToHashtag={sendToHashtag}
+                                    updateHashtagPosts={updateHashtagPosts}
                         />
-
                     </InfiniteScroll>
+
                     <TrendingList send={sendToHashtag}/>
+
                 </TimelineContent>
         </TimelineContainer>
-                   
+
+                  
                             
+                           
+                          
                             
+                                        
 
     </Container>
     )
-
     function like (id){
         const config = {
             headers: {
