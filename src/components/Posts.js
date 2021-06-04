@@ -20,9 +20,11 @@ import {useContext} from 'react'
 
 import {useState} from 'react'
 
+
+
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag,
+TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
 
 
     
@@ -30,6 +32,7 @@ Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostCont
 export default function Posts(props){
     const [writeComment, setWriteComment] = useState("");
     const [postComments, setPostComments] = useState({id: null, comment:[]});
+
     function YoutubeId(post){
         const getYouTubeID = require('get-youtube-id');
         const id = getYouTubeID(post.link);
@@ -143,12 +146,6 @@ return(
     )
 }
 
-
-
- 
-
-
- 
 const RepostIcon = styled.div`
     font-family: 'Lato', sans-serif!important;
     font-size: 11px;

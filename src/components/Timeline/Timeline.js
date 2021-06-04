@@ -4,6 +4,7 @@ import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
 
+
 import styled from 'styled-components';
 
 
@@ -12,17 +13,18 @@ import LinkPreview from './LinkPreview'
 
 import getYouTubeID from 'get-youtube-id';
 
+
 /*import dos Posts*/
 import Posts from '../Posts'
-
-/*InfiniteScroller*/
-import InfiniteScroll from 'react-infinite-scroller';
 
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
 
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
+
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
 
 export default function Timeline({goToLink}){
     const history = useHistory();
@@ -32,8 +34,7 @@ export default function Timeline({goToLink}){
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
-    const [numberofFollowing, setNumberofFollowing] = useState([])
-    const [timelineRef,setTimelineRef] = useState(false);
+    const [numberofFollowing, setNumberofFollowing] = useState([]);
 
 
 
@@ -42,6 +43,9 @@ export default function Timeline({goToLink}){
         const[hasMore,setHasMore] = useState(false)
 
   
+    const [timelineRef,setTimelineRef] = useState(false);
+    
+ 
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
@@ -49,6 +53,16 @@ export default function Timeline({goToLink}){
     }
     
    
+         
+    
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }   
     
     useEffect(()=>{
 
@@ -114,14 +128,7 @@ export default function Timeline({goToLink}){
         history.push(`/hashtag/${newVal}`)
     }
 
-    function goToUserPosts(id){
-        if(id!==user.user.id){
-        history.push(`/user/${id}`)
-        }
-        else{
-            history.push(`/my-posts`)
-        }
-    }
+    
 
     function tryingToEdit(id) {
         let postsToEdit = allPosts.map((p) => {
@@ -174,10 +181,10 @@ export default function Timeline({goToLink}){
         <Container>
             
             <TimelineContainer>
-
-            <Title><h1>timeline</h1></Title> 
-            
-
+                <Title>
+                    <h1>timeline</h1>
+                </Title> 
+        
                     <TimelineContent>
                       
                             <NewPost update={update} />
@@ -223,9 +230,7 @@ export default function Timeline({goToLink}){
                     
         </Container>
     )
-                            
-                                
-                            
+
     function like (id){
         const config = {
             headers: {
@@ -252,6 +257,7 @@ export default function Timeline({goToLink}){
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
     }
+
 }
 
 const NoOneYet = styled.h1`

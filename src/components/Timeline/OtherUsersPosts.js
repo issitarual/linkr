@@ -8,6 +8,9 @@ import styled from 'styled-components';
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
     
+
+/*import dos Posts*/
+
 import Posts from '../Posts'
 
 /*InfiniteScroller*/
@@ -27,7 +30,7 @@ export default function OtherUsersPosts({goToLink}){
     const history=useHistory();
     const [disabFollow, setDisabFollow] = useState(false);
     const [followingUsers, setFollowingUsers] = useState([])
-    const [isFollowing, setIsFollowing] = useState(false)
+
 
     
 
@@ -38,12 +41,16 @@ export default function OtherUsersPosts({goToLink}){
 
   
 
-   const config = {
-    headers:{
-        'Authorization' : `Bearer ${user.token}`
-    }
-} 
-     useEffect(()=>{
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    } 
+
+
+    useEffect(()=>{
         
         getUsersPosts()
                     
@@ -81,6 +88,8 @@ export default function OtherUsersPosts({goToLink}){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
+        
+        
     }
 
 
@@ -99,7 +108,10 @@ export default function OtherUsersPosts({goToLink}){
         getFollowing.catch()
     }
 
-    
+    function goToLink(e,link){
+        e.preventDefault()
+        window.open(link)
+    }  
 
     function goToUserPosts(id){
         if(id!==user.user.id){

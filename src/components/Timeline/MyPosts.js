@@ -14,10 +14,6 @@ import Posts from '../Posts'
 /*InfiniteScroller*/
 import InfiniteScroll from 'react-infinite-scroller';
 
- 
-
- 
-
 export default function MyPosts({goToLink}){
     const history=useHistory();
     const {user} = useContext(UserContext);
@@ -82,6 +78,11 @@ export default function MyPosts({goToLink}){
         //    inputRef.current[id].focus()
         //  },100)
     
+    }
+
+  function goToLink(e,link){
+        e.preventDefault()
+        window.open(link)
     }
 
     function sendToHashtag(val){
