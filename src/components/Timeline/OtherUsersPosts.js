@@ -286,8 +286,11 @@ const Follow = styled.button`
     margin-left: 950px;
     position: absolute;
 
-    @media (max-width:800px){
-        margin-left: 500px;
+    @media (max-width:1080px){
+       // margin-left: 500px;
+       position: initial;
+       margin-left: 0px;
+
     }
 
 `;

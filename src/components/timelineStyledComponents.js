@@ -87,6 +87,7 @@ const Title = styled.div`
     @media (max-width:800px){
         width: 100%px;
         margin: 0 auto;
+        flex-direction: column;
     }
 
     h1{
