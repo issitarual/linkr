@@ -14,10 +14,6 @@ import Posts from '../Posts'
 /*InfiniteScroller*/
 import InfiniteScroll from 'react-infinite-scroller';
 
- 
-
- 
-
 export default function MyPosts({goToLink}){
     const history=useHistory();
     const {user} = useContext(UserContext);

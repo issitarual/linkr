@@ -72,6 +72,8 @@ export default function OtherUsersPosts({goToLink}){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
+        
+        
     }
 
 

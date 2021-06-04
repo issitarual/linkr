@@ -3,22 +3,20 @@ import UserContext from '../UserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-import NewPost from './NewPost'
-import LinkPreview from './LinkPreview'
-
-import getYouTubeID from 'get-youtube-id';
+import NewPost from './NewPost';
+import styled from 'styled-components';
 
 /*import dos Posts*/
 import Posts from '../Posts'
-
-/*InfiniteScroller*/
-import InfiniteScroll from 'react-infinite-scroller';
 
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
 
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
+
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
 
 export default function Timeline({goToLink}){
     const history = useHistory();
@@ -28,16 +26,21 @@ export default function Timeline({goToLink}){
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
-    const [timelineRef,setTimelineRef] = useState(false);
-    
+    const [numberofFollowing, setNumberofFollowing] = useState([]);
+
     /*Logics of infinite Scroller*/ 
     const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
     const[hasMore,setHasMore] = useState(true)
+
+    const [timelineRef,setTimelineRef] = useState(false);
+    
+ 
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
     }      
+    
     function goToUserPosts(id){
         if(id!==user.user.id){
         history.push(`/user/${id}`)
@@ -50,6 +53,11 @@ export default function Timeline({goToLink}){
     useEffect(()=>{
         update()        
     },[]);
+
+    useEffect(() => {
+        const getNumberofFollowing = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/follows", config)
+        getNumberofFollowing.then((response) => setNumberofFollowing(response.data.users))
+    },[])
 
     UseInterval(() => {
     
@@ -170,7 +178,9 @@ export default function Timeline({goToLink}){
                     <TimelineContent>
                       
                             <NewPost update={update} />
-                            <Posts noPostsMessage={'Nenhum post encontrado'}
+
+                            {numberofFollowing.length === 0 ? <NoOneYet> Você ainda não segue ninguem, <br/> procure por perfis na busca </NoOneYet> :
+                            <Posts noPostsMessage={'Quem você segue ainda não publicou nenhum post'}
                                 update={update}
                                 serverLoading={serverLoading}
                                 allPosts={allPosts}
@@ -183,8 +193,7 @@ export default function Timeline({goToLink}){
                                 config={config}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
-                                sendToHashtag={sendToHashtag}
-                            />
+                            />}
 
                         <TrendingList send={sendToHashtag}/>
                     
@@ -193,13 +202,6 @@ export default function Timeline({goToLink}){
 
         </Container>
     )
-                            
-                                
-                                
-
-                       
-
-
 
 
     function like (id){
@@ -229,3 +231,7 @@ export default function Timeline({goToLink}){
         }
     }
 }
+
+const NoOneYet = styled.h1`
+    margin-top: 20px;
+`;

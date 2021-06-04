@@ -10,11 +10,14 @@ import Comments from '../components/Comments/Comments';
 import CommentContainer from '../components/Comments/CommentContainer';
 import Repost from './repost/Repost'
 import styled from 'styled-components';
-import {useState} from 'react'
+import {useState} from 'react';
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag,
+TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
 
+
+    
  
 export default function Posts(props){
     const [writeComment, setWriteComment] = useState("");
@@ -65,7 +68,7 @@ export default function Posts(props){
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink,sendToHashtag} = props;
+    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts} = props;
 
 return(
     <TimelinePosts>
@@ -139,7 +142,6 @@ return(
     )
 }
 
- 
 const RepostIcon = styled.div`
     font-family: 'Lato', sans-serif!important;
     font-size: 11px;
