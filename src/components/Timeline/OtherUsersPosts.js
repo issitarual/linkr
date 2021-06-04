@@ -52,8 +52,10 @@ export default function OtherUsersPosts({goToLink}){
 
           if(response.data.posts[0]["repostedBy"]){
             setPageUser(response.data.posts[0].repostedBy.username)
+            setUserImage(response.data.posts[0].repostedBy.avatar)
             }else{
                 setPageUser(response.data.posts[0].user.username)
+                setUserImage(response.data.posts[0].user.avatar)
             }
 
           setServerLoading(false) 
@@ -91,11 +93,6 @@ export default function OtherUsersPosts({goToLink}){
         getFollowing.then((response) => setFollowingUsers(response.data.users))
         getFollowing.catch()
     }
-
-    function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }  
 
     function goToUserPosts(id){
         if(id!==user.user.id){
