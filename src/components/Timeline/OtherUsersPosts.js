@@ -8,7 +8,9 @@ import styled from 'styled-components';
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
     
+
 /*import dos Posts*/
+
 import Posts from '../Posts'
 
 /*InfiniteScroller*/
@@ -28,6 +30,17 @@ export default function OtherUsersPosts({goToLink}){
     const history=useHistory();
     const [disabFollow, setDisabFollow] = useState(false);
     const [followingUsers, setFollowingUsers] = useState([])
+
+
+    
+
+
+  /*Logics of infinite Scroller*/ 
+  
+  const[hasMore,setHasMore] = useState(true)
+
+  
+
     const [isFollowing, setIsFollowing] = useState(false);
 
     const config = {
@@ -36,14 +49,15 @@ export default function OtherUsersPosts({goToLink}){
         }
     } 
 
+
     useEffect(()=>{
         
         getUsersPosts()
                     
     },[id])
 
-    function getUsersPosts(){
-        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
+    function getUsersPosts(newUser){
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${newUser || id}/posts`,config)
 
         getPosts.then((response)=>{
           const newArray = response.data.posts
@@ -94,9 +108,13 @@ export default function OtherUsersPosts({goToLink}){
         getFollowing.catch()
     }
 
+
     function goToUserPosts(id){
         if(id!==user.user.id){
-        history.push(`/user/${id}`)
+            setServerLoading(true)
+            getUsersPosts(id)
+            history.push(`/user/${id}`)
+
         }
         else{
             history.push(`/my-posts`)
@@ -128,6 +146,47 @@ export default function OtherUsersPosts({goToLink}){
             unfollow()
 
     }
+
+
+    function goToOtherUser(newUser){
+        setServerLoading(true) 
+        getUsersPosts(newUser)
+        history.push(`/user/${newUser}`)
+    }
+
+    function scrollPage(lastPost){
+        
+
+        if(usersPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts =  axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts?offset=20`,config)
+
+        getNewPosts.then((response)=>{
+            
+            
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+            
+
+            setUsersPosts([...usersPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+        
+
+        })
+
+       
+    }
     
     return( 
       
@@ -145,21 +204,41 @@ export default function OtherUsersPosts({goToLink}){
                 </Title> 
                 
                 <TimelineContent>
-                    <Posts noPostsMessage={'Este usuário não postou nada'}
-                            serverLoading={serverLoading}
-                            allPosts={usersPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                    />
+
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={()=>scrollPage(usersPosts.length-1)}
+                        hasMore={hasMore}
+                        loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                        threshold={1}
+                        className='Scroller'
+                    > 
+                        
+                        <Posts noPostsMessage={'Este usuário não postou nada'}
+                                serverLoading={serverLoading}
+                                allPosts={usersPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
+                                goToUserPosts={goToUserPosts}
+                                getUsersPosts={getUsersPosts}
+                                sendToHashtag={sendToHashtag}
+                                goToOtherUser={goToOtherUser}
+                                
+                        />
+
+                    </InfiniteScroll>
+
+                   
                     
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
             </TimelineContainer>
         </Container>
+
     )
 
     function like (id){
@@ -203,8 +282,10 @@ const Follow = styled.button`
     margin-left: 950px;
     position: absolute;
 
-    @media (max-width:800px){
-        margin-left: 500px;
+    @media (max-width:1080px){
+       position: initial;
+       margin-left: 0px;
+
     }
 
 `;

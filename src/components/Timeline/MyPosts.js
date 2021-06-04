@@ -25,10 +25,8 @@ export default function MyPosts({goToLink}){
 
   /*Logics of infinite Scroller*/ 
   const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-  const[hasMore,setHasMore] = useState(true)
+  const [hasMore,setHasMore] = useState(true)
  
-
-
 
     const config = {
         headers:{
@@ -40,8 +38,6 @@ export default function MyPosts({goToLink}){
         update();
     },[])
 
-
-  
         function update () {
             const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts`,config)
 
@@ -77,11 +73,7 @@ export default function MyPosts({goToLink}){
         setMyPosts([...postsToEdit]);
 
        
-        setTimeout(()=>{
-
-            inputRef.current[id].focus()
-        },100) 
-    
+        
     }
 
     function sendToHashtag(val){
@@ -97,6 +89,39 @@ export default function MyPosts({goToLink}){
             history.push(`/my-posts`)
         }
     }
+
+    function scrollPage(lastPost){
+        
+
+        if(myPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${user.user.id}/posts?offset=20`,config)
+
+        getNewPosts.then((response)=>{
+           
+
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+           
+
+            setMyPosts([...myPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            
+        })
+
+       
+    }
    
     return( 
       
@@ -109,24 +134,34 @@ export default function MyPosts({goToLink}){
                 
                 <TimelineContent>
 
-                   
-                        <Posts noPostsMessage={'Você ainda não postou nada'}
-                            update={update}
-                            serverLoading={serverLoading}
-                            allPosts={myPosts}
-                            goToUserPosts={goToUserPosts}
-                            olderLikes={olderLikes}
-                            likedPosts={likedPosts}
-                            user={user}
-                            like={like}
-                            tryingToEdit={tryingToEdit}
-                            config={config}
-                            inputRef={inputRef}
-                            goToLink={goToLink}
-                            sendToHashtag={sendToHashtag}
 
-                        />
+                        <InfiniteScroll
+                                pageStart={0}
+                                loadMore={()=>scrollPage(myPosts.length-1)}
+                                hasMore={hasMore}
+                                loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                                threshold={1}
+                                className='Scroller'
+                        > 
+                       
+                            <Posts noPostsMessage={'Você ainda não postou nada'}
+                                update={update}
+                                serverLoading={serverLoading}
+                                allPosts={myPosts}
+                                goToUserPosts={goToUserPosts}
+                                olderLikes={olderLikes}
+                                likedPosts={likedPosts}
+                                user={user}
+                                like={like}
+                                tryingToEdit={tryingToEdit}
+                                config={config}
+                                inputRef={inputRef}
+                                goToLink={goToLink}
                                 
+                            />
+
+                        </InfiniteScroll>
+    
                      
                                         
                     <TrendingList send={sendToHashtag}/>

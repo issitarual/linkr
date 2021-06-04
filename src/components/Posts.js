@@ -1,16 +1,26 @@
 import ReactHashtag from "react-hashtag";
 import {useHistory} from 'react-router-dom';
 import Loader from "react-loader-spinner";
+
+import ActionsPost from './Timeline/ActionsPost';
+import styled from 'styled-components'
+import TrendingList from './hashtag/TrendingList'
+import { ChevronUpCircleSharp, HeartOutline, HeartSharp } from 'react-ionicons';
+import InputNewText from './Timeline/InputNewText'
+
 import { RepeatOutline } from 'react-ionicons';
 import getYouTubeID from 'get-youtube-id';
-import ActionsPost from './Timeline/ActionsPost';
-import InputNewText from './Timeline/InputNewText';
+
+
 import Likes from './likes';
 import Comments from '../components/Comments/Comments';
 import CommentContainer from '../components/Comments/CommentContainer';
 import Repost from './repost/Repost'
-import styled from 'styled-components';
-import {useState} from 'react';
+import {useContext} from 'react'
+
+import {useState} from 'react'
+
+
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,
@@ -55,20 +65,13 @@ export default function Posts(props){
      }
 
      function saveOtherUserInfo(userInfo){
-        
-         if(userInfo["repostedBy"]){
-             
+       
             goToUserPosts(userInfo.user.id)
-           
-            }else{
-                goToUserPosts(userInfo.user.id)
-            }
-
     }
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts} = props;
+    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts,updateHashtagPosts,goToOtherUser} = props;
 
 return(
     <TimelinePosts>
@@ -79,26 +82,27 @@ return(
             :allPosts.map((post)=>{
             return(
                 <li key={post.id} id={post.id}>
-                    {
-                        post["repostedBy"] ? 
-                        (<RepostIcon>
-                            <RepeatOutline
-                                color={'#ffffff'}
-                                height="20px"
-                                width="20px"
-                                style={{
-                                    margin: "0",
-                                    marginRight: "10",
-                                    marginBottom: "10"            
-                                }}
-                            />
-                            Re-posted by {user.user.username === post.repostedBy.username ? "you" : post.repostedBy.username}
-                        </RepostIcon>) :
-                        ""
-                    }
-                    <div className = "oficialPost">    
+
+                    {post["repostedBy"] ? 
+                            (<RepostIcon>
+                                <RepeatOutline
+                                    color={'#ffffff'}
+                                    height="20px"
+                                    width="20px"
+                                    style={{
+                                        margin: "0",
+                                        marginRight: "10",
+                                        marginBottom: "10"
+                                        
+                                    }}
+                                />
+                                Re-posted by {user.user.username === post.repostedBy.username ? "you" : post.repostedBy.username}
+                            </RepostIcon>) : ""}
+                        
+                    <div className = "oficialPost">
+                        
                         <div className='postLeft'>
-                            <img src={post.user.avatar} onClick={()=>goToUserPosts(post.user.id)}/>
+                            <img src={post.user.avatar} onClick={()=>saveOtherUserInfo(post)}/>
                             <Likes 
                                 post={post} 
                                 olderLikes={olderLikes} 
@@ -106,33 +110,34 @@ return(
                                 user={user}
                                 like={like}
                             />
-                            <Comments 
-                                post={post} 
-                                postComments = {postComments} 
-                                setPostComments={setPostComments} 
-                                setWriteComment={setWriteComment}
-                            />
-                            <Repost 
-                                id={post.id} 
-                                count={post.repostCount}
-                            />
+                            <Comments post={post} setPostComments={setPostComments} setWriteComment={setWriteComment} postComments={postComments}/>
+                            <Repost id={post.id} count={post.repostCount} update={update} />
                         </div>
+
                         <div className='postRight'>
                             <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+                            
                             <UserName id={post.user.id} onClick={()=>saveOtherUserInfo(post)}>{post.user.username}</UserName>
+
+            
                             <PostContent open={!post.toEdit} >
                                 <ReactHashtag 
                                     renderHashtag={(hashtagValue) => (
-                                        <Hashtag className='hashtagSpan' onClick={()=>(sendToHashtag(hashtagValue))}>{hashtagValue}</Hashtag>
+                                    <Hashtag className='hashtagSpan' onClick={()=>(sendToHashtag(hashtagValue))}>{hashtagValue}</Hashtag>
                                     )}
                                 >
                                     {post.text}  
                                 </ReactHashtag>
-                            </PostContent>                                        
+                            </PostContent>    
+                        
                             <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
-                            <LinkDetails id1={getYouTubeID(post.link)}>                                                
-                                {YoutubeId(post)}            
+
+                            <LinkDetails id1={getYouTubeID(post.link)}>
+                                
+                            {YoutubeId(post)}
+                            
                             </LinkDetails>
+
                         </div>
                     </div>
                     <CommentContainer setPostComments={setPostComments} idComment = {post.id} postComments = {postComments} postId = {post.repostId? post.repostId: post.id} avatar = {user.user.avatar} setWriteComment={setWriteComment} writeComment={writeComment}/>
@@ -149,11 +154,17 @@ const RepostIcon = styled.div`
     align-items: center;
     justify-content: flex-end;
     padding-right: 20px;
+
     width: 503px;
     margin-left:118px;
     color: #fff;
     @media(max-width:1200px){
         margin-left:118px;
+    }
+
+
+    @media(max-width:730px){
+        margin-left:30px;
     }
     
     @media(max-width:690px){

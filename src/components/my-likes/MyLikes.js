@@ -22,6 +22,7 @@ export default function MyLikes({goToLink}){
     const [allPosts,setAllPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const inputRef = useRef([]);
+    
 
 
   /*Logics of infinite Scroller*/ 
@@ -81,13 +82,59 @@ export default function MyLikes({goToLink}){
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
     }
+
+
+    function scrollPage(lastPost){
+        
+
+        if(allPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/liked?offset=20',config)
+
+        getNewPosts.then((response)=>{
+           
+            
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+            setAllPosts([...allPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+           
+
+        })
+
+       
+    }
     return( 
       
     <Container>
         
         <TimelineContainer>
             <h1>my likes</h1> 
-                <TimelineContent>  
+
+                
+                <TimelineContent>
+
+                     <InfiniteScroll
+                        pageStart={0}
+                        loadMore={()=>scrollPage(allPosts.length-1)}
+                        hasMore={hasMore}
+                        loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                        threshold={1}
+                        className='Scroller'
+                    > 
+                
+
                         <Posts noPostsMessage={'Você ainda não curtiu nenhum post'}
                                 serverLoading={serverLoading}
                                 allPosts={allPosts}
@@ -100,6 +147,8 @@ export default function MyLikes({goToLink}){
                                 goToLink={goToLink}
                                 sendToHashtag={sendToHashtag}
                         />
+
+                    </InfiniteScroll>
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
         </TimelineContainer>

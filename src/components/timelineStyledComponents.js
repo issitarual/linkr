@@ -82,10 +82,12 @@ const Title = styled.div`
     display: flex;
     align-items: center;
     margin-left: 10px;
+    
 
     @media (max-width:800px){
-        width: 500px;
-        margin-left: 50px;
+        width: 100%px;
+        margin: 0 auto;
+        flex-direction: column;
     }
 
     h1{
@@ -169,10 +171,12 @@ const TimelinePosts = styled.ul`
     flex-direction: column;
     
     
+
     @media (max-width:1200px){
         align-items: center;
         width: 690px;
         min-width:360px;
+        margin: 0 auto;
     }
     @media (max-width:610px){
         align-items: center;
@@ -285,6 +289,7 @@ const TimelineContent= styled.div`
     flex-direction: column;
     @media (max-width: 1200px){
         justify-content: center;
+        width: 100%;
         align-items: center;
     }  
 `;

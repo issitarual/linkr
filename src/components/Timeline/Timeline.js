@@ -3,8 +3,16 @@ import UserContext from '../UserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-import NewPost from './NewPost';
+
+
 import styled from 'styled-components';
+
+
+import NewPost from './NewPost'
+import LinkPreview from './LinkPreview'
+
+import getYouTubeID from 'get-youtube-id';
+
 
 /*import dos Posts*/
 import Posts from '../Posts'
@@ -28,10 +36,13 @@ export default function Timeline({goToLink}){
     const inputRef = useRef([]);
     const [numberofFollowing, setNumberofFollowing] = useState([]);
 
-    /*Logics of infinite Scroller*/ 
-    const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-    const[hasMore,setHasMore] = useState(true)
 
+
+    /*Logics of infinite Scroller*/ 
+        
+        const[hasMore,setHasMore] = useState(false)
+
+  
     const [timelineRef,setTimelineRef] = useState(false);
     
  
@@ -39,7 +50,10 @@ export default function Timeline({goToLink}){
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
-    }      
+    }
+    
+   
+         
     
     function goToUserPosts(id){
         if(id!==user.user.id){
@@ -51,62 +65,36 @@ export default function Timeline({goToLink}){
     }   
     
     useEffect(()=>{
+
         update()        
     },[]);
 
     useEffect(() => {
+        
         const getNumberofFollowing = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/follows", config)
         getNumberofFollowing.then((response) => setNumberofFollowing(response.data.users))
     },[])
 
     UseInterval(() => {
     
-        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
-
-        getNewPosts.then((response)=> {
         
-        const holder = allPosts[0]
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?earlierThan=${allPosts[0].id}`,config)
 
-        let numberHolder='x'
-
-        response.data.posts.forEach((post,index)=>{
-                if(post.id===holder.id){
-                    numberHolder=index
-                }
-        })
-        const newPosts = response.data.posts.splice(0,numberHolder)
-            setAllPosts([...newPosts,...allPosts])
-
-        })
     
+        getNewPosts.then((response)=>{
+           
+            const newerPosts = response.data.posts
+            const newTimeline=newerPosts.concat(allPosts)
+            
+            setAllPosts([...newTimeline])
+         })
+            
 
-    },15000); 
-
-
-    function partialUpdate(limit){
-        
-        setTimeout(()=>{
-            const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
-        
-        getPosts.then((response)=>{
-            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            const partial = newArray.slice(0,limit)
-            setAllPosts(partial)
-            let sharpedHeart = []
-            newArray.forEach( post => {
-                post.likes.forEach(n =>{
-                if(n.userId === user.user.id){
-                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-                }})
-            })
-            setLikedPosts(sharpedHeart);
-            setOlderLikes(sharpedHeart);
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar os posts. Por favor recarregue a página')
         })
 
-        },1000)
-
-       maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
-    }
+    }, 15000); 
 
     function update () {
         
@@ -115,8 +103,6 @@ export default function Timeline({goToLink}){
         
         getPosts.then((response)=>{
             const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
-            
-
             setAllPosts(newArray)
             setServerLoading(false)
             let sharpedHeart = []
@@ -134,6 +120,8 @@ export default function Timeline({goToLink}){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
+
+        setHasMore(true)
     }
 
     function sendToHashtag(val){
@@ -141,14 +129,7 @@ export default function Timeline({goToLink}){
         history.push(`/hashtag/${newVal}`)
     }
 
-    function goToUserPosts(id){
-        if(id!==user.user.id){
-        history.push(`/user/${id}`)
-        }
-        else{
-            history.push(`/my-posts`)
-        }
-    }
+    
 
     function tryingToEdit(id) {
         let postsToEdit = allPosts.map((p) => {
@@ -159,14 +140,40 @@ export default function Timeline({goToLink}){
         })   
         setAllPosts([...postsToEdit]);
 
-        setTimeout(()=>{
-
-            inputRef.current[id].focus()
-           },100
-        ) 
+       
     }
 
-   
+    
+    function scrollPage(lastPost){
+        
+
+        if(allPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${allPosts[lastPost].id}`,config)
+
+        getNewPosts.then((response)=>{
+        
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+             const scrollPosts = response.data.posts
+         setAllPosts([...allPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao buscas mais post. Por favor recarregue a página')
+            
+
+        })
+       
+    }
+
     return( 
         <Container>
             
@@ -180,29 +187,46 @@ export default function Timeline({goToLink}){
                             <NewPost update={update} />
 
                             {numberofFollowing.length === 0 ? <NoOneYet> Você ainda não segue ninguem, <br/> procure por perfis na busca </NoOneYet> :
-                            <Posts noPostsMessage={'Quem você segue ainda não publicou nenhum post'}
-                                update={update}
-                                serverLoading={serverLoading}
-                                allPosts={allPosts}
-                                goToUserPosts={goToUserPosts}
-                                olderLikes={olderLikes}
-                                likedPosts={likedPosts}
-                                user={user}
-                                like={like}
-                                tryingToEdit={tryingToEdit}
-                                config={config}
-                                inputRef={inputRef}
-                                goToLink={goToLink}
-                            />}
+                            <>
+                            
+                             <InfiniteScroll
+                                pageStart={0}
+                                loadMore={()=>scrollPage(allPosts.length-1)}
+                                hasMore={hasMore}
+                                loader={<div className="loader" key={0}>Loading More Posts...</div>}
+                                threshold={1}
+                                className='Scroller'
+                            > 
+                              
+                                <Posts noPostsMessage={'Quem você segue ainda não publicou nenhum post'}
+                                    update={update}
+                                    serverLoading={serverLoading}
+                                    allPosts={allPosts}
+                                    goToUserPosts={goToUserPosts}
+                                    olderLikes={olderLikes}
+                                    likedPosts={likedPosts}
+                                    user={user}
+                                    like={like}
+                                    tryingToEdit={tryingToEdit}
+                                    config={config}
+                                    inputRef={inputRef}
+                                    goToLink={goToLink}
+                                    sendToHashtag={sendToHashtag}
+                                />
+                                
+                             </InfiniteScroll> 
+                                    
+                            
+
+                            </>}
 
                         <TrendingList send={sendToHashtag}/>
                     
                     </TimelineContent>
             </TimelineContainer>
-
+                    
         </Container>
     )
-
 
     function like (id){
         const config = {
@@ -230,6 +254,7 @@ export default function Timeline({goToLink}){
             request.catch(error => alert ("Ocorreu um erro, tente novamente."))
         }
     }
+
 }
 
 const NoOneYet = styled.h1`

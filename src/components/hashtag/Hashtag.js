@@ -24,6 +24,11 @@ export default function OtherUsersPosts({goToLink}){
     const [likedPosts, setLikedPosts] = useState([]);
     const inputRef = useRef([]);
 
+
+    /*Logics of infinite Scroller*/ 
+  
+  const[hasMore,setHasMore] = useState(true)
+
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
@@ -78,6 +83,53 @@ export default function OtherUsersPosts({goToLink}){
             history.push(`/my-posts`)
         }
     }
+
+    function scrollPage(lastPost){
+        
+
+        if(hashtagPosts[lastPost]===undefined){
+            return
+        }
+
+        const getNewPosts =  axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${hashtag}/posts?offset=20`,config)
+
+        getNewPosts.then((response)=>{
+            
+            
+            if(response.data.posts.length<10){
+                setHasMore(false)
+            }else{
+                setHasMore(true)
+            }
+            
+            const scrollPosts = response.data.posts
+            
+
+            setHashtagPosts([...hashtagPosts,...scrollPosts])
+           
+        })
+
+        getNewPosts.catch((responseError)=>{
+            alert('houve um erro ao atualizar')
+            
+
+        })
+
+       
+    }
+
+    function scrollLoader(){
+        if(hasMore){
+            return(
+
+                <div className="loader" key={0}>Loading More Posts...</div>
+            )
+        }else{
+            return(
+                ''
+            )
+        }
+    }
    
     return( 
       
@@ -90,7 +142,15 @@ export default function OtherUsersPosts({goToLink}){
                 
                 <TimelineContent>
 
-                    
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={()=>scrollPage(hashtagPosts.length-1)}
+                        hasMore={hasMore}
+                        loader={ <div className="loader" key={0}>Loading More Posts...</div>}
+                        threshold={1}
+                        className='Scroller'
+                        initialLoad={false}
+                    > 
                         <Posts noPostsMessage={'Não há posts dessa hashtag no momento'}
                                     serverLoading={serverLoading}
                                     allPosts={hashtagPosts}
@@ -102,7 +162,9 @@ export default function OtherUsersPosts({goToLink}){
                                     inputRef={inputRef}
                                     goToLink={goToLink}
                                     sendToHashtag={sendToHashtag}
+                                    updateHashtagPosts={updateHashtagPosts}
                         />
+                    </InfiniteScroll>
 
                     <TrendingList send={sendToHashtag}/>
 
