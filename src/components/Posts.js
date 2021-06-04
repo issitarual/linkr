@@ -9,20 +9,17 @@ import Likes from './likes';
 import Comments from '../components/Comments/Comments';
 import CommentContainer from '../components/Comments/CommentContainer';
 import Repost from './repost/Repost'
-import {useContext} from 'react'
 import styled from 'styled-components';
 import {useState} from 'react'
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
-Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
+import {PostInfo,LinkDescription,Links,Hashtag,TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
 
-
-    
  
 export default function Posts(props){
     const [writeComment, setWriteComment] = useState("");
     const [postComments, setPostComments] = useState({id: null, comment:[]});
+
     function YoutubeId(post){
         const getYouTubeID = require('get-youtube-id');
         const id = getYouTubeID(post.link);
@@ -68,7 +65,7 @@ export default function Posts(props){
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts} = props;
+    config,inputRef,setTimelineRef,goToLink,sendToHashtag} = props;
 
 return(
     <TimelinePosts>
@@ -141,11 +138,6 @@ return(
     </TimelinePosts>
     )
 }
-
-
-
- 
-
 
  
 const RepostIcon = styled.div`

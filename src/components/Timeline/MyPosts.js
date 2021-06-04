@@ -19,14 +19,13 @@ import InfiniteScroll from 'react-infinite-scroller';
  
 
 export default function MyPosts({goToLink}){
-    const history=useHistory()
-    const {user} = useContext(UserContext)
-    const [myPosts,setMyPosts] = useState([])
+    const history=useHistory();
+    const {user} = useContext(UserContext);
+    const [myPosts,setMyPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
-
-   const inputRef = useRef([])
+    const inputRef = useRef([]);
 
   /*Logics of infinite Scroller*/ 
   const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
@@ -89,8 +88,12 @@ export default function MyPosts({goToLink}){
     
     }
 
+  function goToLink(e,link){
+        e.preventDefault()
+        window.open(link)
+    }
+
     function sendToHashtag(val){
-        
         const newVal = val.replace('#',"")
         history.push(`/hashtag/${newVal}`)
     }
@@ -109,7 +112,9 @@ export default function MyPosts({goToLink}){
     <Container>
         
         <TimelineContainer>
-        <Title>my posts</Title> 
+            <Title>
+                <h1>my posts</h1>
+            </Title> 
                 
                 <TimelineContent>
 

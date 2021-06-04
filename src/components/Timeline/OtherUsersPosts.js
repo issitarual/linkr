@@ -1,12 +1,14 @@
-import {useContext, useEffect,useState,useRef} from 'react'
+import {useContext, useEffect,useState,useRef} from 'react';
 import UserContext from '../UserContext';
 import axios from 'axios';
 import {useParams, useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-
+import styled from 'styled-components';
 
 /*import de style components*/
-import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
+import {Title,TimelineContainer,Container,TimelineContent} from '../timelineStyledComponents'
+    
+/*import dos Posts*/
 import Posts from '../Posts'
 
 /*InfiniteScroller*/
@@ -19,25 +21,22 @@ export default function OtherUsersPosts({goToLink}){
     const [usersPosts,setUsersPosts] = useState([]);
     const [serverLoading,setServerLoading] = useState(true);
     const [pageUser,setPageUser] = useState(null);
+    const [userImage, setUserImage] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
+    const inputRef = useRef([]);
+    const history=useHistory();
+    const [disabFollow, setDisabFollow] = useState(false);
+    const [followingUsers, setFollowingUsers] = useState([])
+    const [isFollowing, setIsFollowing] = useState(false);
 
-    
+    const config = {
+        headers:{
+            'Authorization' : `Bearer ${user.token}`
+        }
+    } 
 
-
-  /*Logics of infinite Scroller*/ 
-  const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-  const[hasMore,setHasMore] = useState(true)
-
-   const inputRef = useRef([])
-   const history=useHistory()
-
-   const config = {
-    headers:{
-        'Authorization' : `Bearer ${user.token}`
-    }
-} 
-     useEffect(()=>{
+    useEffect(()=>{
         
         getUsersPosts()
                     
@@ -75,6 +74,27 @@ export default function OtherUsersPosts({goToLink}){
         })
     }
 
+
+    useEffect(() => {
+        getFollowingList()
+    },[])
+
+    useEffect(() =>{
+        const peopleIFollow = followingUsers && followingUsers.filter((user) => user.username === pageUser);
+        peopleIFollow && peopleIFollow.length > 0 ? setIsFollowing(true) : setIsFollowing(false);
+    }, [followingUsers, pageUser])
+
+    function getFollowingList(){
+        const getFollowing = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/follows", config)
+        getFollowing.then((response) => setFollowingUsers(response.data.users))
+        getFollowing.catch()
+    }
+
+    function goToLink(e,link){
+        e.preventDefault()
+        window.open(link)
+    }  
+
     function goToUserPosts(id){
         if(id!==user.user.id){
         history.push(`/user/${id}`)
@@ -89,31 +109,60 @@ export default function OtherUsersPosts({goToLink}){
         history.push(`/hashtag/${newVal}`)
     }
 
-    return(  
-    <Container>
-        <TimelineContainer>
-            <Title>{ !serverLoading 
-            ? `${pageUser}'s posts`  
-            :'Other Posts'}</Title> 
-                <TimelineContent>                
+    function follow(){
+        const requestToFollow = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/follow`, {}, config)
+        requestToFollow.then(() => {setDisabFollow(false); getFollowingList()});
+        requestToFollow.catch(()=> alert("Não foi possivel executar essa operação"));
+    }
+
+    function unfollow(){
+        const requestToUnfollow = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/unfollow`, {}, config)
+        requestToUnfollow.then(() => {setDisabFollow(false); getFollowingList()});
+        requestToUnfollow.catch(()=> alert("Não foi possivel executar essa operação"));
+    }
+
+    function ifFollowing(){
+        setDisabFollow(true);
+        if(!isFollowing)
+            follow() 
+        else 
+            unfollow()
+
+    }
+    
+    return( 
+      
+        <Container>
+            <TimelineContainer>
+                <Title>
+                    <img src={userImage}/> 
+                    <h1>{ !serverLoading 
+                        ? `${pageUser}'s posts`  
+                        :'Other Posts'}
+                    </h1>
+                    <Follow onClick={ifFollowing} disabled={disabFollow} following={isFollowing}>
+                        <p>{!isFollowing ? "Follow" : "Unfollow"}</p>
+                    </Follow>
+                </Title> 
+                
+                <TimelineContent>
                     <Posts noPostsMessage={'Este usuário não postou nada'}
-                        serverLoading={serverLoading}
-                        allPosts={usersPosts}
-                        olderLikes={olderLikes}
-                        likedPosts={likedPosts}
-                        user={user}
-                        like={like}
-                        inputRef={inputRef}
-                        goToLink={goToLink}
-                        goToUserPosts={goToUserPosts}
-                        getUsersPosts={getUsersPosts}
-                        sendToHashtag={sendToHashtag}                                
-                    />                  
+                            serverLoading={serverLoading}
+                            allPosts={usersPosts}
+                            olderLikes={olderLikes}
+                            likedPosts={likedPosts}
+                            user={user}
+                            like={like}
+                            inputRef={inputRef}
+                            goToLink={goToLink}
+                    />
+                    
                     <TrendingList send={sendToHashtag}/>
                 </TimelineContent>
-        </TimelineContainer>
-    </Container>
+            </TimelineContainer>
+        </Container>
     )
+
     function like (id){
         const config = {
             headers: {
@@ -141,3 +190,22 @@ export default function OtherUsersPosts({goToLink}){
         }
     }
 }
+
+
+const Follow = styled.button`
+    width: 112px;
+    height: 30px;
+    background: ${props => (!props.following ? "#1877F2" : "white" )};
+    color: ${props => (props.following ? "#1877F2" : "white" )};
+    border-radius: 5px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 700; 
+    margin-left: 950px;
+    position: absolute;
+
+    @media (max-width:800px){
+        margin-left: 500px;
+    }
+
+`;

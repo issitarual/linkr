@@ -7,7 +7,6 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     const [newValue, setNewValue] = useState('');
 
     if(toEdit){
-        console.log("passando por aqui");
         inputRef.current.focus();
     }
     

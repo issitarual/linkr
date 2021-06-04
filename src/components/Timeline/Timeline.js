@@ -29,6 +29,7 @@ export default function Timeline({goToLink}){
     const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
     const [timelineRef,setTimelineRef] = useState(false);
+    
     /*Logics of infinite Scroller*/ 
     const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
     const[hasMore,setHasMore] = useState(true)
@@ -52,33 +53,56 @@ export default function Timeline({goToLink}){
 
     UseInterval(() => {
     
-    const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getNewPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
 
-    getNewPosts.then((response)=>{
-     
-     const holder = allPosts[0]
+        getNewPosts.then((response)=> {
+        
+        const holder = allPosts[0]
 
-       let numberHolder='x'
+        let numberHolder='x'
 
-       response.data.posts.forEach((post,index)=>{
-            if(post.id===holder.id){
-                numberHolder=index
-            }
-       })
-       const newPosts = response.data.posts.splice(0,numberHolder)
-        setAllPosts([...newPosts,...allPosts])
+        response.data.posts.forEach((post,index)=>{
+                if(post.id===holder.id){
+                    numberHolder=index
+                }
+        })
+        const newPosts = response.data.posts.splice(0,numberHolder)
+            setAllPosts([...newPosts,...allPosts])
 
-    })
+        })
     
 
-    }, 15000); 
+    },15000); 
 
 
-    
+    function partialUpdate(limit){
+        
+        setTimeout(()=>{
+            const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
+        
+        getPosts.then((response)=>{
+            const newArray = (response.data.posts.map((p)=>({...p, toEdit: false})));
+            const partial = newArray.slice(0,limit)
+            setAllPosts(partial)
+            let sharpedHeart = []
+            newArray.forEach( post => {
+                post.likes.forEach(n =>{
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
+                }})
+            })
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
+        })
+
+        },1000)
+
+       maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
+    }
 
     function update () {
         
-        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts',config)
+        const getPosts = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts',config)
         setServerLoading(true)
         
         getPosts.then((response)=>{
@@ -136,11 +160,13 @@ export default function Timeline({goToLink}){
 
    
     return( 
-        
         <Container>
             
             <TimelineContainer>
-            <Title>timeline</Title> 
+                <Title>
+                    <h1>timeline</h1>
+                </Title> 
+        
                     <TimelineContent>
                       
                             <NewPost update={update} />

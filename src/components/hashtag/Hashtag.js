@@ -15,19 +15,14 @@ import InfiniteScroll from 'react-infinite-scroller';
     
 
 export default function OtherUsersPosts({goToLink}){
-    const {hashtag} = useParams()
-
-    const history=useHistory()
-
-    const {user} = useContext(UserContext)
-
-    const [hashtagPosts,setHashtagPosts] = useState([])
-
-    const [serverLoading,setServerLoading] = useState(true)
+    const {hashtag} = useParams();
+    const history=useHistory();
+    const {user} = useContext(UserContext);
+    const [hashtagPosts,setHashtagPosts] = useState([]);
+    const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
-
-    const inputRef = useRef([])
+    const inputRef = useRef([]);
 
     const config = {
         headers:{
@@ -49,16 +44,16 @@ export default function OtherUsersPosts({goToLink}){
            
           
             setHashtagPosts(newArray)
-           setServerLoading(false) 
-           let sharpedHeart = []
-           newArray.forEach( post => {
-               post.likes.forEach(n =>{
-               if(n.userId === user.user.id){
-                   sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
-               }})
-           })
-           setLikedPosts(sharpedHeart);
-           setOlderLikes(sharpedHeart);
+            setServerLoading(false) 
+            let sharpedHeart = []
+            newArray.forEach( post => {
+                post.likes.forEach(n =>{
+                if(n.userId === user.user.id){
+                    sharpedHeart.push({id: post.id, likes: post.likes.length, names: post.likes.map(n => n["user.username"])})
+                }})
+            })   
+            setLikedPosts(sharpedHeart);
+            setOlderLikes(sharpedHeart);
 
         })
 
@@ -70,10 +65,8 @@ export default function OtherUsersPosts({goToLink}){
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")
-       
         setServerLoading(true) 
         updateHashtagPosts(newVal)
-
         history.push(`/hashtag/${newVal}`)
     }
 
@@ -84,13 +77,6 @@ export default function OtherUsersPosts({goToLink}){
         else{
             history.push(`/my-posts`)
         }
-    }
-
-    function RepostButton(id){
-        window.confirm("Você quer respostar esse link?");
-        const requestRepost = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts/${id}/share`,{}, config);
-        requestRepost.then(() => console.log("deu bom"));
-        requestRepost.catch(() => console.log("deu ruim"));
     }
    
     return( 
