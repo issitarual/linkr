@@ -193,15 +193,14 @@ const TimelinePosts = styled.ul`
         background-color: #171717;
         color: white;
         width: auto;
-       
-       
         @media (max-width:610px){
             width: 90%;
+            border-radius: 0;
         }
         @media (max-width:1200px){
             width: 100%;
             margin :0 auto;
-            
+
         }
     }
     .postRight{
