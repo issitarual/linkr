@@ -164,15 +164,13 @@ const InputGroup = styled.div`
     height: 45px;
     position: relative;
     z-index: 3;
-    @media (max-width:1200px){
+    @media (max-width:840px){
         position: absolute;
-        width: 95%;
+        width: 94%;
         top: 90px;
-        right: calc(50% - 47%);
+        right: 3%;
+        left: 3%
     }   
-    @media (max-width: 610px){
-        right: calc(51% - 47%)!important;
-    } 
     
     input{
         width: 500px;
@@ -190,7 +188,7 @@ const InputGroup = styled.div`
             font-family: 'Lato', sans-serif;
             font-size: 19px;
         }
-        @media (max-width:1200px){
+        @media (max-width:840px){
         width: 100%;
         } 
     }
@@ -218,13 +216,11 @@ const Usernames = styled.div`
     padding: 18px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    @media (max-width:1200px){
-        width: 95%;
-        right: calc(50% - 47%);
+    @media (max-width:840px){
+        width: 94%;
+        right: 3%;
+        left: 3%;
         top: 129px;
-    } 
-    @media (max-width: 610px){
-        right: calc(51% - 47%)!important;
     } 
 `;
 
@@ -241,12 +237,12 @@ const CloseMenu = styled.div`
 const HidePosts = styled.div`
     background-color: #333;
     height: 140px;
-    width: 30px;
     position: fixed;
     width: 100%;
     z-index: 1;
     display: none;
-    @media (max-width:1200px){
+    @media (max-width:840px){
         display: block;
+        width: 100%;
     } 
 `;
