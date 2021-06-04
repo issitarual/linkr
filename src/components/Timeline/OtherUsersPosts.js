@@ -108,10 +108,7 @@ export default function OtherUsersPosts({goToLink}){
         getFollowing.catch()
     }
 
-    function goToLink(e,link){
-        e.preventDefault()
-        window.open(link)
-    }  
+    
 
     function goToUserPosts(id){
         if(id!==user.user.id){
@@ -287,7 +284,6 @@ const Follow = styled.button`
     position: absolute;
 
     @media (max-width:1080px){
-       // margin-left: 500px;
        position: initial;
        margin-left: 0px;
 

@@ -98,44 +98,45 @@ return(
                                 />
                                 Re-posted by {user.user.username === post.repostedBy.username ? "you" : post.repostedBy.username}
                             </RepostIcon>) : ""}
+                        
                     <div className = "oficialPost">
                         
-                                        <div className='postLeft'>
-                                            <img src={post.user.avatar} onClick={()=>saveOtherUserInfo(post)}/>
-                                    <Likes 
-                                        post={post} 
-                                        olderLikes={olderLikes} 
-                                        likedPosts = {likedPosts}
-                                        user={user}
-                                        like={like}
-                                    />
-                                <Comments post={post} setPostComments={setPostComments} setWriteComment={setWriteComment} postComments={postComments}/>
-                                <Repost id={post.id} count={post.repostCount} update={update} />
-                                </div>
+                        <div className='postLeft'>
+                            <img src={post.user.avatar} onClick={()=>saveOtherUserInfo(post)}/>
+                            <Likes 
+                                post={post} 
+                                olderLikes={olderLikes} 
+                                likedPosts = {likedPosts}
+                                user={user}
+                                like={like}
+                            />
+                            <Comments post={post} setPostComments={setPostComments} setWriteComment={setWriteComment} postComments={postComments}/>
+                            <Repost id={post.id} count={post.repostCount} update={update} />
+                        </div>
 
-                                        <div className='postRight'>
-                                            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
-                                            {/*(<UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>*/}
-                                            <UserName id={post.user.id} onClick={()=>saveOtherUserInfo(post)}>{post.user.username}</UserName>
-
+                        <div className='postRight'>
+                            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
                             
-                                            <PostContent open={!post.toEdit} >
-                                                <ReactHashtag 
-                                                    renderHashtag={(hashtagValue) => (
-                                                    <Hashtag className='hashtagSpan' onClick={()=>(sendToHashtag(hashtagValue))}>{hashtagValue}</Hashtag>
-                                                    )}
-                                                >
-                                                    {post.text}  
-                                                </ReactHashtag>
-                                            </PostContent>    
-                                        
-                                            <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
+                            <UserName id={post.user.id} onClick={()=>saveOtherUserInfo(post)}>{post.user.username}</UserName>
 
-                                            <LinkDetails id1={getYouTubeID(post.link)}>
-                                                
-                                            {YoutubeId(post)}
-                                            
-                                            </LinkDetails>
+            
+                            <PostContent open={!post.toEdit} >
+                                <ReactHashtag 
+                                    renderHashtag={(hashtagValue) => (
+                                    <Hashtag className='hashtagSpan' onClick={()=>(sendToHashtag(hashtagValue))}>{hashtagValue}</Hashtag>
+                                    )}
+                                >
+                                    {post.text}  
+                                </ReactHashtag>
+                            </PostContent>    
+                        
+                            <InputNewText update={update} id={post.id} tryingToEdit={tryingToEdit} post={post} config={config} toEdit={post.toEdit} inputRef={inputRef} setTimelineRef={setTimelineRef}/>
+
+                            <LinkDetails id1={getYouTubeID(post.link)}>
+                                
+                            {YoutubeId(post)}
+                            
+                            </LinkDetails>
 
                         </div>
                     </div>

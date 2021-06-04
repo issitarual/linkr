@@ -73,11 +73,7 @@ export default function MyPosts({goToLink}){
         setMyPosts([...postsToEdit]);
 
        
-        //  setTimeout(()=>{
-
-        //    inputRef.current[id].focus()
-        //  },100)
-    
+        
     }
 
   function goToLink(e,link){

@@ -169,11 +169,7 @@ const TimelinePosts = styled.ul`
     flex-direction: column;
     
     
-<<<<<<< HEAD
-    
 
-=======
->>>>>>> main
     @media (max-width:1200px){
         align-items: center;
         width: 690px;
