@@ -60,14 +60,13 @@ export default function LocationModal ({ loc, username, locationIsOpen, setLocat
             </DisplayFlex>
 
             <Map>
-            {console.log(loc)}
                 <GoogleMapReact 
                     bootstrapURLKeys={{
                         key: 'AIzaSyBcxyx-xIbCFp88e_tiMPKwTYHAL4438og', 
                         language: 'pt-br'
                     }}
                     center={loc}
-                    defaultZoom={8}
+                    defaultZoom={12}
                 ></GoogleMapReact>
 
             </Map>           

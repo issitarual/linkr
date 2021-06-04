@@ -33,8 +33,6 @@ export default function NewPost ({update}) {
       }
     }
 
-    console.log(body);
-
     const config = {
       headers:{
       'Authorization' : `Bearer ${user.token}`

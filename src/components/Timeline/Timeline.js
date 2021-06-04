@@ -102,7 +102,6 @@ export default function Timeline({goToLink, openMap}){
 
        maxNumberOfPosts===allPosts.length ? setHasMore(false) : setHasMore(true)
     }
-    console.log(allPosts)
 
     function update () {
         
