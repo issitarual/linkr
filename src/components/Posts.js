@@ -124,7 +124,6 @@ return(
                         </div>
 
                         <div className='postRight'>
-                            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
                             
                             <SpaceBetween>
                                 <Flex>
