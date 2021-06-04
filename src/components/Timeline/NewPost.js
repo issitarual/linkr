@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useContext } from 'react';
 import UserContext from '../UserContext';
+import { LocationOutline } from 'react-ionicons'
 
 export default function NewPost ({update}) {
   const [linkToPost, setLinkToPost] = useState('');
@@ -9,6 +10,9 @@ export default function NewPost ({update}) {
   const [disabled, letDisabled] = useState(false);
   const [buttonText, letButtonText] = useState('Publicar');
   const { user ,setUser} = useContext(UserContext);
+  
+  const [enableLocation, setEnableLocation] = useState({text: 'Localização desativada', textColor: '#949494', enable: false});
+  const [cordenates, setCordenates] = useState([null,null])
 
   function createNewPost (event) {
 
@@ -21,7 +25,11 @@ export default function NewPost ({update}) {
 
     const body = {
       "text": linkDescription,
-      "link": linkToPost
+      "link": linkToPost,
+      "geolocation": {
+        "latitude": cordenates[0],
+        "longitude": cordenates[1]
+      }
     }
 
     const config = {
@@ -35,7 +43,7 @@ export default function NewPost ({update}) {
       letButtonText('Publicar')
       setLinkToPost('');
       setLinkDescription('');
-      update()    
+      update();
     }).catch((error)=>{
       alert('houve um erro ao publicar seu link');
       letDisabled(false);
@@ -47,34 +55,83 @@ export default function NewPost ({update}) {
     
   }
 
+  function toggleEnabled () {
+    let atualiza;
+    if (!enableLocation.enable) {
+      atualiza = {text: 'Localização ativada', textColor: '#238700', enable: true}
+      if ("geolocation" in navigator) {
+        getLocation();
+      } else {
+        alert('não foi possível obter sua localização')
+        atualiza = {text: 'Localização desativada', textColor: '#949494', enable: false}
+      }
+    } else {
+      atualiza = {text: 'Localização desativada', textColor: '#949494', enable: false}
+      clearLocation();
+    }
+    setEnableLocation(atualiza);
+  }
+
+  function getLocation () {
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      setCordenates([position.coords.latitude, position.coords.longitude])
+    });
+
+  }
+  function clearLocation () {
+    setCordenates([null,null])
+  }
+
   return (
-    <Post>
-      <Icon>
-        <img src={user.user.avatar}/>
-      </Icon>
-      <Form onSubmit={createNewPost}>
-        <p>O que você tem para favoritar hoje?</p>
-        <InputLink
-        autoFocus={true}
-          value={linkToPost} 
-          disabled={disabled} 
-          type="url" 
-          placeholder={"http://..."} 
-          onChange={e => setLinkToPost(e.target.value)} 
-        />
-        <InputDescription
-          value={linkDescription}
-          disabled={disabled}
-          type="text"
-          placeholder={"Muito irado esse link falando de #javascript"}
-          onChange={e => setLinkDescription(e.target.value)}
-        />
-        <Button disabled={disabled}>{buttonText}</Button>
-      </Form>
-    </Post>
+      <Post>
+        <Icon>
+          <img src={user.user.avatar}/>
+        </Icon>
+        <Form onSubmit={createNewPost}>
+          <p>O que você tem para favoritar hoje?</p>
+          <InputLink
+          autoFocus={true}
+            value={linkToPost} 
+            disabled={disabled} 
+            type="url" 
+            placeholder={"http://..."} 
+            onChange={e => setLinkToPost(e.target.value)} 
+          />
+          <InputDescription
+            value={linkDescription}
+            disabled={disabled}
+            type="text"
+            placeholder={"Muito irado esse link falando de #javascript"}
+            onChange={e => setLinkDescription(e.target.value)}
+          />
+          <Button disabled={disabled}>{buttonText}</Button>
+        </Form>
+        <ShowLocation onClick={toggleEnabled} enableLocation={enableLocation} >
+          <LocationOutline
+            color={enableLocation.textColor} 
+            height="15px"
+            width="15px"
+          />
+          <p>{enableLocation.text}</p>
+        </ShowLocation>
+      </Post>
   );
 
 }
+
+const ShowLocation = styled.div`
+  color: ${(props) => (props.enableLocation.textColor)} ;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 90px;
+  bottom: 24px;
+  p {
+    margin: 0 0 0 3px;
+    font-size: 13px;
+  }
+`;
 
 const Post = styled.div`
   background-color: white;
@@ -85,6 +142,7 @@ const Post = styled.div`
   padding-right: 22px;
   padding-bottom: 16px;
   font-family: Lato;
+  position: relative;
   
 
   @media (max-width:1200px){
@@ -176,3 +234,4 @@ const Button = styled.button`
   }
 `;
     
+

@@ -17,7 +17,7 @@ import Posts from '../Posts'
 import InfiniteScroll from 'react-infinite-scroller';
 
 
-export default function OtherUsersPosts({goToLink}){
+export default function OtherUsersPosts({goToLink, openMap}){
     const {id} = useParams();
     const {user} = useContext(UserContext);
     const [usersPosts,setUsersPosts] = useState([]);
@@ -227,6 +227,7 @@ export default function OtherUsersPosts({goToLink}){
                                 getUsersPosts={getUsersPosts}
                                 sendToHashtag={sendToHashtag}
                                 goToOtherUser={goToOtherUser}
+                                openMap={openMap}
                                 
                         />
 

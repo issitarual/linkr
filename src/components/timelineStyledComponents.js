@@ -372,6 +372,25 @@ const NoPostsYet = styled.p`
     margin-top: 20px;
 `;
 
+const SpaceBetween = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 0 7px 0;
+`;
+const Flex = styled.div`
+    display: flex;
+    align-items: center;
+    
+`;
+const PinIcon = styled.div`
+    img {
+        width: 12px;
+        height: 16px;
+        margin: 19px 0 0 8px;
+    }
+`;
 const IframeContent = styled.div`
     width:100%;
     display: flex;
@@ -384,8 +403,10 @@ const IframeContent = styled.div`
 `
 
 
+export{SpaceBetween, Flex, PinIcon}
 export {PostInfo}
 export{LinkDescription}
 export{Links}
 export{Hashtag}
-export{PostComment,Title,TimelineContainer,Container,TimelinePosts,TimelineContent,LinkDetails,UserName,PostContent,NoPostsYet,IframeContent}
+export{PostComment,Title,TimelineContainer,Container,TimelinePosts,TimelineContent,LinkDetails,UserName,PostContent,NoPostsYet, IframeContent}
+

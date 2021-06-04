@@ -14,7 +14,7 @@ import Posts from '../Posts'
 import InfiniteScroll from 'react-infinite-scroller';
     
 
-export default function OtherUsersPosts({goToLink}){
+export default function OtherUsersPosts({goToLink, openMap}){
     const {hashtag} = useParams();
     const history=useHistory();
     const {user} = useContext(UserContext);
@@ -161,6 +161,7 @@ export default function OtherUsersPosts({goToLink}){
                                     like={like}
                                     inputRef={inputRef}
                                     goToLink={goToLink}
+                                    openMap={openMap}
                                     sendToHashtag={sendToHashtag}
                                     updateHashtagPosts={updateHashtagPosts}
                         />

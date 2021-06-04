@@ -26,7 +26,7 @@ import UseInterval from '../UseInterval'
 /*InfiniteScroller*/
 import InfiniteScroll from 'react-infinite-scroller';
 
-export default function Timeline({goToLink}){
+export default function Timeline({goToLink, openMap}){
     const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
     const { user ,setUser} = useContext(UserContext);
@@ -114,6 +114,7 @@ export default function Timeline({goToLink}){
             })
             setLikedPosts(sharpedHeart);
             setOlderLikes(sharpedHeart);
+
         })
 
         getPosts.catch((responseError)=>{           
@@ -173,7 +174,6 @@ export default function Timeline({goToLink}){
         })
        
     }
-
     return( 
         <Container>
             
@@ -212,6 +212,8 @@ export default function Timeline({goToLink}){
                                     inputRef={inputRef}
                                     goToLink={goToLink}
                                     sendToHashtag={sendToHashtag}
+                                    openMap={openMap}                               
+
                                 />
                                 
                              </InfiniteScroll> 

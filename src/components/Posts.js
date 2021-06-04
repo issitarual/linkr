@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import TrendingList from './hashtag/TrendingList'
 import { ChevronUpCircleSharp, HeartOutline, HeartSharp } from 'react-ionicons';
 import InputNewText from './Timeline/InputNewText'
+import locationpin from './Timeline/images/locationpin.png'
+
 
 import { RepeatOutline } from 'react-ionicons';
 import getYouTubeID from 'get-youtube-id';
@@ -23,11 +25,8 @@ import {useState} from 'react'
 
 
 /*import de style components*/
-import {PostInfo,LinkDescription,Links,Hashtag,
-TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '../components/timelineStyledComponents'
-
-
-    
+import {PostInfo,LinkDescription,Links,Hashtag,Title,TimelineContainer,
+Container,TimelinePosts,TimelineContent,LinkDetails,UserName,NoPostsYet,PostContent, SpaceBetween, Flex, PinIcon,IframeContent} from '../components/timelineStyledComponents'
  
 export default function Posts(props){
     const [writeComment, setWriteComment] = useState("");
@@ -71,7 +70,17 @@ export default function Posts(props){
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts,updateHashtagPosts,goToOtherUser} = props;
+    config,inputRef,setTimelineRef,goToLink, openMap,sendToHashtag,getUsersPosts,updateHashtagPosts,goToOtherUser} = props;
+
+    function pinLocation (post) {
+        if (post.geolocation) {
+            return (
+                <PinIcon onClick={(e)=>{openMap(e, post)}}>
+                    <img src={locationpin} />
+                </PinIcon>
+            )
+        }
+    }
 
 return(
     <TimelinePosts>
@@ -115,11 +124,14 @@ return(
                         </div>
 
                         <div className='postRight'>
-                            <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
                             
-                            <UserName id={post.user.id} onClick={()=>saveOtherUserInfo(post)}>{post.user.username}</UserName>
-
-            
+                            <SpaceBetween>
+                                <Flex>
+                                    <UserName id={post.user.id} onClick={()=>goToUserPosts(post.user.id)}>{post.user.username}</UserName>
+                                    {pinLocation(post)}
+                                </Flex>
+                                <ActionsPost update={update} post={post} tryingToEdit={tryingToEdit} id={post.id}/>
+                            </SpaceBetween>
                             <PostContent open={!post.toEdit} >
                                 <ReactHashtag 
                                     renderHashtag={(hashtagValue) => (

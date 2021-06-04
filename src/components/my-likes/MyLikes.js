@@ -14,7 +14,7 @@ import Posts from '../Posts'
 /*InfiniteScroller*/
 import InfiniteScroll from 'react-infinite-scroller';
 
-export default function MyLikes({goToLink}){
+export default function MyLikes({goToLink, openMap}){
     const history = useHistory();
     const [likedPosts, setLikedPosts] = useState([]);
     const [olderLikes, setOlderLikes] = useState([]);
@@ -146,6 +146,7 @@ export default function MyLikes({goToLink}){
                                 inputRef={inputRef}
                                 goToLink={goToLink}
                                 sendToHashtag={sendToHashtag}
+                                openMap={openMap}
                         />
 
                     </InfiniteScroll>

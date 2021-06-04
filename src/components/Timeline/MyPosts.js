@@ -14,7 +14,7 @@ import Posts from '../Posts'
 /*InfiniteScroller*/
 import InfiniteScroll from 'react-infinite-scroller';
 
-export default function MyPosts({goToLink}){
+export default function MyPosts({goToLink,openMap}){
     const history=useHistory();
     const {user} = useContext(UserContext);
     const [myPosts,setMyPosts] = useState([]);
@@ -157,6 +157,7 @@ export default function MyPosts({goToLink}){
                                 config={config}
                                 inputRef={inputRef}
                                 goToLink={goToLink}
+                                openMap={openMap}
                                 
                             />
 
