@@ -108,7 +108,6 @@ export default function OtherUsersPosts({goToLink}){
         getFollowing.catch()
     }
 
-    
 
     function goToUserPosts(id){
         if(id!==user.user.id){
