@@ -91,7 +91,7 @@ export default function OtherUsersPosts({goToLink}){
             return
         }
 
-        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${hashtagPosts[lastPost].id}`,config)
+        const getNewPosts =  axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags/${hashtag}/posts?offset=20`,config)
 
         getNewPosts.then((response)=>{
             

@@ -36,8 +36,7 @@ export default function OtherUsersPosts({goToLink}){
   
   const[hasMore,setHasMore] = useState(true)
 
-  // const inputRef = useRef([])
-   //const history=useHistory()
+  
 
    const config = {
     headers:{
@@ -144,7 +143,7 @@ export default function OtherUsersPosts({goToLink}){
             return
         }
 
-        const getNewPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/following/posts?olderThan=${usersPosts[lastPost].id}`,config)
+        const getNewPosts =  axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts?offset=20`,config)
 
         getNewPosts.then((response)=>{
             
