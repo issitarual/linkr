@@ -49,8 +49,8 @@ export default function OtherUsersPosts({goToLink}){
                     
     },[id])
 
-    function getUsersPosts(){
-        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${id}/posts`,config)
+    function getUsersPosts(newUser){
+        const getPosts = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/${newUser || id}/posts`,config)
 
         getPosts.then((response)=>{
           const newArray = response.data.posts
@@ -103,7 +103,10 @@ export default function OtherUsersPosts({goToLink}){
 
     function goToUserPosts(id){
         if(id!==user.user.id){
-        history.push(`/user/${id}`)
+            setServerLoading(true)
+            getUsersPosts(id)
+            history.push(`/user/${id}`)
+
         }
         else{
             history.push(`/my-posts`)
@@ -134,6 +137,13 @@ export default function OtherUsersPosts({goToLink}){
         else 
             unfollow()
 
+    }
+
+
+    function goToOtherUser(newUser){
+        setServerLoading(true) 
+        getUsersPosts(newUser)
+        history.push(`/user/${newUser}`)
     }
 
     function scrollPage(lastPost){
@@ -208,6 +218,7 @@ export default function OtherUsersPosts({goToLink}){
                                 goToUserPosts={goToUserPosts}
                                 getUsersPosts={getUsersPosts}
                                 sendToHashtag={sendToHashtag}
+                                goToOtherUser={goToOtherUser}
                                 
                         />
 

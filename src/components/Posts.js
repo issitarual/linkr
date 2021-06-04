@@ -68,7 +68,7 @@ export default function Posts(props){
     const history=useHistory()
 
     const {noPostsMessage,update,serverLoading,allPosts,goToUserPosts,olderLikes,likedPosts,user,like,tryingToEdit,
-    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts,updateHashtagPosts} = props;
+    config,inputRef,setTimelineRef,goToLink,sendToHashtag,getUsersPosts,updateHashtagPosts,goToOtherUser} = props;
 
 return(
     <TimelinePosts>

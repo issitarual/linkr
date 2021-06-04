@@ -134,9 +134,9 @@ export default function Timeline({goToLink}){
 
         setTimeout(()=>{
 
-            inputRef.current[id].focus()
-           },100
-        ) 
+           inputRef.current[id].focus()
+            },100
+         ) 
     }
 
     
