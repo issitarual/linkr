@@ -28,20 +28,13 @@ export default function OtherUsersPosts({goToLink}){
     const history=useHistory();
     const [disabFollow, setDisabFollow] = useState(false);
     const [followingUsers, setFollowingUsers] = useState([])
-    const [isFollowing, setIsFollowing] = useState(false)
-
-
-    /*Logics of infinite Scroller*/ 
-    const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
-    const[hasMore,setHasMore] = useState(true)
+    const [isFollowing, setIsFollowing] = useState(false);
 
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
         }
     } 
-
-    console.log(user)
 
     useEffect(()=>{
         
@@ -102,8 +95,16 @@ export default function OtherUsersPosts({goToLink}){
     function goToLink(e,link){
         e.preventDefault()
         window.open(link)
-    } 
-    
+    }  
+
+    function goToUserPosts(id){
+        if(id!==user.user.id){
+        history.push(`/user/${id}`)
+        }
+        else{
+            history.push(`/my-posts`)
+        }
+    }
 
     function sendToHashtag(val){
         const newVal = val.replace('#',"")

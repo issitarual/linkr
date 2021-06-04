@@ -10,7 +10,7 @@ import Comments from '../components/Comments/Comments';
 import CommentContainer from '../components/Comments/CommentContainer';
 import Repost from './repost/Repost'
 import styled from 'styled-components';
-import {useState} from 'react'
+import {useState} from 'react';
 
 /*import de style components*/
 import {PostInfo,LinkDescription,Links,Hashtag,
@@ -22,7 +22,7 @@ TimelinePosts,LinkDetails,UserName,NoPostsYet,PostContent,IframeContent} from '.
 export default function Posts(props){
     const [writeComment, setWriteComment] = useState("");
     const [postComments, setPostComments] = useState({id: null, comment:[]});
-    
+
     function YoutubeId(post){
         const getYouTubeID = require('get-youtube-id');
         const id = getYouTubeID(post.link);

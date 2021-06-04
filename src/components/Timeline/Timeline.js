@@ -32,6 +32,9 @@ export default function Timeline({goToLink}){
     const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
     const[hasMore,setHasMore] = useState(true)
 
+    const [timelineRef,setTimelineRef] = useState(false);
+    
+ 
     const config = {
         headers:{
             'Authorization' : `Bearer ${user.token}`
@@ -168,7 +171,10 @@ export default function Timeline({goToLink}){
         <Container>
             
             <TimelineContainer>
-                <Title><h1>timeline</h1></Title> 
+                <Title>
+                    <h1>timeline</h1>
+                </Title> 
+        
                     <TimelineContent>
                       
                             <NewPost update={update} />
