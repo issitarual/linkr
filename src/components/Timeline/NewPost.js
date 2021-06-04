@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState, useContext ,useEffect} from 'react';
+import { useState, useContext } from 'react';
 import UserContext from '../UserContext';
 
 export default function NewPost ({update}) {
-
   const [linkToPost, setLinkToPost] = useState('');
   const [linkDescription, setLinkDescription] = useState('');
   const [disabled, letDisabled] = useState(false);
@@ -108,9 +107,9 @@ const Form = styled.form`
   align-items: flex-end;
 
   @media (max-width:610px){
-            width: 100%;
-            
-        }
+    width: 100%;
+  }
+
   p {
     color: #707070;
     font-size: 20px;
@@ -129,6 +128,7 @@ const Form = styled.form`
     padding-left: 12px;
     padding-top: 8px;
     resize: none;
+
     ::placeholder {
       color: #949494;
       font-size: 15px;
@@ -143,6 +143,7 @@ const Icon = styled.div`
   margin-top: 16px;
   margin-left: 18px;
   margin-right: 18px;
+
   img {
     width: 50px;
     height: 50px;
@@ -168,6 +169,7 @@ const Button = styled.button`
   border-radius: 5px;
   color: white;
   font-size: 14px;
+
   &:disabled {
     background-color: grey;
     color: lightgrey;

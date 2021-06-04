@@ -3,7 +3,7 @@ import {RepeatOutline} from 'react-ionicons';
 import RepostModal from './RepostModal';
 import styled from 'styled-components';
 
-export default function Repost ({id, count}) {
+export default function Repost ({id, count, update}) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     function toggleModal () {
@@ -30,6 +30,7 @@ export default function Repost ({id, count}) {
             </ContainerIcon>
             
             <RepostModal
+            update={update}
             modalIsOpen={modalIsOpen}
             toggleModal={toggleModal}
             id={id}
