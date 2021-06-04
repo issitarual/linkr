@@ -2,13 +2,11 @@ import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id}) {
-    const inputRef = useRef();
-    const [newValue, setNewValue] = useState('');
+export default function InputNewText ({post, update, config, tryingToEdit, toEdit, id,inputRef,setTimelineRef}) {
+   
+    const [newValue, setNewValue] = useState(post.text);
 
-    if(toEdit){
-        inputRef.current.focus();
-    }
+    
     
     useEffect(()=>{
         if (toEdit){
@@ -53,7 +51,7 @@ export default function InputNewText ({post, update, config, tryingToEdit, toEdi
     return ( 
         <InputField ref={inputRef} onChange={(e)=>{
             setNewValue(e.target.value);
-        }} readOnly={!post.toEdit} open={post.toEdit}>
+        }} readOnly={!post.toEdit} open={post.toEdit} value={newValue===post.text ? post.text : newValue}>
             {post.text}
         </InputField>
     )

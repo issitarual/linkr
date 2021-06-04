@@ -132,11 +132,11 @@ export default function Timeline({goToLink}){
         })   
         setAllPosts([...postsToEdit]);
 
-        setTimeout(()=>{
+        // setTimeout(()=>{
 
-           inputRef.current[id].focus()
-            },100
-         ) 
+        //    inputRef.current[id].focus()
+        //     },100
+        //  ) 
     }
 
     
