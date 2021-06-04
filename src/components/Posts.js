@@ -109,7 +109,7 @@ return(
                                         user={user}
                                         like={like}
                                     />
-                                <Comments post={post}/>
+                                <Comments post={post} setPostComments={setPostComments} setWriteComment={setWriteComment} postComments={postComments}/>
                                 <Repost id={post.id} count={post.repostCount} update={update} />
                                 </div>
 

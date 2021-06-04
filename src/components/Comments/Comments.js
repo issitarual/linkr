@@ -36,8 +36,8 @@ export default function Comments({post, setPostComments, setWriteComment, postCo
                     }}
                 />
             </Icone>
-            {/* 
-            <h6>{postComments.id === post.id || postComments.id === post.repostId? postComments.comment.length: post.commentCount} comments</h6>*/}
+            
+            <h6>{postComments.id === post.id || postComments.id === post.repostId? postComments.comment.length: post.commentCount} comments</h6>
         </> 
     )
 }

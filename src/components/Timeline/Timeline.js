@@ -70,6 +70,7 @@ export default function Timeline({goToLink}){
     },[]);
 
     useEffect(() => {
+        
         const getNumberofFollowing = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/follows", config)
         getNumberofFollowing.then((response) => setNumberofFollowing(response.data.users))
     },[])
@@ -142,7 +143,7 @@ export default function Timeline({goToLink}){
         // setTimeout(()=>{
 
         //    inputRef.current[id].focus()
-        //     },100
+        // },100
         //  ) 
     }
 
