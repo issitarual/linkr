@@ -40,7 +40,9 @@ export default function OtherUsersPosts({goToLink}){
             'Authorization' : `Bearer ${user.token}`
         }
     } 
-    
+
+    console.log(user)
+
     useEffect(()=>{
         
         getUsersPosts()
@@ -77,6 +79,8 @@ export default function OtherUsersPosts({goToLink}){
             alert(`Houve uma falha ao obter os posts. Por favor atualize a página`)
             return
         })
+        
+        
     }
 
 

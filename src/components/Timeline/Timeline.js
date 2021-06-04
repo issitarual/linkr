@@ -3,22 +3,20 @@ import UserContext from '../UserContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import TrendingList from '../hashtag/TrendingList';
-import NewPost from './NewPost'
-import LinkPreview from './LinkPreview'
-
-import getYouTubeID from 'get-youtube-id';
+import NewPost from './NewPost';
+import styled from 'styled-components';
 
 /*import dos Posts*/
 import Posts from '../Posts'
-
-/*InfiniteScroller*/
-import InfiniteScroll from 'react-infinite-scroller';
 
 /*import de style components*/
 import {Title,TimelineContainer,Container,TimelineContent,} from '../timelineStyledComponents'
 
 /* Import UseInterval custom hook*/
 import UseInterval from '../UseInterval'
+
+/*InfiniteScroller*/
+import InfiniteScroll from 'react-infinite-scroller';
 
 export default function Timeline({goToLink}){
     const history = useHistory();
@@ -28,8 +26,7 @@ export default function Timeline({goToLink}){
     const [serverLoading,setServerLoading] = useState(true);
     const [olderLikes, setOlderLikes] = useState([]); 
     const inputRef = useRef([]);
-    const [numberofFollowing, setNumberofFollowing] = useState([])
-    const [timelineRef,setTimelineRef] = useState(false);
+    const [numberofFollowing, setNumberofFollowing] = useState([]);
 
     /*Logics of infinite Scroller*/ 
     const [maxNumberOfPosts,setMaxNumberOfPosts] = useState(null)
