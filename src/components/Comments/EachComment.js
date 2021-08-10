@@ -25,7 +25,7 @@ export default function EachComment({ avatar, username, text, id }) {
   return (
     <>
       <Container>
-        <img src={avatar} />
+        <img src={avatar} alt={username}/>
         <TextComment>
           <span>
             <h5 onClick={() => goToUserPosts(id)}>{username}</h5>

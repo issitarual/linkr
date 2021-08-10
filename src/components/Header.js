@@ -10,7 +10,6 @@ import {
   ChevronDownOutline,
   ChevronUpOutline,
   SearchOutline,
-  TrainOutline,
 } from "react-ionicons";
 
 import Users from "./Users";
@@ -55,7 +54,7 @@ export default function Header() {
           ) : (
             <ChevronDownOutline color={"#fff"} height="32px" width="32px" />
           )}
-          <img src={user.user.avatar} />
+          <img src={user.user.avatar} alt={user.user.username}/>
         </span>
         <Usernames state={otherUsers.length > 0 && stateSearch}>
           {otherUsers.length > 0

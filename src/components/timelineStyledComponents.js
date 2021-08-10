@@ -75,38 +75,13 @@ const PostComment = styled.p`
   word-wrap: break-word;
   white-space: pre-wrap;
 `;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-
-  @media (max-width: 800px) {
-    width: 100%px;
-    margin: 0 auto;
-    flex-direction: column;
-  }
-
-  h1 {
-    font-family: Oswald;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 43px;
-    line-height: 64px;
-    color: white;
-    margin-left: 15px;
-    margin-top: 30px;
-  }
-
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-
-    @media (max-width: 800px) {
-      margin-left: 10px;
-    }
-  }
+const Title = styled.h1`
+  font-family: Oswald;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 43px;
+  line-height: 64px;
+  color: white;
 `;
 
 const TimelineContainer = styled.div`
@@ -140,10 +115,9 @@ const TimelineContainer = styled.div`
     position: fixed;
     z-index: 0;
     right: 174px;
-    top: 260px;
+    top: 226px;
     color: white;
     border-radius: 16px;
-
     @media (max-width: 1200px) {
       display: none;
     }
@@ -170,7 +144,6 @@ const TimelinePosts = styled.ul`
     align-items: center;
     width: 690px;
     min-width: 360px;
-    margin: 0 auto;
   }
   @media (max-width: 610px) {
     align-items: center;
@@ -213,9 +186,9 @@ const TimelinePosts = styled.ul`
     background-color: #171717;
     color: white;
     width: auto;
+
     @media (max-width: 610px) {
       width: 90%;
-      border-radius: 0;
     }
     @media (max-width: 1200px) {
       width: 100%;
@@ -282,7 +255,6 @@ const TimelineContent = styled.div`
   flex-direction: column;
   @media (max-width: 1200px) {
     justify-content: center;
-    width: 100%;
     align-items: center;
   }
 `;

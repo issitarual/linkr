@@ -1,6 +1,6 @@
 import { ChatbubblesOutline } from "react-ionicons";
 import styled from "styled-components";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import UserContext from "../UserContext";
 import axios from "axios";
 

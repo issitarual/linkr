@@ -13,6 +13,7 @@ export default function CommentContainer({
   setWriteComment,
   writeComment,
   idComment,
+  author
 }) {
   const { user } = useContext(UserContext);
 
@@ -29,7 +30,7 @@ export default function CommentContainer({
           ))
         : null}
       <CommentOnThis>
-        <img src={avatar} />
+        <img src={avatar} alt={author}/>
         <form
           onSubmit={(e) => {
             e.preventDefault();

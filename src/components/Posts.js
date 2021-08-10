@@ -23,11 +23,7 @@ import {
   LinkDescription,
   Links,
   Hashtag,
-  Title,
-  TimelineContainer,
-  Container,
   TimelinePosts,
-  TimelineContent,
   LinkDetails,
   UserName,
   NoPostsYet,
@@ -99,9 +95,6 @@ export default function Posts(props) {
     goToLink,
     openMap,
     sendToHashtag,
-    getUsersPosts,
-    updateHashtagPosts,
-    goToOtherUser,
   } = props;
 
   function pinLocation(post) {
@@ -232,6 +225,7 @@ export default function Posts(props) {
                 avatar={user.user.avatar}
                 setWriteComment={setWriteComment}
                 writeComment={writeComment}
+                author={user.user.username}
               />
             </li>
           );
