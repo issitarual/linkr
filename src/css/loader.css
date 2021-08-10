@@ -1,43 +1,39 @@
-
-
-
-.loader svg{
-    height: 200px;
-    width: 200px;
+.loader svg {
+  height: 200px;
+  width: 200px;
 }
 
-@media (max-width:610px){
-    .loader svg{
-        height: 60px;
-        width: 60px;
-        margin: 40px 60px !important;
-    }
+@media (max-width: 610px) {
+  .loader svg {
+    height: 60px;
+    width: 60px;
+    margin: 40px 60px !important;
+  }
 }
 
-.Scroller.mid{
-    margin: 0 auto;
+.Scroller.mid {
+  margin: 0 auto;
 }
 
-.Scroller{
-    width: auto;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    
+.Scroller {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (max-width:1200px){
-    .Scroller{  
-       align-items: center;
-       width: 90%;
-       min-width:360px;
-    }
+@media (max-width: 1200px) {
+  .Scroller {
+    align-items: center;
+    width: 90%;
+    min-width: 360px;
+  }
 }
 
-@media (max-width:610px){
-     .Scroller{  
-        align-items: center;
-        width: 90%;
-        min-width:360px;
-     }
+@media (max-width: 610px) {
+  .Scroller {
+    align-items: center;
+    width: 90%;
+    min-width: 360px;
+  }
 }

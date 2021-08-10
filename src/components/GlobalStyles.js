@@ -1,4 +1,4 @@
-import {createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
     /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -58,11 +58,6 @@ const GlobalStyle = createGlobalStyle`
     }
     a{
         text-decoration: none;
-    }
-
-    @media (max-width:1200px){
-
-
-    
+    }    
 `;
 export default GlobalStyle;

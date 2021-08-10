@@ -1,127 +1,141 @@
-import styled from 'styled-components';
-import axios from 'axios';
-import { useState, useContext } from 'react';
-import UserContext from '../UserContext';
-import { LocationOutline } from 'react-ionicons'
+import styled from "styled-components";
+import axios from "axios";
+import { useState, useContext } from "react";
+import UserContext from "../UserContext";
+import { LocationOutline } from "react-ionicons";
 
-export default function NewPost ({update}) {
-  const [linkToPost, setLinkToPost] = useState('');
-  const [linkDescription, setLinkDescription] = useState('');
+export default function NewPost({ update }) {
+  const [linkToPost, setLinkToPost] = useState("");
+  const [linkDescription, setLinkDescription] = useState("");
   const [disabled, letDisabled] = useState(false);
-  const [buttonText, letButtonText] = useState('Publicar');
-  const { user ,setUser} = useContext(UserContext);
-  
-  const [enableLocation, setEnableLocation] = useState({text: 'Localização desativada', textColor: '#949494', enable: false});
-  const [cordenates, setCordenates] = useState([null,null])
+  const [buttonText, letButtonText] = useState("Publicar");
+  const { user, setUser } = useContext(UserContext);
 
-  function createNewPost (event) {
+  const [enableLocation, setEnableLocation] = useState({
+    text: "Localização desativada",
+    textColor: "#949494",
+    enable: false,
+  });
+  const [cordenates, setCordenates] = useState([null, null]);
 
+  function createNewPost(event) {
     event.preventDefault();
 
-    if (linkToPost === '') {
-      alert('o link é obrigatório.');
+    if (linkToPost === "") {
+      alert("o link é obrigatório.");
       return;
     }
 
     const body = {
-      "text": linkDescription,
-      "link": linkToPost,
-      "geolocation": {
-        "latitude": cordenates[0],
-        "longitude": cordenates[1]
-      }
-    }
+      text: linkDescription,
+      link: linkToPost,
+      geolocation: {
+        latitude: cordenates[0],
+        longitude: cordenates[1],
+      },
+    };
 
     const config = {
-      headers:{
-      'Authorization' : `Bearer ${user.token}`
-      }
-    }
-    
-    const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', body, config).then((response)=>{
-      letDisabled(false);
-      letButtonText('Publicar')
-      setLinkToPost('');
-      setLinkDescription('');
-      update();
-    }).catch((error)=>{
-      alert('houve um erro ao publicar seu link');
-      letDisabled(false);
-      letButtonText('Publicar')
-    })
-   
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+
+    const promise = axios
+      .post(`${process.env.REACT_APP_API_BASE_URL}/posts`, body, config)
+      .then((response) => {
+        letDisabled(false);
+        letButtonText("Publicar");
+        setLinkToPost("");
+        setLinkDescription("");
+        update();
+      })
+      .catch((error) => {
+        alert("houve um erro ao publicar seu link");
+        letDisabled(false);
+        letButtonText("Publicar");
+      });
+
     letDisabled(true);
-    letButtonText('Publicando...')
-    
+    letButtonText("Publicando...");
   }
 
-  function toggleEnabled () {
+  function toggleEnabled() {
     let atualiza;
     if (!enableLocation.enable) {
-      atualiza = {text: 'Localização ativada', textColor: '#238700', enable: true}
+      atualiza = {
+        text: "Localização ativada",
+        textColor: "#238700",
+        enable: true,
+      };
       if ("geolocation" in navigator) {
         getLocation();
       } else {
-        alert('não foi possível obter sua localização')
-        atualiza = {text: 'Localização desativada', textColor: '#949494', enable: false}
+        alert("não foi possível obter sua localização");
+        atualiza = {
+          text: "Localização desativada",
+          textColor: "#949494",
+          enable: false,
+        };
       }
     } else {
-      atualiza = {text: 'Localização desativada', textColor: '#949494', enable: false}
+      atualiza = {
+        text: "Localização desativada",
+        textColor: "#949494",
+        enable: false,
+      };
       clearLocation();
     }
     setEnableLocation(atualiza);
   }
 
-  function getLocation () {
-
+  function getLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
-      setCordenates([position.coords.latitude, position.coords.longitude])
+      setCordenates([position.coords.latitude, position.coords.longitude]);
     });
-
   }
-  function clearLocation () {
-    setCordenates([null,null])
+  function clearLocation() {
+    setCordenates([null, null]);
   }
 
   return (
-      <Post>
-        <Icon>
-          <img src={user.user.avatar}/>
-        </Icon>
-        <Form onSubmit={createNewPost}>
-          <p>O que você tem para favoritar hoje?</p>
-          <InputLink
+    <Post>
+      <Icon>
+        <img src={user.user.avatar} />
+      </Icon>
+      <Form onSubmit={createNewPost}>
+        <p>O que você tem para favoritar hoje?</p>
+        <InputLink
           autoFocus={true}
-            value={linkToPost} 
-            disabled={disabled} 
-            type="url" 
-            placeholder={"http://..."} 
-            onChange={e => setLinkToPost(e.target.value)} 
-          />
-          <InputDescription
-            value={linkDescription}
-            disabled={disabled}
-            type="text"
-            placeholder={"Muito irado esse link falando de #javascript"}
-            onChange={e => setLinkDescription(e.target.value)}
-          />
-          <Button disabled={disabled}>{buttonText}</Button>
-        </Form>
-        <ShowLocation onClick={toggleEnabled} enableLocation={enableLocation} >
-          <LocationOutline
-            color={enableLocation.textColor} 
-            height="15px"
-            width="15px"
-          />
-          <p>{enableLocation.text}</p>
-        </ShowLocation>
-      </Post>
+          value={linkToPost}
+          disabled={disabled}
+          type="url"
+          placeholder={"http://..."}
+          onChange={(e) => setLinkToPost(e.target.value)}
+        />
+        <InputDescription
+          value={linkDescription}
+          disabled={disabled}
+          type="text"
+          placeholder={"Muito irado esse link falando de #javascript"}
+          onChange={(e) => setLinkDescription(e.target.value)}
+        />
+        <Button disabled={disabled}>{buttonText}</Button>
+      </Form>
+      <ShowLocation onClick={toggleEnabled} enableLocation={enableLocation}>
+        <LocationOutline
+          color={enableLocation.textColor}
+          height="15px"
+          width="15px"
+        />
+        <p>{enableLocation.text}</p>
+      </ShowLocation>
+    </Post>
   );
-
 }
 
 const ShowLocation = styled.div`
-  color: ${(props) => (props.enableLocation.textColor)} ;
+  color: ${(props) => props.enableLocation.textColor};
   display: flex;
   align-items: center;
   position: absolute;
@@ -143,17 +157,15 @@ const Post = styled.div`
   padding-bottom: 16px;
   font-family: Lato;
   position: relative;
-  
 
-  @media (max-width:1200px){
+  @media (max-width: 1200px) {
     margin: 0 auto;
     width: calc(690px - 8%);
-    min-width:360px;
+    min-width: 360px;
   }
-  
 
-  @media (max-width:610px){
-    width: 100%!important;
+  @media (max-width: 610px) {
+    width: 100% !important;
     border-radius: 0;
   }
 `;
@@ -164,7 +176,7 @@ const Form = styled.form`
   flex-direction: column;
   align-items: flex-end;
 
-  @media (max-width:610px){
+  @media (max-width: 610px) {
     width: 100%;
   }
 
@@ -233,5 +245,3 @@ const Button = styled.button`
     color: lightgrey;
   }
 `;
-    
-
