@@ -43,3 +43,4 @@ npm i
 npm start
 ```
 4. Finally access http://localhost:3000 on your favorite browser 
+- Suggested API: https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr
