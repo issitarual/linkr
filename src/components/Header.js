@@ -242,6 +242,6 @@ const HidePosts = styled.div`
   display: none;
   @media (max-width: 840px) {
     display: block;
-    width: 100%;
+    width: 100vw;
   }
 `;

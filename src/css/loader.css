@@ -33,7 +33,7 @@
 @media (max-width: 610px) {
   .Scroller {
     align-items: center;
-    width: 90%;
+    width: 100%;
     min-width: 360px;
   }
 }
